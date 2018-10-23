@@ -1,6 +1,6 @@
 ## chess_engine
 # Board_reader
-Board_Reader class has private arrays called bitboards, which in summary represent a board.
+Board_Reader class has private arrays called bitboards, which in summary represent a board.\n
 Each element of array - True or False
 True means that represented square has a piece mentioned in name of array
 Bool move - if true - white to move, else - black
