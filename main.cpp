@@ -1,11 +1,9 @@
-#include "iostream"
-#include "Board_Reader.h"
-#include "Position_Evaluator.h"
+#include "Moves.h"
 
 int main() {
     std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
-    Board_Reader board(FEN);
-    std::cout << "Print square (e4 for example), the program should return piece on it \n";
+    Board board(FEN);
+    std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
     while(true){
         std::string input;
@@ -14,8 +12,9 @@ int main() {
             break;
         }
         else{
-            std::cout << board.pieceOnSquare(input) + "\n";
+            readMove(&board, input);
         }
+        std::cout << "Enter the next move \n";
     }
     return 0;
 }
