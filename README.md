@@ -7,3 +7,4 @@ Bool move - if true - white to move, else - black
 As input data we use Forsyth–Edwards Notation (FEN)  
 For more info:       <link>https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation  
 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" (default input FEN) - chess starting position  
+enPassant array shows, if this move is possible. First 8 cells - move to the third horizontal, other 8 - sixth horizontal
