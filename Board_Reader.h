@@ -12,6 +12,7 @@ private:
  * as input data we use Forsyth–Edwards Notation (FEN)
  * for more info:       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
  * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" (default input FEN) - chess starting position
+ * enPassant array shows, if this move is possible. First 8 cells - move to the third horizontal, other 8 - sixth horizontal
 */
     bool whitePieces[64] = {};
     bool blackPieces[64] = {};
@@ -21,6 +22,7 @@ private:
     bool queens[64] = {};
     bool kings[64] = {};
     bool pawns[64] = {};
+    bool enPassant[16] = {};
     bool whiteLongCastle;
     bool blackLongCastle;
     bool whiteShortCastle;
@@ -117,7 +119,14 @@ public:
                     blackLongCastle = true;
                     break;
                 default:
-                    continue;
+                    if(FEN[i]<='h' and FEN[i] >= 'a'){
+                        if(FEN[i+1]=='3'){
+                            enPassant[FEN[i] - 'a'] = true;
+                        }
+                        else if(FEN[i+1] == '6'){
+                            enPassant[8 + FEN[i] - 'a'] = true;
+                        }
+                    }
             }
         }
     }
