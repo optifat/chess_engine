@@ -22,7 +22,7 @@ private:
     bool queens[64] = {};
     bool kings[64] = {};
     bool pawns[64] = {};
-    bool enPassant[16] = {};
+    int enPassant = -1;
     bool whiteLongCastle;
     bool blackLongCastle;
     bool whiteShortCastle;
@@ -33,11 +33,12 @@ public:
     Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"){
         int index = 55;
         int i = 0;
+        bool flag = false;
         for(i; i < FEN.length(); i++){
-            index ++;
-            bool flag = false;
+            index++;
             if(FEN[i] < '9' and FEN[i] > '0'){
                 index += FEN[i] - '1';
+                continue;
             } else if(FEN[i] == '/'){
                 index -= 17;
                 continue;
@@ -119,9 +120,9 @@ public:
                 default:
                     if(FEN[i]<='h' and FEN[i] >= 'a'){
                         if(FEN[i+1]=='3'){
-                            enPassant[FEN[i] - 'a'] = true;
+                            enPassant = FEN[i] - 'a';
                         } else if(FEN[i+1] == '6'){
-                            enPassant[8 + FEN[i] - 'a'] = true;
+                            enPassant = 8 + FEN[i] - 'a';
                         }
                     }
             }
@@ -249,6 +250,47 @@ public:
 
     void passTheMove(){
         whiteToMove = !whiteToMove;
+    }
+
+    void editEnPassant(int index){
+        enPassant = index;
+    }
+
+    int possibleEnPassant(){
+        return enPassant;
+    }
+
+    void showBoard() {
+        for (int i=0; i < 64; i++) {
+            if(pawns[i]) {
+                if (blackPieces[i])
+                    std::cout << "p";
+                else std::cout << "P";
+            }else if(rooks[i]) {
+                if (blackPieces[i])
+                    std::cout << "r";
+                else std::cout << "R";
+            }else if (bishops[i]) {
+                if (blackPieces[i])
+                    std::cout << "b";
+                else std::cout << "B";
+            }else if (knights[i]) {
+                if (blackPieces[i])
+                    std::cout << "n";
+                else std::cout << "N";
+            }else if (queens[i]) {
+                if (blackPieces[i])
+                    std::cout << "q";
+                else std::cout << "Q";
+            }else if (kings[i]) {
+                if (blackPieces[i])
+                    std::cout << "k";
+                else std::cout << "K";
+            }else std::cout << "*";
+
+            if ((i+1)%8 == 0)
+                std::cout << std::endl;
+        }
     }
 
 };

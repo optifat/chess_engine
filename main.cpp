@@ -6,6 +6,7 @@ int main() {
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
     while(true){
+        board.showBoard();
         std::string input;
         std::cin >> input;
         if(input == "stop"){
