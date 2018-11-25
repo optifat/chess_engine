@@ -4,6 +4,34 @@
 #include <iostream>
 #include "Board.h"
 
+void promotion(Board *board, int endSquare){
+    std::cout << "Choose the piece for pawn promotion (Q, R, N, B)";
+    char promotion;
+    while(true){
+        std::cin >> promotion;
+        switch(promotion) {
+            case 'Q':
+                board->showPawns()[endSquare] = false;
+                board->showQueens()[endSquare] = true;
+                return;
+            case 'R':
+                board->showPawns()[endSquare] = false;
+                board->showRooks()[endSquare] = true;
+                return;
+            case 'B':
+                board->showPawns()[endSquare] = false;
+                board->showBishops()[endSquare] = true;
+                return;
+            case 'N':
+                board->showPawns()[endSquare] = false;
+                board->showKnights()[endSquare] = true;
+                return;
+            default:
+                std::cerr << 'Impossible promotion';
+        }
+    }
+}
+
 void pawnMove(Board *board, std::string move){
     if(move.length() != 5){
         std::cerr << "Wrong move input (length) \n";
@@ -71,6 +99,11 @@ void pawnMove(Board *board, std::string move){
             board->showPawns()[initSquare] = false;
             board->showPawns()[endSquare] = true;
             board->editEnPassant(-1);
+
+            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
+                promotion(board, endSquare);
+            }
+
             board->passTheMove();
             return;
         } else{
@@ -94,6 +127,11 @@ void pawnMove(Board *board, std::string move){
             board->showKnights()[endSquare] = false;
             board->showQueens()[endSquare] = false;
             board->editEnPassant(-1);
+
+            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
+                promotion(board, endSquare);
+            }
+
             board->passTheMove();
             return;
         }
@@ -109,6 +147,11 @@ void pawnMove(Board *board, std::string move){
             board->showRooks()[endSquare] = false;
             board->showKnights()[endSquare] = false;
             board->showQueens()[endSquare] = false;
+
+            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
+                promotion(board, endSquare);
+            }
+
             board->passTheMove();
             return;
         }
@@ -125,6 +168,11 @@ void pawnMove(Board *board, std::string move){
             board->showKnights()[endSquare] = false;
             board->showQueens()[endSquare] = false;
             board->editEnPassant(-1);
+
+            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
+                promotion(board, endSquare);
+            }
+            
             board->passTheMove();
             return;
         } else{
