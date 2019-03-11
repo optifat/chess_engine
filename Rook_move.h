@@ -6,7 +6,7 @@
 #include <cmath>
 
 // Rook move has a "Ra1-h1" representation.
-// Rook capturing is similar as pawn capturing e.g. "Rh1xh8".
+// Rook capturing is similar to pawn capturing e.g. "Rh1xh8".
 
 void rookMove(Board *board, std::string move){
     if(move.length() != 5){
