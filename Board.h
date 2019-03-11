@@ -129,7 +129,7 @@ public:
         }
     }
 
-    ~Board(){};
+    ~Board() = default;
 
     std::string pieceOnSquare(std::string square){
         if(square.length() > 2)
@@ -205,7 +205,6 @@ public:
             return "Black have no castle";
     }
 
-
     bool* showAnotherColor(){
         if(whiteToMove)
             return blackPieces;
@@ -261,7 +260,7 @@ public:
     }
 
     void showBoard() {
-        for (int i=0; i < 64; i++) {
+        for (int i = 56; i >= 0; i++) {
             if(pawns[i]) {
                 if (blackPieces[i])
                     std::cout << "p";
@@ -288,8 +287,10 @@ public:
                 else std::cout << "K";
             }else std::cout << "*";
 
-            if ((i+1)%8 == 0)
+            if ((i+1)%8 == 0) {
+                i-=16;
                 std::cout << std::endl;
+            }
         }
     }
 
