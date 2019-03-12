@@ -21,6 +21,10 @@ void readMove(Board *board, std::string move){
         knightMove(board, move.substr(1, 5));
     else if (move[0] == 'B')
         bishopMove(board, move.substr(1, 5));
+    else if (move[0] == 'Q') {
+        rookMove(board, move.substr(1, 5));
+        bishopMove(board, move.substr(1, 5));
+    }
 }
 
 #endif //CHESS_ENGINE_MOVES_H
