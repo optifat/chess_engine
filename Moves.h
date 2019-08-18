@@ -1,11 +1,10 @@
-
 #ifndef CHESS_ENGINE_MOVES_H
 #define CHESS_ENGINE_MOVES_H
 
-#include "Pawn_move.h"
-#include "Rook_move.h"
-#include "Knight_move.h"
-#include "Bishop_move.h"
+#include "include/Pawn_move.h"
+#include "include/Rook_move.h"
+#include "include/Knight_move.h"
+#include "include/Bishop_move.h"
 
 
 /* This function will be define by the first letter, which piece should move
@@ -13,17 +12,25 @@
  */
 
 void readMove(Board *board, std::string move){
-    if (move[0] >= 'a' and move[0] <= 'h')
-        pawnMove(board, move);
-    else if (move[0] == 'R')
-        rookMove(board, move.substr(1, 5));
-    else if (move[0] == 'N')
-        knightMove(board, move.substr(1, 5));
-    else if (move[0] == 'B')
-        bishopMove(board, move.substr(1, 5));
+    if (move[0] >= 'a' and move[0] <= 'h') {
+        Pawn_move nextMove;
+        nextMove.makeMove(board, move);
+    }
+    else if (move[0] == 'R') {
+        Rook_move nextMove;
+        nextMove.makeMove(board, move.substr(1, 5));
+    }
+    else if (move[0] == 'N') {
+        Knight_move nextMove;
+        nextMove.makeMove(board, move.substr(1, 5));
+    }
+    else if (move[0] == 'B') {
+        Bishop_move nextMove;
+        nextMove.makeMove(board, move.substr(1, 5));
+    }
     else if (move[0] == 'Q') {
-        rookMove(board, move.substr(1, 5));
-        bishopMove(board, move.substr(1, 5));
+        //rookMove(board, move.substr(1, 5));
+        //bishopMove(board, move.substr(1, 5));
     }
 }
 

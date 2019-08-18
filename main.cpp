@@ -1,7 +1,9 @@
+#include <iostream>
+
 #include "Moves.h"
 
 int main() {
-    std::string FEN = "r7/8/8/8/8/8/8/7R w KQkq -";
+    std::string FEN = "R7/2r5/8/8/8/8/8/8 w KQkq -";
     Board board(FEN);
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
