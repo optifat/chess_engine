@@ -150,6 +150,84 @@ std::string Board::pieceOnSquare(std::string square){
     }
 }
 
+//fieldIsAttacked function checks fields for king in order to prevent impossible moves
+bool Board::fieldIsAttacked(int position){
+    if (!kings[position] && this->showCurrentColor()[position]){
+        std::cerr << "This field is occupied by allied piece which is not a king. Returning false.";
+        return false;
+    }
+
+    //checking vertical
+    for(int i = -1; i <= 1; i+=2){
+        for(int j = 1; j <= 7; j++){
+            int checkedField = 8*j*i + position;
+            if(checkedField > 63 || checkedField < 0){
+                continue;
+            }
+            else if(this->showAnotherColor()[checkedField] &&
+                    ((this->showQueens()[checkedField] || this->showRooks()[checkedField]) ||
+                     (j == 1 && this->showKings()[checkedField]))){
+                return true;
+            }
+            else if (this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]){
+                break;
+            }
+        }
+    }
+
+    //checking horizontals
+    for(int i = -1; i <= 1; i+=2){
+        for(int j = 1; j <= 7; j++){
+            int checkedField = j*i + position;
+            if(checkedField/8 != position/8){
+                continue;
+            }
+            else if(this->showAnotherColor()[checkedField] &&
+                    ((this->showQueens()[checkedField] || this->showRooks()[checkedField]) ||
+                     (j == 1 && this->showKings()[checkedField]))){
+                return true;
+            }
+            else if (this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]){
+                break;
+            }
+        }
+    }
+
+    //checking diagonals
+    for(int i = -1; i <= 1; i+=2){
+        for(int j = -1; j <= 1; j+=2){
+            for(int k = 1; k <= 7; k++){
+                int checkedField = (8+i)*j*k + position;
+                //std::cout << (((this->showPawns()[checkedField]))) << std::endl;
+                if(checkedField > 63 || checkedField < 0 || abs(checkedField%8-position%8) != abs(checkedField/8-position/8)){
+                    continue;
+                } else if(this->showAnotherColor()[checkedField] &&
+                        (this->showQueens()[checkedField] || this->showBishops()[checkedField] ||
+                         (k == 1 && ((this->showPawns()[checkedField] && j == -1+2*this->whiteOrder())
+                                                                  || this->showKings()[checkedField]))
+                        )){
+                    return true;
+                } else if (this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]){
+                    break;
+                }
+            }
+        }
+    }
+
+    int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -18};
+
+    for(auto move: possibleKnightMoves){
+        int checkedField = position + move;
+        if(checkedField < 0 || checkedField > 63 || abs(checkedField/8-position/8)+abs(checkedField%8-position%8) != 3){
+            continue;
+        }
+        if(this->showAnotherColor()[checkedField] && this->showKnights()[checkedField]){
+            return true;
+        }
+    }
+    return false;
+}
+
 std::string Board::sideToMove(){
     if(whiteToMove)
         return "White to whiteToMove";
@@ -267,5 +345,3 @@ void Board::showBoard() {
         }
     }
 }
-
-

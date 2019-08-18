@@ -66,6 +66,8 @@ public:
 
     void showBoard();
 
+    bool fieldIsAttacked(int position);
+
 };
 
 #endif //CHESS_ENGINE_BOARD_H
