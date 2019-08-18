@@ -34,7 +34,7 @@ void Knight_move::makeMove(Board *board, std::string move){
     } else if(possibleMoves.find(initSquare - endSquare) == possibleMoves.end()){
         std::cerr << "Impossible move\n";
         return;
-    } else if(abs(endSquare/8 - initSquare/8) != (abs(initSquare-endSquare)+2)/8){                      //need to think how to deal with impossible moves like Na8-g8
+    } else if(abs(initSquare/8-endSquare/8)+abs(initSquare%8-endSquare%8) != 3){  //need to think how to deal with impossible moves like Na8-g8
         std::cerr << "Impossible move\n";
         return;
     }
