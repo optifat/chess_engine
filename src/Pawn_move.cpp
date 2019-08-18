@@ -9,7 +9,7 @@
 Pawn_move::Pawn_move(): Move(){};
 
 void Pawn_move::promotion(Board *board, int endSquare){
-    std::cout << "Choose the piece for pawn promotion (Q, R, N, B)";
+    std::cout << "Choose the piece for pawn promotion (Q, R, N, B): ";
     char promotion;
     while(true){
         std::cin >> promotion;
@@ -59,6 +59,7 @@ void Pawn_move::makeMove(Board *board, std::string move){
         return;
     }
 
+
     /* k variable is defined by the side to move: 1 if white and -1 if black.
      * All the white pawns are going up the board while black vice versa.
      * That means for us, that the difference between end and initial pawn squares is positive in case of white
@@ -71,9 +72,7 @@ void Pawn_move::makeMove(Board *board, std::string move){
      * Similarly for H vertical with change of previous equation to (8 - k)*k
      */
 
-    int k = -1;
-    if(board->whiteOrder())
-        k = 1;
+    int k = -1 + 2*board->whiteOrder();
 
     /* e variable shows if en passant take is possible.
      * If it is we should remove the opponent's pawn on adjacent square on the vertical you move to.
@@ -118,49 +117,7 @@ void Pawn_move::makeMove(Board *board, std::string move){
         std::cerr << "Nothing to take on there\n";
         return;
     } else if(move[2] == 'x') {
-        //checking vertical a
-        if (initSquare % 8 == 0 and endSquare - initSquare == (8 + k)*k) {
-            board->showCurrentColor()[initSquare] = false;
-            board->showCurrentColor()[endSquare] = true;
-            board->showAnotherColor()[endSquare-e*k] = false;
-            board->showPawns()[initSquare] = false;
-            board->showPawns()[endSquare-e*k] = false;
-            board->showPawns()[endSquare] = true;
-            board->showBishops()[endSquare] = false;
-            board->showRooks()[endSquare] = false;
-            board->showKnights()[endSquare] = false;
-            board->showQueens()[endSquare] = false;
-            board->editEnPassant(-1);
-
-            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
-                this->promotion(board, endSquare);
-            }
-
-            board->passTheMove();
-            return;
-        }
-        //now we checking vertical h
-        else if (initSquare % 8 == 7 and endSquare - initSquare == (8 - k)*k) {
-            board->showCurrentColor()[initSquare] = false;
-            board->showCurrentColor()[endSquare] = true;
-            board->showAnotherColor()[endSquare-e*k] = false;
-            board->showPawns()[initSquare] = false;
-            board->showPawns()[endSquare-e*k] = false;
-            board->showPawns()[endSquare] = true;
-            board->showBishops()[endSquare] = false;
-            board->showRooks()[endSquare] = false;
-            board->showKnights()[endSquare] = false;
-            board->showQueens()[endSquare] = false;
-
-            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
-                this->promotion(board, endSquare);
-            }
-
-            board->passTheMove();
-            return;
-        }
-        //all other verticals
-        else if (endSquare - initSquare == 7*k or endSquare - initSquare == 9*k) {
+        if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8)) {
             board->showCurrentColor()[initSquare] = false;
             board->showCurrentColor()[endSquare] = true;
             board->showAnotherColor()[endSquare-e*k] = false;
