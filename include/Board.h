@@ -66,6 +66,10 @@ public:
 
     void showBoard();
 
+    bool fieldIsAttacked(int position);
+
+    bool areOneDiagonal(int field1, int field2);
+
 };
 
 #endif //CHESS_ENGINE_BOARD_H
