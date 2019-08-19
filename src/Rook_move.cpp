@@ -29,7 +29,7 @@ void Rook_move::makeMove(Board *board, std::string move){
         std::cerr << "No rook on " << move[0] << move[1]<<"\n";
         return;
     } else if(initSquare == endSquare){
-        std::cerr << "Impossible move1\n";
+        std::cerr << "Impossible move\n";
         return;
     }
 
@@ -43,7 +43,7 @@ void Rook_move::makeMove(Board *board, std::string move){
             int i = initSquare + 1*k;
             for(i; i*k <= endSquare*k; i+=1*k){
                 if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
-                    std::cerr << "Impossible move2\n";
+                    std::cerr << "Impossible move\n";
                     return;
                 }
                 else if(i == endSquare){
@@ -52,6 +52,15 @@ void Rook_move::makeMove(Board *board, std::string move){
                     board->showRooks()[initSquare] = false;
                     board->showRooks()[endSquare] = true;
                     board->passTheMove();
+                    if(initSquare == 0 || board->whiteOrder()){
+                        board->whiteLongCastle = false;
+                    }else if(initSquare == 7 || board->whiteOrder()){
+                        board->whiteShortCastle = false;
+                    }else if(initSquare == 56 || !board->whiteOrder()){
+                        board->blackLongCastle = false;
+                    }else if(initSquare == 63 || !board->whiteOrder()){
+                        board->blackShortCastle = false;
+                    }
                     return;
                 }
             }
@@ -60,7 +69,7 @@ void Rook_move::makeMove(Board *board, std::string move){
             int i = initSquare + 8*k;
             for(i; i*k <= endSquare*k; i+=8*k){
                 if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
-                    std::cerr << "Impossible move3\n";
+                    std::cerr << "Impossible move\n";
                     return;
                 }
                 else if(i == endSquare){
@@ -69,12 +78,21 @@ void Rook_move::makeMove(Board *board, std::string move){
                     board->showRooks()[initSquare] = false;
                     board->showRooks()[endSquare] = true;
                     board->passTheMove();
+                    if(initSquare == 0 || board->whiteOrder()){
+                        board->whiteLongCastle = false;
+                    }else if(initSquare == 7 || board->whiteOrder()){
+                        board->whiteShortCastle = false;
+                    }else if(initSquare == 56 || !board->whiteOrder()){
+                        board->blackLongCastle = false;
+                    }else if(initSquare == 63 || !board->whiteOrder()){
+                        board->blackShortCastle = false;
+                    }
                     return;
                 }
             }
         }
         else{
-            std::cerr << "Impossible move4\n";
+            std::cerr << "Impossible move\n";
             return;
         }
     }
@@ -84,7 +102,7 @@ void Rook_move::makeMove(Board *board, std::string move){
             int i = initSquare + 1*k;
             for(i; i*k<=(endSquare-k)*k; i+=1*k){
                 if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
-                    std::cerr << "Impossible move5\n";
+                    std::cerr << "Impossible move\n";
                     return;
                 }
                 else if(i == endSquare-k){
@@ -99,10 +117,19 @@ void Rook_move::makeMove(Board *board, std::string move){
                         board->showRooks()[initSquare] = false;
                         board->showRooks()[endSquare] = true;
                         board->passTheMove();
+                        if(initSquare == 0 || board->whiteOrder()){
+                            board->whiteLongCastle = false;
+                        }else if(initSquare == 7 || board->whiteOrder()){
+                            board->whiteShortCastle = false;
+                        }else if(initSquare == 56 || !board->whiteOrder()){
+                            board->blackLongCastle = false;
+                        }else if(initSquare == 63 || !board->whiteOrder()){
+                            board->blackShortCastle = false;
+                        }
                         return;
                     }
                     else{
-                        std::cerr << "Impossible move6\n";
+                        std::cerr << "Impossible move\n";
                         return;
                     }
                 }
@@ -112,7 +139,7 @@ void Rook_move::makeMove(Board *board, std::string move){
             int i = initSquare + 8*k;
             for(i; i*k<=(endSquare-8)*k; i+=8*k){
                 if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
-                    std::cerr << "Impossible move7\n";
+                    std::cerr << "Impossible move\n";
                     return;
                 }
                 else if(i == endSquare-8*k){
@@ -128,17 +155,26 @@ void Rook_move::makeMove(Board *board, std::string move){
                         board->showRooks()[initSquare] = false;
                         board->showRooks()[endSquare] = true;
                         board->passTheMove();
+                        if(initSquare == 0 || board->whiteOrder()){
+                            board->whiteLongCastle = false;
+                        }else if(initSquare == 7 || board->whiteOrder()){
+                            board->whiteShortCastle = false;
+                        }else if(initSquare == 56 || !board->whiteOrder()){
+                            board->blackLongCastle = false;
+                        }else if(initSquare == 63 || !board->whiteOrder()){
+                            board->blackShortCastle = false;
+                        }
                         return;
                     }
                     else{
-                        std::cerr << "Impossible move8\n";
+                        std::cerr << "Impossible move\n";
                         return;
                     }
                 }
             }
         }
         else{
-            std::cerr << "Impossible move9\n";
+            std::cerr << "Impossible move\n";
             return;
         }
     }

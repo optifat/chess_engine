@@ -21,11 +21,13 @@ private:
     bool kings[64] = {};
     bool pawns[64] = {};
     int enPassant = -1;
+    bool whiteToMove = false;
+
+public:
     bool whiteLongCastle;
     bool blackLongCastle;
     bool whiteShortCastle;
     bool blackShortCastle;
-    bool whiteToMove = false;
 
 public:
     Board(std::string FEN);
@@ -67,8 +69,6 @@ public:
     void showBoard();
 
     bool fieldIsAttacked(int position);
-
-    bool areOneDiagonal(int field1, int field2);
 
 };
 
