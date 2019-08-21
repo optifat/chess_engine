@@ -31,10 +31,12 @@ void King_move::makeMove(Board *board, std::string move) {
 
     if(board->fieldIsAttacked(endSquare)){
         std::cerr << "Impossible move\n";
+        return;
     }
 
     if(abs(initSquare/8-endSquare/8) > 1 || abs(initSquare%8-endSquare%8) > 1){
         std::cerr << "Impossible move\n";
+        return;
     }
 
     if(move[2] == '-'){
