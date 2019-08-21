@@ -6,6 +6,7 @@
 #include "include/Knight_move.h"
 #include "include/Bishop_move.h"
 #include "include/Queen_move.h"
+#include "include/Castling.h"
 
 
 /* This function will be define by the first letter, which piece should move
@@ -36,6 +37,11 @@ void readMove(Board *board, std::string move){
     else if (move[0] == 'Q') {
         Queen_move nextMove;
         nextMove.makeMove(board, move.substr(1, 5));
+        board->editEnPassant(-1);
+    }
+    else if (move[0] == 'O') {
+        Castling nextMove;
+        nextMove.makeMove(board, move);
         board->editEnPassant(-1);
     }
 }
