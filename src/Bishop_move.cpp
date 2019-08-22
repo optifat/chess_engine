@@ -31,8 +31,8 @@ void Bishop_move::makeMove(Board *board, std::string move){
     if(!board->showBishops()[initSquare] or !board->showCurrentColor()[initSquare]){
         std::cerr << "No bishop on " << move[0] << move[1]<<"\n";
         return;
-    } else if(initSquare == endSquare || abs(initSquare/8-endSquare/8) != (initSquare%8-endSquare%8)){
-        std::cerr << "Impossible move\n";
+    } else if(initSquare == endSquare || abs(initSquare/8-endSquare/8) != abs(initSquare%8-endSquare%8)){
+        std::cerr << "Impossible move1\n";
         return;
     }
 
