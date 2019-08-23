@@ -17,6 +17,45 @@ bool Move::openingPin(Board *board, std::string move){
 
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
-    std::cout << board->fieldIsAttacked(kingPos, initSquare) << std::endl;
-    return board->fieldIsAttacked(kingPos, initSquare);
+
+    if(!board->showCurrentColor()[initSquare]){
+        std::cerr << "No piece with current color here\n";
+        return false;
+    }
+
+    if(!board->isPinned(initSquare)){
+        return false;
+    }
+    else if(!board->showAnotherColor()[endSquare]){
+        board->showCurrentColor()[initSquare] = false;
+        board->showCurrentColor()[endSquare] = true;
+        if(board->fieldIsAttacked(kingPos)){
+            board->showCurrentColor()[initSquare] = true;
+            board->showCurrentColor()[endSquare] = false;
+            return true;
+        }
+        else{
+            board->showCurrentColor()[initSquare] = true;
+            board->showCurrentColor()[endSquare] = false;
+            return false;
+        }
+    }
+
+    else{
+        board->showCurrentColor()[initSquare] = false;
+        board->showCurrentColor()[endSquare] = true;
+        board->showAnotherColor()[endSquare] = false;
+        if(board->fieldIsAttacked(kingPos)){
+            board->showCurrentColor()[initSquare] = true;
+            board->showCurrentColor()[endSquare] = false;
+            board->showAnotherColor()[endSquare] = true;
+            return true;
+        }
+        else{
+            board->showCurrentColor()[initSquare] = true;
+            board->showCurrentColor()[endSquare] = false;
+            board->showAnotherColor()[endSquare] = true;
+            return false;
+        }
+    }
 }

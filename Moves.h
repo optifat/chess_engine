@@ -73,5 +73,3 @@ void readMove(Board *board, std::string move){
 }
 
 #endif //CHESS_ENGINE_MOVES_H
-
-

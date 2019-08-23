@@ -318,15 +318,7 @@ bool Board::isPinned(int position){
             break;
         }
     }
-    this->showCurrentColor()[position] = false;
-    if(this->fieldIsAttacked(kingPos)){
-        this->showCurrentColor()[position] = true;
-        return true;
-    }
-    else{
-        this->showCurrentColor()[position] = true;
-        return false;
-    }
+    return this->fieldIsAttacked(kingPos, position);
 }
 
 void Board::showBoard() {

@@ -32,7 +32,7 @@ void Bishop_move::makeMove(Board *board, std::string move){
         std::cerr << "No bishop on " << move[0] << move[1]<<"\n";
         return;
     } else if(initSquare == endSquare || abs(initSquare/8-endSquare/8) != abs(initSquare%8-endSquare%8)){
-        std::cerr << "Impossible move1\n";
+        std::cerr << "Impossible move\n";
         return;
     }
 
@@ -123,8 +123,8 @@ void Bishop_move::makeMove(Board *board, std::string move){
             if((endSquare - initSquare) % 7 == 0){
                 int i = initSquare + 7;
                 for(i; i <= endSquare; i+=7){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
-                        std::cerr << "Impossible move\n";
+                    if(board->showCurrentColor()[i]){
+                        std::cerr << "Impossible move1\n";
                         return;
                     }
                     else if(i == endSquare){
@@ -146,7 +146,7 @@ void Bishop_move::makeMove(Board *board, std::string move){
                 int i = initSquare + 9;
                 for(i; i <= endSquare; i+=9){
                     if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
-                        std::cerr << "Impossible move\n";
+                        std::cerr << "Impossible move2\n";
                         return;
                     }
                     else if(i == endSquare){
@@ -164,7 +164,7 @@ void Bishop_move::makeMove(Board *board, std::string move){
                     }
                 }
             }
-            else std::cerr << "Impossible move\n";
+            else std::cerr << "Impossible move3\n";
         }
         else {
             if((initSquare - endSquare) % 7 == 0){
