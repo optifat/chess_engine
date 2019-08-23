@@ -13,6 +13,7 @@ public:
 
     virtual void makeMove(Board *board, std::string move);
 
+    bool openingPin(Board *board, std::string move);
 };
 
 

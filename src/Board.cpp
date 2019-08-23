@@ -151,11 +151,11 @@ std::string Board::pieceOnSquare(std::string square){
 }
 
 //fieldIsAttacked function checks fields for king in order to prevent impossible moves
-bool Board::fieldIsAttacked(int position){
-    if (!kings[position] && this->showCurrentColor()[position]){
-        std::cerr << "This field is occupied by allied piece which is not a king. Returning false.";
-        return false;
-    }
+bool Board::fieldIsAttacked(int position, int ignore){
+    //if (!kings[position] && this->showCurrentColor()[position]){
+    //    std::cerr << "This field is occupied by allied piece which is not a king. Returning false.";
+    //    return false;
+    //}
 
     //checking vertical
     for(int i = -1; i <= 1; i+=2){
@@ -169,7 +169,7 @@ bool Board::fieldIsAttacked(int position){
                      (j == 1 && this->showKings()[checkedField]))){
                 return true;
             }
-            else if (this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]){
+            else if ((this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]) && ignore != checkedField){
                 break;
             }
         }
@@ -187,7 +187,7 @@ bool Board::fieldIsAttacked(int position){
                      (j == 1 && this->showKings()[checkedField]))){
                 return true;
             }
-            else if (this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]){
+            else if ((this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]) && ignore != checkedField){
                 break;
             }
         }
@@ -198,7 +198,6 @@ bool Board::fieldIsAttacked(int position){
         for(int j = -1; j <= 1; j+=2){
             for(int k = 1; k <= 7; k++){
                 int checkedField = (8+i)*j*k + position;
-                //std::cout << (((this->showPawns()[checkedField]))) << std::endl;
                 if(checkedField > 63 || checkedField < 0 || abs(checkedField%8-position%8) != abs(checkedField/8-position/8)){
                     continue;
                 } else if(this->showAnotherColor()[checkedField] &&
@@ -207,7 +206,7 @@ bool Board::fieldIsAttacked(int position){
                                                                   || this->showKings()[checkedField]))
                         )){
                     return true;
-                } else if (this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]){
+                } else if ((this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]) && ignore != checkedField){
                     break;
                 }
             }
@@ -309,6 +308,25 @@ void Board::editEnPassant(int index){
 
 int Board::possibleEnPassant(){
     return enPassant;
+}
+
+bool Board::isPinned(int position){
+    int kingPos = -1;
+    for(int i = 0; i <= 63; i++){
+        if(this->kings[i] && this->showCurrentColor()[i]){
+            kingPos = i;
+            break;
+        }
+    }
+    this->showCurrentColor()[position] = false;
+    if(this->fieldIsAttacked(kingPos)){
+        this->showCurrentColor()[position] = true;
+        return true;
+    }
+    else{
+        this->showCurrentColor()[position] = true;
+        return false;
+    }
 }
 
 void Board::showBoard() {

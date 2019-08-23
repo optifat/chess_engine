@@ -10,7 +10,7 @@ private:
  * as input data we use Forsyth–Edwards Notation (FEN)
  * for more info:       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
  * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" (default input FEN) - chess starting position
- * enPassant array shows, if this move is possible. First 8 cells - move to the third horizontal, other 8 - sixth horizontal
+ * enPassant variable shows, if this move is possible. Its values is field index where pawn moves after enPassant
 */
     bool whitePieces[64] = {};
     bool blackPieces[64] = {};
@@ -68,7 +68,9 @@ public:
 
     void showBoard();
 
-    bool fieldIsAttacked(int position);
+    bool fieldIsAttacked(int position, int ignore = -1);
+
+    bool isPinned(int position);
 
 };
 
