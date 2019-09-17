@@ -7,6 +7,9 @@
 
 class Node{
 
+    friend class PositionNode;
+    friend class ValueNode;
+
 public:
     Node();
     ~Node();

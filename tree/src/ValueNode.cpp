@@ -6,4 +6,4 @@ ValueNode::ValueNode(int initSquare, int endSquare, int value): Node() {
     this->positionValue = value;
 }
 
-ValueNode::~ValueNode(): ~Node(){}
+ValueNode::~ValueNode(){}

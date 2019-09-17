@@ -6,7 +6,7 @@ PositionNode::PositionNode(Board* position): Node(){
     this->position = position;
 }
 
-PositionNode::~PositionNode(): ~Node() {}
+PositionNode::~PositionNode(){}
 
 void PositionNode::analyze() {
     for(int i = 0; i < this->parent->children.size(); i++){
