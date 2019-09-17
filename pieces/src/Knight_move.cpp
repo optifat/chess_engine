@@ -28,7 +28,7 @@ void Knight_move::makeMove(Board *board, std::string move){
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
     std::set<int> possibleMoves = {-17, -15, -10, -6, 6, 10, 15, 17};
 
-    if(!board->showKnights()[initSquare] or !board->showCurrentColor()[initSquare]){
+    if(!board->knights[initSquare] or !board->showCurrentColor()[initSquare]){
         std::cerr << "No knight on " << move[0] << move[1]<<"\n";
         return;
     } else if(possibleMoves.find(initSquare - endSquare) == possibleMoves.end()){
@@ -44,20 +44,20 @@ void Knight_move::makeMove(Board *board, std::string move){
     if(move[2] == '-'){
         board->showCurrentColor()[initSquare] = false;
         board->showCurrentColor()[endSquare]  = true;
-        board->showKnights()[initSquare] = false;
-        board->showKnights()[endSquare] = true;
+        board->knights[initSquare] = false;
+        board->knights[endSquare] = true;
         board->passTheMove();
     }
     else if(move[2] == 'x'){
         board->showCurrentColor()[initSquare] = false;
         board->showCurrentColor()[endSquare] = true;
         board->showAnotherColor()[endSquare] = false;
-        board->showKnights()[initSquare] = false;
-        board->showKnights()[endSquare] = true;
-        board->showPawns()[endSquare] = false;
-        board->showBishops()[endSquare] = false;
-        board->showRooks()[endSquare] = false;
-        board->showQueens()[endSquare] = false;
+        board->knights[initSquare] = false;
+        board->knights[endSquare] = true;
+        board->pawns[endSquare] = false;
+        board->bishops[endSquare] = false;
+        board->rooks[endSquare] = false;
+        board->queens[endSquare] = false;
     }
     else{
         std::cerr << "Impossible move\n";

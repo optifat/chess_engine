@@ -15,20 +15,20 @@ void Pawn_move::promotion(Board *board, int endSquare){
         std::cin >> promotion;
         switch(promotion) {
             case 'Q':
-                board->showPawns()[endSquare] = false;
-                board->showQueens()[endSquare] = true;
+                board->pawns[endSquare] = false;
+                board->queens[endSquare] = true;
                 return;
             case 'R':
-                board->showPawns()[endSquare] = false;
-                board->showRooks()[endSquare] = true;
+                board->pawns[endSquare] = false;
+                board->rooks[endSquare] = true;
                 return;
             case 'B':
-                board->showPawns()[endSquare] = false;
-                board->showBishops()[endSquare] = true;
+                board->pawns[endSquare] = false;
+                board->bishops[endSquare] = true;
                 return;
             case 'N':
-                board->showPawns()[endSquare] = false;
-                board->showKnights()[endSquare] = true;
+                board->pawns[endSquare] = false;
+                board->knights[endSquare] = true;
                 return;
             default:
                 std::cerr << "Impossible promotion";
@@ -54,7 +54,7 @@ void Pawn_move::makeMove(Board *board, std::string move){
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
-    if(!board->showPawns()[initSquare] or !board->showCurrentColor()[initSquare]){
+    if(!board->pawns[initSquare] or !board->showCurrentColor()[initSquare]){
         std::cerr << "No pawn on " << move[0] << move[1]<<"\n";
         return;
     }
@@ -90,8 +90,8 @@ void Pawn_move::makeMove(Board *board, std::string move){
            and !board->showAnotherColor()[endSquare] and !board->showAnotherColor()[endSquare-8*k]){
             board->showCurrentColor()[initSquare] = false;
             board->showCurrentColor()[endSquare]  = true;
-            board->showPawns()[initSquare] = false;
-            board->showPawns()[endSquare] = true;
+            board->pawns[initSquare] = false;
+            board->pawns[endSquare] = true;
             board->editEnPassant(endSquare-8*k);
             board->passTheMove();
             return;
@@ -99,8 +99,8 @@ void Pawn_move::makeMove(Board *board, std::string move){
                   and !board->showCurrentColor()[endSquare] and !board->showAnotherColor()[endSquare]){
             board->showCurrentColor()[initSquare] = false;
             board->showCurrentColor()[endSquare]  = true;
-            board->showPawns()[initSquare] = false;
-            board->showPawns()[endSquare] = true;
+            board->pawns[initSquare] = false;
+            board->pawns[endSquare] = true;
             board->editEnPassant(-1);
 
             if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
@@ -121,13 +121,13 @@ void Pawn_move::makeMove(Board *board, std::string move){
             board->showCurrentColor()[initSquare] = false;
             board->showCurrentColor()[endSquare] = true;
             board->showAnotherColor()[endSquare-e*k] = false;
-            board->showPawns()[initSquare] = false;
-            board->showPawns()[endSquare-e*k] = false;
-            board->showPawns()[endSquare] = true;
-            board->showBishops()[endSquare] = false;
-            board->showRooks()[endSquare] = false;
-            board->showKnights()[endSquare] = false;
-            board->showQueens()[endSquare] = false;
+            board->pawns[initSquare] = false;
+            board->pawns[endSquare-e*k] = false;
+            board->pawns[endSquare] = true;
+            board->bishops[endSquare] = false;
+            board->rooks[endSquare] = false;
+            board->knights[endSquare] = false;
+            board->queens[endSquare] = false;
             board->editEnPassant(-1);
 
             if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){

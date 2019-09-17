@@ -270,27 +270,27 @@ bool* Board::showCurrentColor(){
         return whitePieces;
 }
 
-bool* Board::showRooks(){
+const bool* Board::showRooks(){
     return rooks;
 }
 
-bool* Board::showKnights(){
+const bool* Board::showKnights(){
     return knights;
 }
 
-bool* Board::showBishops(){
+const bool* Board::showBishops(){
     return bishops;
 }
 
-bool* Board::showQueens(){
+const bool* Board::showQueens(){
     return queens;
 }
 
-bool* Board::showKings(){
+const bool* Board::showKings(){
     return kings;
 }
 
-bool* Board::showPawns(){
+const bool* Board::showPawns(){
     return pawns;
 }
 

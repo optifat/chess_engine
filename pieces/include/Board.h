@@ -1,7 +1,19 @@
 #ifndef CHESS_ENGINE_BOARD_H
 #define CHESS_ENGINE_BOARD_H
 
+#include <string>
+
 class Board{
+
+    friend class Move;
+    friend class Bishop_move;
+    friend class Castling;
+    friend class King_move;
+    friend class Knight_move;
+    friend class Pawn_move;
+    friend class Queen_move;
+    friend class Rook_move;
+
 private:
 /* These arrays called bitboards represent a board
  * Each element of array - True or False
@@ -22,8 +34,6 @@ private:
     bool pawns[64] = {};
     int enPassant = -1;
     bool whiteToMove = false;
-
-public:
     bool whiteLongCastle;
     bool blackLongCastle;
     bool whiteShortCastle;
@@ -46,17 +56,17 @@ public:
 
     bool* showCurrentColor();
 
-    bool* showRooks();
+    const bool* showRooks();
 
-    bool* showKnights();
+    const bool* showKnights();
 
-    bool* showBishops();
+    const bool* showBishops();
 
-    bool* showQueens();
+    const bool* showQueens();
 
-    bool* showKings();
+    const bool* showKings();
 
-    bool* showPawns();
+    const bool* showPawns();
 
     bool whiteOrder();
 

@@ -22,7 +22,7 @@ void Queen_move::makeMove(Board *board, std::string move) {
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
-    if(!board->showQueens()[initSquare] or !board->showCurrentColor()[initSquare]){
+    if(!board->queens[initSquare] or !board->showCurrentColor()[initSquare]){
         std::cerr << "No queen on " << move[0] << move[1]<<"\n";
         return;
     } else if(initSquare == endSquare){
@@ -47,8 +47,8 @@ void Queen_move::makeMove(Board *board, std::string move) {
                     else if(i == endSquare){
                         board->showCurrentColor()[initSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showQueens()[initSquare] = false;
-                        board->showQueens()[endSquare] = true;
+                        board->queens[initSquare] = false;
+                        board->queens[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -64,8 +64,8 @@ void Queen_move::makeMove(Board *board, std::string move) {
                     else if(i == endSquare){
                         board->showCurrentColor()[initSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showQueens()[initSquare] = false;
-                        board->showQueens()[endSquare] = true;
+                        board->queens[initSquare] = false;
+                        board->queens[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -87,15 +87,15 @@ void Queen_move::makeMove(Board *board, std::string move) {
                     }
                     else if(i == endSquare-k){
                         if(board->showAnotherColor()[endSquare]){
-                            board->showPawns()[endSquare] = false;
-                            board->showBishops()[endSquare] = false;
-                            board->showKnights()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
+                            board->pawns[endSquare] = false;
+                            board->bishops[endSquare] = false;
+                            board->knights[endSquare] = false;
+                            board->rooks[endSquare] = false;
                             board->showCurrentColor()[initSquare] = false;
                             board->showAnotherColor()[endSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -115,16 +115,16 @@ void Queen_move::makeMove(Board *board, std::string move) {
                     }
                     else if(i == endSquare-8*k){
                         if(board->showAnotherColor()[endSquare]){
-                            board->showPawns()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
-                            board->showBishops()[endSquare] = false;
-                            board->showKnights()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
+                            board->pawns[endSquare] = false;
+                            board->rooks[endSquare] = false;
+                            board->bishops[endSquare] = false;
+                            board->knights[endSquare] = false;
+                            board->rooks[endSquare] = false;
                             board->showCurrentColor()[initSquare] = false;
                             board->showAnotherColor()[endSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -156,8 +156,8 @@ void Queen_move::makeMove(Board *board, std::string move) {
                         else if(i == endSquare){
                             board->showCurrentColor()[initSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -173,8 +173,8 @@ void Queen_move::makeMove(Board *board, std::string move) {
                         else if(i == endSquare){
                             board->showCurrentColor()[initSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -193,8 +193,8 @@ void Queen_move::makeMove(Board *board, std::string move) {
                         else if(i == endSquare){
                             board->showCurrentColor()[initSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -210,8 +210,8 @@ void Queen_move::makeMove(Board *board, std::string move) {
                         else if(i == endSquare){
                             board->showCurrentColor()[initSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -231,15 +231,15 @@ void Queen_move::makeMove(Board *board, std::string move) {
                             return;
                         }
                         else if(i == endSquare){
-                            board->showPawns()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
-                            board->showKnights()[endSquare] = false;
-                            board->showBishops()[endSquare] = false;
+                            board->pawns[endSquare] = false;
+                            board->rooks[endSquare] = false;
+                            board->knights[endSquare] = false;
+                            board->bishops[endSquare] = false;
                             board->showCurrentColor()[initSquare] = false;
                             board->showAnotherColor()[endSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -253,15 +253,15 @@ void Queen_move::makeMove(Board *board, std::string move) {
                             return;
                         }
                         else if(i == endSquare){
-                            board->showPawns()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
-                            board->showKnights()[endSquare] = false;
-                            board->showBishops()[endSquare] = false;
+                            board->pawns[endSquare] = false;
+                            board->rooks[endSquare] = false;
+                            board->knights[endSquare] = false;
+                            board->bishops[endSquare] = false;
                             board->showCurrentColor()[initSquare] = false;
                             board->showAnotherColor()[endSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -278,15 +278,15 @@ void Queen_move::makeMove(Board *board, std::string move) {
                             return;
                         }
                         else if(i == endSquare){
-                            board->showPawns()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
-                            board->showKnights()[endSquare] = false;
-                            board->showBishops()[endSquare] = false;
+                            board->pawns[endSquare] = false;
+                            board->rooks[endSquare] = false;
+                            board->knights[endSquare] = false;
+                            board->bishops[endSquare] = false;
                             board->showCurrentColor()[initSquare] = false;
                             board->showAnotherColor()[endSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }
@@ -300,15 +300,15 @@ void Queen_move::makeMove(Board *board, std::string move) {
                             return;
                         }
                         else if(i == endSquare){
-                            board->showPawns()[endSquare] = false;
-                            board->showRooks()[endSquare] = false;
-                            board->showKnights()[endSquare] = false;
-                            board->showBishops()[endSquare] = false;
+                            board->pawns[endSquare] = false;
+                            board->rooks[endSquare] = false;
+                            board->knights[endSquare] = false;
+                            board->bishops[endSquare] = false;
                             board->showCurrentColor()[initSquare] = false;
                             board->showAnotherColor()[endSquare] = false;
                             board->showCurrentColor()[endSquare] = true;
-                            board->showQueens()[initSquare] = false;
-                            board->showQueens()[endSquare] = true;
+                            board->queens[initSquare] = false;
+                            board->queens[endSquare] = true;
                             board->passTheMove();
                             return;
                         }

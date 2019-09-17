@@ -9,7 +9,7 @@ bool Move::openingPin(Board *board, std::string move){
 
     int kingPos = -1;
     for(int i = 0; i <= 63; i++){
-        if(board->showKings()[i] && board->showCurrentColor()[i]){
+        if(board->kings[i] && board->showCurrentColor()[i]){
             kingPos = i;
             break;
         }

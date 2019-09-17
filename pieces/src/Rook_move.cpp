@@ -25,7 +25,7 @@ void Rook_move::makeMove(Board *board, std::string move){
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
-    if(!board->showRooks()[initSquare] or !board->showCurrentColor()[initSquare]){
+    if(!board->rooks[initSquare] or !board->showCurrentColor()[initSquare]){
         std::cerr << "No rook on " << move[0] << move[1]<<"\n";
         return;
     } else if(initSquare == endSquare){
@@ -49,8 +49,8 @@ void Rook_move::makeMove(Board *board, std::string move){
                 else if(i == endSquare){
                     board->showCurrentColor()[initSquare] = false;
                     board->showCurrentColor()[endSquare] = true;
-                    board->showRooks()[initSquare] = false;
-                    board->showRooks()[endSquare] = true;
+                    board->rooks[initSquare] = false;
+                    board->rooks[endSquare] = true;
                     board->passTheMove();
                     if(initSquare == 0 || board->whiteOrder()){
                         board->whiteLongCastle = false;
@@ -75,8 +75,8 @@ void Rook_move::makeMove(Board *board, std::string move){
                 else if(i == endSquare){
                     board->showCurrentColor()[initSquare] = false;
                     board->showCurrentColor()[endSquare] = true;
-                    board->showRooks()[initSquare] = false;
-                    board->showRooks()[endSquare] = true;
+                    board->rooks[initSquare] = false;
+                    board->rooks[endSquare] = true;
                     board->passTheMove();
                     if(initSquare == 0 || board->whiteOrder()){
                         board->whiteLongCastle = false;
@@ -107,15 +107,15 @@ void Rook_move::makeMove(Board *board, std::string move){
                 }
                 else if(i == endSquare-k){
                     if(board->showAnotherColor()[endSquare]){
-                        board->showPawns()[endSquare] = false;
-                        board->showBishops()[endSquare] = false;
-                        board->showKnights()[endSquare] = false;
-                        board->showQueens()[endSquare] = false;
+                        board->pawns[endSquare] = false;
+                        board->bishops[endSquare] = false;
+                        board->knights[endSquare] = false;
+                        board->queens[endSquare] = false;
                         board->showCurrentColor()[initSquare] = false;
                         board->showAnotherColor()[endSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showRooks()[initSquare] = false;
-                        board->showRooks()[endSquare] = true;
+                        board->rooks[initSquare] = false;
+                        board->rooks[endSquare] = true;
                         board->passTheMove();
                         if(initSquare == 0 || board->whiteOrder()){
                             board->whiteLongCastle = false;
@@ -144,16 +144,16 @@ void Rook_move::makeMove(Board *board, std::string move){
                 }
                 else if(i == endSquare-8*k){
                     if(board->showAnotherColor()[endSquare]){
-                        board->showPawns()[endSquare] = false;
-                        board->showRooks()[endSquare] = false;
-                        board->showBishops()[endSquare] = false;
-                        board->showKnights()[endSquare] = false;
-                        board->showQueens()[endSquare] = false;
+                        board->pawns[endSquare] = false;
+                        board->rooks[endSquare] = false;
+                        board->bishops[endSquare] = false;
+                        board->knights[endSquare] = false;
+                        board->queens[endSquare] = false;
                         board->showCurrentColor()[initSquare] = false;
                         board->showAnotherColor()[endSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showRooks()[initSquare] = false;
-                        board->showRooks()[endSquare] = true;
+                        board->rooks[initSquare] = false;
+                        board->rooks[endSquare] = true;
                         board->passTheMove();
                         if(initSquare == 0 || board->whiteOrder()){
                             board->whiteLongCastle = false;

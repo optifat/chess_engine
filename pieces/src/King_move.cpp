@@ -21,7 +21,7 @@ void King_move::makeMove(Board *board, std::string move) {
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
-    if(!board->showKings()[initSquare] || !board->showCurrentColor()[initSquare]){
+    if(!board->kings[initSquare] || !board->showCurrentColor()[initSquare]){
         std::cerr << "No king on " << move[0] << move[1]<<"\n";
         return;
     } else if(initSquare == endSquare){
@@ -42,21 +42,21 @@ void King_move::makeMove(Board *board, std::string move) {
     if(move[2] == '-'){
         board->showCurrentColor()[initSquare] = false;
         board->showCurrentColor()[endSquare] = true;
-        board->showKings()[initSquare] = false;
-        board->showKings()[endSquare] = true;
+        board->kings[initSquare] = false;
+        board->kings[endSquare] = true;
         board->passTheMove();
         return;
     }
     else if(move[2] == 'x'){
-        board->showPawns()[endSquare] = false;
-        board->showBishops()[endSquare] = false;
-        board->showKnights()[endSquare] = false;
-        board->showRooks()[endSquare] = false;
+        board->pawns[endSquare] = false;
+        board->bishops[endSquare] = false;
+        board->knights[endSquare] = false;
+        board->rooks[endSquare] = false;
         board->showCurrentColor()[initSquare] = false;
         board->showAnotherColor()[endSquare] = false;
         board->showCurrentColor()[endSquare] = true;
-        board->showKings()[initSquare] = false;
-        board->showKings()[endSquare] = true;
+        board->kings[initSquare] = false;
+        board->kings[endSquare] = true;
         board->passTheMove();
         return;
     }

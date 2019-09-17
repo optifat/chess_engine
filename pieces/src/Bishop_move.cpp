@@ -28,7 +28,7 @@ void Bishop_move::makeMove(Board *board, std::string move){
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
-    if(!board->showBishops()[initSquare] or !board->showCurrentColor()[initSquare]){
+    if(!board->bishops[initSquare] or !board->showCurrentColor()[initSquare]){
         std::cerr << "No bishop on " << move[0] << move[1]<<"\n";
         return;
     } else if(initSquare == endSquare || abs(initSquare/8-endSquare/8) != abs(initSquare%8-endSquare%8)){
@@ -53,8 +53,8 @@ void Bishop_move::makeMove(Board *board, std::string move){
                     else if(i == endSquare){
                         board->showCurrentColor()[initSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -70,8 +70,8 @@ void Bishop_move::makeMove(Board *board, std::string move){
                     else if(i == endSquare){
                         board->showCurrentColor()[initSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -90,8 +90,8 @@ void Bishop_move::makeMove(Board *board, std::string move){
                     else if(i == endSquare){
                         board->showCurrentColor()[initSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -107,8 +107,8 @@ void Bishop_move::makeMove(Board *board, std::string move){
                     else if(i == endSquare){
                         board->showCurrentColor()[initSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -128,15 +128,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
                         return;
                     }
                     else if(i == endSquare){
-                        board->showPawns()[endSquare] = false;
-                        board->showRooks()[endSquare] = false;
-                        board->showKnights()[endSquare] = false;
-                        board->showQueens()[endSquare] = false;
+                        board->pawns[endSquare] = false;
+                        board->rooks[endSquare] = false;
+                        board->knights[endSquare] = false;
+                        board->queens[endSquare] = false;
                         board->showCurrentColor()[initSquare] = false;
                         board->showAnotherColor()[endSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -150,15 +150,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
                         return;
                     }
                     else if(i == endSquare){
-                        board->showPawns()[endSquare] = false;
-                        board->showRooks()[endSquare] = false;
-                        board->showKnights()[endSquare] = false;
-                        board->showQueens()[endSquare] = false;
+                        board->pawns[endSquare] = false;
+                        board->rooks[endSquare] = false;
+                        board->knights[endSquare] = false;
+                        board->queens[endSquare] = false;
                         board->showCurrentColor()[initSquare] = false;
                         board->showAnotherColor()[endSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -175,15 +175,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
                         return;
                     }
                     else if(i == endSquare){
-                        board->showPawns()[endSquare] = false;
-                        board->showRooks()[endSquare] = false;
-                        board->showKnights()[endSquare] = false;
-                        board->showQueens()[endSquare] = false;
+                        board->pawns[endSquare] = false;
+                        board->rooks[endSquare] = false;
+                        board->knights[endSquare] = false;
+                        board->queens[endSquare] = false;
                         board->showCurrentColor()[initSquare] = false;
                         board->showAnotherColor()[endSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
@@ -197,15 +197,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
                         return;
                     }
                     else if(i == endSquare){
-                        board->showPawns()[endSquare] = false;
-                        board->showRooks()[endSquare] = false;
-                        board->showKnights()[endSquare] = false;
-                        board->showQueens()[endSquare] = false;
+                        board->pawns[endSquare] = false;
+                        board->rooks[endSquare] = false;
+                        board->knights[endSquare] = false;
+                        board->queens[endSquare] = false;
                         board->showCurrentColor()[initSquare] = false;
                         board->showAnotherColor()[endSquare] = false;
                         board->showCurrentColor()[endSquare] = true;
-                        board->showBishops()[initSquare] = false;
-                        board->showBishops()[endSquare] = true;
+                        board->bishops[initSquare] = false;
+                        board->bishops[endSquare] = true;
                         board->passTheMove();
                         return;
                     }
