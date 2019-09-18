@@ -1,20 +1,14 @@
-#ifndef CHESS_ENGINE_MOVES_H
-#define CHESS_ENGINE_MOVES_H
+#include <iostream>
+#include "../include/Input_processor.h"
+#include "../include/Pawn_move.h"
+#include "../include/Rook_move.h"
+#include "../include/Knight_move.h"
+#include "../include/Bishop_move.h"
+#include "../include/Queen_move.h"
+#include "../include/Castling.h"
+#include "../include/King_move.h"
 
-#include "pieces/include/Pawn_move.h"
-#include "pieces/include/Rook_move.h"
-#include "pieces/include/Knight_move.h"
-#include "pieces/include/Bishop_move.h"
-#include "pieces/include/Queen_move.h"
-#include "pieces/include/Castling.h"
-#include "pieces/include/King_move.h"
-
-
-/* This function will be define by the first letter, which piece should move
- * and pass it over to the next function (pawnMove, queenMove an so on)
- */
-
-void readMove(Board *board, std::string move){
+void Input_processor::readMove(Board *board, std::string move) {
     if (move[0] >= 'a' and move[0] <= 'h') {
         Pawn_move nextMove;
         if(nextMove.openingPin(board, move)){
@@ -71,5 +65,3 @@ void readMove(Board *board, std::string move){
         board->editEnPassant(-1);
     }
 }
-
-#endif //CHESS_ENGINE_MOVES_H

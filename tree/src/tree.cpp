@@ -19,7 +19,7 @@ void Tree::createNewLayer() {
 
     Node* current = this->queue.front();
 
-    while(int i < 0){                        // some condition here
+    while(true){                        // some condition here
         Board* newPosition = nullptr;
 
         //TODO create position with next move
