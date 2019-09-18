@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "Moves.h"
+#include "pieces/include/Input_processor.h"
 
 int main() {
-    std::string FEN = "B6R/2k5/8/P21K3/1N6/8/P7/8 b KQkq -";
+    std::string FEN = "B6R/2k5/8/P21K3/1N6/8/P7/8 w KQkq -";
     Board board(FEN);
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
@@ -15,7 +15,7 @@ int main() {
         if (input == "stop") {
             break;
         } else {
-            readMove(&board, input);
+            Input_processor::readMove(&board, input);
         }
         std::cout << "Enter the next move \n";
     }
