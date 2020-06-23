@@ -2,6 +2,7 @@
 #define CHESS_ENGINE_BOARD_H
 
 #include <string>
+#include <cinttypes>
 
 class Board{
 
@@ -15,8 +16,8 @@ class Board{
     friend class Rook_move;
 
 private:
-/* These arrays called bitboards represent a board
- * Each element of array - True or False
+/* These integers called bitboards represent a board
+ * Each bit of integer - True or False
  * True means that represented square has a piece mentioned in name of array
  * bool whiteToMove - if true - white to move, else - black
  * as input data we use Forsyth–Edwards Notation (FEN)
@@ -24,16 +25,16 @@ private:
  * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" (default input FEN) - chess starting position
  * enPassant variable shows, if this move is possible. Its values is field index where pawn moves after enPassant
 */
-    bool whitePieces[64] = {};
-    bool blackPieces[64] = {};
-    bool rooks[64] = {};
-    bool knights[64] = {};
-    bool bishops[64] = {};
-    bool queens[64] = {};
-    bool kings[64] = {};
-    bool pawns[64] = {};
+    uint64_t whitePieces = 0;
+    uint64_t blackPieces = 0;
+    uint64_t rooks = 0;
+    uint64_t knights = 0;
+    uint64_t bishops = 0;
+    uint64_t queens = 0;
+    uint64_t kings = 0;
+    uint64_t pawns = 0;
     int enPassant = -1;
-    bool whiteToMove = false;
+    bool whiteToMove = true;
     bool whiteLongCastle;
     bool blackLongCastle;
     bool whiteShortCastle;
@@ -52,21 +53,25 @@ public:
 
     std::string blackCastle();
 
-    bool* showAnotherColor();
+    bool whitePieceCheck(int square);
 
-    bool* showCurrentColor();
+    bool blackPieceCheck(int square);
 
-    const bool* showRooks();
+    bool anotherColorCheck(int square);
 
-    const bool* showKnights();
+    bool currentColorCheck(int square);
 
-    const bool* showBishops();
+    bool rookCheck(int square);
 
-    const bool* showQueens();
+    bool knightCheck(int square);
 
-    const bool* showKings();
+    bool bishopCheck(int square);
 
-    const bool* showPawns();
+    bool queenCheck(int square);
+
+    bool kingCheck(int square);
+
+    bool pawnCheck(int square);
 
     bool whiteOrder();
 
@@ -81,6 +86,10 @@ public:
     bool fieldIsAttacked(int position, int ignore = -1);
 
     bool isPinned(int position);
+
+    void updateCurrentColor(int initSquare, int endSqure);
+
+    void updateAnotherColor(int initSquare, int endSqure);
 
 };
 

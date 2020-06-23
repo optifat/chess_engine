@@ -10,51 +10,26 @@
 
 Bishop_move::Bishop_move(): Move(){};
 
-void Bishop_move::makeMove(Board *board, std::string move){
-    if(move.length() != 5){
-        std::cerr << "Wrong move input (length) \n";
-        return;
-    } else if(move[2] != '-' and move[2] != 'x'){
-        std::cerr << "Wrong move input (not - or x)\n";
-        return;
-    } else if(move[0] == move[3] or move[1] == move[4]){
-        std::cerr << "Impossible move";
-        return;
-    } else if(move[0]>'h' or move[0]<'a' or move[3]>'h' or move[3]<'a' or move[1]>'8' or move[1]<'1' or move[4]>'8' or move[4]<'1'){
-        std::cerr << "Wrong input";
-        return;
-    }
+void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
 
-    int initSquare = move[0] - 'a' + 8*(move[1] - '1');
-    int endSquare = move[3] - 'a' + 8*(move[4] - '1');
-
-    if(!board->bishops[initSquare] or !board->showCurrentColor()[initSquare]){
-        std::cerr << "No bishop on " << move[0] << move[1]<<"\n";
-        return;
-    } else if(initSquare == endSquare || abs(initSquare/8-endSquare/8) != abs(initSquare%8-endSquare%8)){
-        std::cerr << "Impossible move\n";
-        return;
-    }
-
-    // k variable shows "move direction".
+    // k variable shows move direction: to the upper lines (k == 1) or lower ones (k == -1).
     int k = 1;
     if(initSquare > endSquare)
         k = -1;
 
-    if(move[2] == '-'){
+    if(!take){
         if(k == 1){
             if((endSquare - initSquare) % 7 == 0){
                 int i = initSquare + 7;
-                for(i; i <= endSquare; i+=7){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i <= endSquare; i+=7){
+                    if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -62,16 +37,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
             }
             else if((endSquare - initSquare) % 9 == 0){
                 int i = initSquare + 9;
-                for(i; i <= endSquare; i+=9){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i <= endSquare; i+=9){
+                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -82,16 +56,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
         else {
             if((initSquare - endSquare) % 7 == 0){
                 int i = initSquare - 7;
-                for(i; i >= endSquare; i-=7){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i >= endSquare; i-=7){
+                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -99,16 +72,15 @@ void Bishop_move::makeMove(Board *board, std::string move){
             }
             else if((initSquare - endSquare) % 9 == 0){
                 int i = initSquare - 9;
-                for(i; i >= endSquare; i-=9){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i >= endSquare; i-=9){
+                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -117,26 +89,24 @@ void Bishop_move::makeMove(Board *board, std::string move){
             else std::cerr << "Impossible move\n";
         }
     }
-
-    if(move[2] == 'x'){
+    else{
         if(k == 1){
             if((endSquare - initSquare) % 7 == 0){
                 int i = initSquare + 7;
-                for(i; i <= endSquare; i+=7){
-                    if(board->showCurrentColor()[i]){
+                for(; i <= endSquare; i+=7){
+                    if(board->currentColorCheck(i)){
                         std::cerr << "Impossible move1\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->pawns[endSquare] = false;
-                        board->rooks[endSquare] = false;
-                        board->knights[endSquare] = false;
-                        board->queens[endSquare] = false;
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showAnotherColor()[endSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->updateAnotherColor(endSquare, -1);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
+                        board->pawns &= ~(1 << endSquare);
+                        board->rooks &= ~(1 << endSquare);
+                        board->knights &= ~(1 << endSquare);
+                        board->queens &= ~(1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -144,21 +114,20 @@ void Bishop_move::makeMove(Board *board, std::string move){
             }
             else if((endSquare - initSquare) % 9 == 0){
                 int i = initSquare + 9;
-                for(i; i <= endSquare; i+=9){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i <= endSquare; i+=9){
+                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
                         std::cerr << "Impossible move2\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->pawns[endSquare] = false;
-                        board->rooks[endSquare] = false;
-                        board->knights[endSquare] = false;
-                        board->queens[endSquare] = false;
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showAnotherColor()[endSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->updateAnotherColor(endSquare, -1);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
+                        board->pawns &= ~(1 << endSquare);
+                        board->rooks &= ~(1 << endSquare);
+                        board->knights &= ~(1 << endSquare);
+                        board->queens &= ~(1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -169,21 +138,20 @@ void Bishop_move::makeMove(Board *board, std::string move){
         else {
             if((initSquare - endSquare) % 7 == 0){
                 int i = initSquare - 7;
-                for(i; i >= endSquare; i-=7){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i >= endSquare; i-=7){
+                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->pawns[endSquare] = false;
-                        board->rooks[endSquare] = false;
-                        board->knights[endSquare] = false;
-                        board->queens[endSquare] = false;
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showAnotherColor()[endSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
+                        board->bishops -= powl(2, initSquare);
+                        board->bishops += powl(2, endSquare);
+                        board->pawns &= ~(1 << endSquare);
+                        board->rooks &= ~(1 << endSquare);
+                        board->knights &= ~(1 << endSquare);
+                        board->queens &= ~(1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -191,21 +159,20 @@ void Bishop_move::makeMove(Board *board, std::string move){
             }
             else if((initSquare - endSquare) % 9 == 0){
                 int i = initSquare - 9;
-                for(i; i >= endSquare; i-=9){
-                    if(board->showAnotherColor()[i] or board->showCurrentColor()[i]){
+                for(; i >= endSquare; i-=9){
+                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
                     }
                     else if(i == endSquare){
-                        board->pawns[endSquare] = false;
-                        board->rooks[endSquare] = false;
-                        board->knights[endSquare] = false;
-                        board->queens[endSquare] = false;
-                        board->showCurrentColor()[initSquare] = false;
-                        board->showAnotherColor()[endSquare] = false;
-                        board->showCurrentColor()[endSquare] = true;
-                        board->bishops[initSquare] = false;
-                        board->bishops[endSquare] = true;
+                        board->updateCurrentColor(initSquare, endSquare);
+                        board->updateAnotherColor(endSquare, -1);
+                        board->bishops &= ~(1 << initSquare);
+                        board->bishops |= (1 << endSquare);
+                        board->pawns &= ~(1 << endSquare);
+                        board->rooks &= ~(1 << endSquare);
+                        board->knights &= ~(1 << endSquare);
+                        board->queens &= ~(1 << endSquare);
                         board->passTheMove();
                         return;
                     }
@@ -213,10 +180,6 @@ void Bishop_move::makeMove(Board *board, std::string move){
             }
             else std::cerr << "Impossible move\n";
         }
-    }
-    else{
-        std::cerr << "Impossible move\n";
-        return;
     }
 }
 

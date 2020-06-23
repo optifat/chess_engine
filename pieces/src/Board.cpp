@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <cmath>
 
 #include "../include/Board.h"
 
@@ -19,52 +20,52 @@ Board::Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ
         } else{
             switch(FEN[i]){
                 case 'P':
-                    whitePieces[index] = true;
-                    pawns[index] = true;
+                    whitePieces += powl(2, index);
+                    pawns += powl(2, index);
                     break;
                 case 'p':
-                    blackPieces[index] = true;
-                    pawns[index] = true;
+                    blackPieces += powl(2, index);
+                    pawns += powl(2, index);
                     break;
                 case 'R':
-                    whitePieces[index] = true;
-                    rooks[index] = true;
+                    whitePieces += powl(2, index);
+                    rooks += powl(2, index);
                     break;
                 case 'r':
-                    blackPieces[index] = true;
-                    rooks[index] = true;
+                    blackPieces += powl(2, index);
+                    rooks += powl(2, index);
                     break;
                 case 'B':
-                    whitePieces[index] = true;
-                    bishops[index] = true;
+                    whitePieces += powl(2, index);
+                    bishops += powl(2, index);
                     break;
                 case 'b':
-                    blackPieces[index] = true;
-                    bishops[index] = true;
+                    blackPieces += powl(2, index);
+                    bishops += powl(2, index);
                     break;
                 case 'N':
-                    whitePieces[index] = true;
-                    knights[index] = true;
+                    whitePieces += powl(2, index);
+                    knights += powl(2, index);
                     break;
                 case 'n':
-                    blackPieces[index] = true;
-                    knights[index] = true;
+                    blackPieces += powl(2, index);
+                    knights += powl(2, index);
                     break;
                 case 'Q':
-                    whitePieces[index] = true;
-                    queens[index] = true;
+                    whitePieces += powl(2, index);
+                    queens += powl(2, index);
                     break;
                 case 'q':
-                    blackPieces[index] = true;
-                    queens[index] = true;
+                    blackPieces += powl(2, index);
+                    queens += powl(2, index);
                     break;
                 case 'K':
-                    whitePieces[index] = true;
-                    kings[index] = true;
+                    whitePieces += powl(2, index);
+                    kings += powl(2, index);
                     break;
                 case 'k':
-                    blackPieces[index] = true;
-                    kings[index] = true;
+                    blackPieces += powl(2, index);
+                    kings += powl(2, index);
                     break;
                 default:
                     flag = true;
@@ -115,33 +116,33 @@ std::string Board::pieceOnSquare(std::string square){
     else{
         int index = square[0] - 'a' + 8*(square[1] - '1');
         std::string piece;
-        if(whitePieces[index]){
+        if(whitePieceCheck(index)){
             piece += "White ";
-            if(rooks[index])
+            if(rookCheck(index))
                 piece += "rook";
-            if(knights[index])
+            if(knightCheck(index))
                 piece += "knight";
-            if(bishops[index])
+            if(bishopCheck(index))
                 piece += "bishop";
-            if(pawns[index])
+            if(pawnCheck(index))
                 piece += "pawn";
-            if(queens[index])
+            if(queenCheck(index))
                 piece += "queen";
-            if(kings[index])
+            if(kingCheck(index))
                 piece += "king";
-        } else if(blackPieces[index]){
+        } else if(blackPieceCheck(index)){
             piece += "Black ";
-            if(rooks[index])
+            if(rookCheck(index))
                 piece += "rook";
-            if(knights[index])
+            if(knightCheck(index))
                 piece += "knight";
-            if(bishops[index])
+            if(bishopCheck(index))
                 piece += "bishop";
-            if(pawns[index])
+            if(pawnCheck(index))
                 piece += "pawn";
-            if(queens[index])
+            if(queenCheck(index))
                 piece += "queen";
-            if(kings[index])
+            if(kingCheck(index))
                 piece += "king";
         } else{
             piece += "Empty";
@@ -157,37 +158,37 @@ bool Board::fieldIsAttacked(int position, int ignore){
     //    return false;
     //}
 
-    //checking vertical
+    //checking files
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
             int checkedField = 8*j*i + position;
             if(checkedField > 63 || checkedField < 0){
                 continue;
             }
-            else if(this->showAnotherColor()[checkedField] &&
-                    ((this->showQueens()[checkedField] || this->showRooks()[checkedField]) ||
-                     (j == 1 && this->showKings()[checkedField]))){
+            else if(this->anotherColorCheck(checkedField) &&
+                    ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
+                     (j == 1 && this->kingCheck(checkedField)))){
                 return true;
             }
-            else if ((this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]) && ignore != checkedField){
+            else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                 break;
             }
         }
     }
 
-    //checking horizontals
+    //checking line
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
             int checkedField = j*i + position;
             if(checkedField/8 != position/8){
                 continue;
             }
-            else if(this->showAnotherColor()[checkedField] &&
-                    ((this->showQueens()[checkedField] || this->showRooks()[checkedField]) ||
-                     (j == 1 && this->showKings()[checkedField]))){
+            else if(this->anotherColorCheck(checkedField) &&
+                    ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
+                     (j == 1 && this->kingCheck(checkedField)))){
                 return true;
             }
-            else if ((this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]) && ignore != checkedField){
+            else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                 break;
             }
         }
@@ -200,13 +201,13 @@ bool Board::fieldIsAttacked(int position, int ignore){
                 int checkedField = (8+i)*j*k + position;
                 if(checkedField > 63 || checkedField < 0 || abs(checkedField%8-position%8) != abs(checkedField/8-position/8)){
                     continue;
-                } else if(this->showAnotherColor()[checkedField] &&
-                        (this->showQueens()[checkedField] || this->showBishops()[checkedField] ||
-                         (k == 1 && ((this->showPawns()[checkedField] && j == -1+2*this->whiteOrder())
-                                                                  || this->showKings()[checkedField]))
+                } else if(this->anotherColorCheck(checkedField) &&
+                        (this->queenCheck(checkedField) || this->bishopCheck(checkedField) ||
+                         (k == 1 && ((this->pawnCheck(checkedField) && j == -1+2*this->whiteOrder())
+                                                                  || this->kingCheck(checkedField)))
                         )){
                     return true;
-                } else if ((this->showCurrentColor()[checkedField] || this->showAnotherColor()[checkedField]) && ignore != checkedField){
+                } else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                     break;
                 }
             }
@@ -220,7 +221,7 @@ bool Board::fieldIsAttacked(int position, int ignore){
         if(checkedField < 0 || checkedField > 63 || abs(checkedField/8-position/8)+abs(checkedField%8-position%8) != 3){
             continue;
         }
-        if(this->showAnotherColor()[checkedField] && this->showKnights()[checkedField]){
+        if(this->anotherColorCheck(checkedField) && this->knightCheck(checkedField)){
             return true;
         }
     }
@@ -256,42 +257,50 @@ std::string Board::blackCastle(){
         return "Black have no castle";
 }
 
-bool* Board::showAnotherColor(){
+bool Board::whitePieceCheck(int square) {
+    return (whitePieces >> square)%2;
+}
+
+bool Board::blackPieceCheck(int square) {
+    return (blackPieces >> square)%2;
+}
+
+bool Board::anotherColorCheck(int square){
     if(whiteToMove)
-        return blackPieces;
+        return blackPieceCheck(square);
     else
-        return whitePieces;
+        return whitePieceCheck(square);
 }
 
-bool* Board::showCurrentColor(){
+bool Board::currentColorCheck(int square){
     if(!whiteToMove)
-        return blackPieces;
+        return blackPieceCheck(square);
     else
-        return whitePieces;
+        return whitePieceCheck(square);
 }
 
-const bool* Board::showRooks(){
-    return rooks;
+bool Board::rookCheck(int square){
+    return (rooks >> square)%2;
 }
 
-const bool* Board::showKnights(){
-    return knights;
+bool Board::knightCheck(int square){
+    return (knights >> square)%2;
 }
 
-const bool* Board::showBishops(){
-    return bishops;
+bool Board::bishopCheck(int square){
+    return (bishops >> square)%2;
 }
 
-const bool* Board::showQueens(){
-    return queens;
+bool Board::queenCheck(int square){
+    return (queens >> square)%2;
 }
 
-const bool* Board::showKings(){
-    return kings;
+bool Board::kingCheck(int square){
+    return (kings >> square)%2;
 }
 
-const bool* Board::showPawns(){
-    return pawns;
+bool Board::pawnCheck(int square){
+    return (pawns >> square)%2;
 }
 
 bool Board::whiteOrder(){
@@ -313,7 +322,7 @@ int Board::possibleEnPassant(){
 bool Board::isPinned(int position){
     int kingPos = -1;
     for(int i = 0; i <= 63; i++){
-        if(this->kings[i] && this->showCurrentColor()[i]){
+        if(this->kingCheck(i) && this->currentColorCheck(i)){
             kingPos = i;
             break;
         }
@@ -323,35 +332,57 @@ bool Board::isPinned(int position){
 
 void Board::showBoard() {
     for (int i = 56; i >= 0; i++) {
-        if(pawns[i]) {
-            if (blackPieces[i])
+        if( (pawns >> i)%2 ) {
+            if ((blackPieces >> i)%2 )
                 std::cout << "p";
             else std::cout << "P";
-        }else if(rooks[i]) {
-            if (blackPieces[i])
+        } else if( (rooks >> i)%2 ) {
+            if ( (blackPieces >> i)%2 )
                 std::cout << "r";
             else std::cout << "R";
-        }else if (bishops[i]) {
-            if (blackPieces[i])
+        } else if ( (bishops >> i)%2 ) {
+            if ( (blackPieces >> i)%2 )
                 std::cout << "b";
             else std::cout << "B";
-        }else if (knights[i]) {
-            if (blackPieces[i])
+        } else if ( (knights >> i)%2 ) {
+            if ( (blackPieces >> i)%2 )
                 std::cout << "n";
             else std::cout << "N";
-        }else if (queens[i]) {
-            if (blackPieces[i])
+        } else if ((queens >> i)%2 ) {
+            if ( (blackPieces >> i)%2 )
                 std::cout << "q";
             else std::cout << "Q";
-        }else if (kings[i]) {
-            if (blackPieces[i])
+        } else if ( (kings >> i)%2 ) {
+            if ( (blackPieces >> i)%2 )
                 std::cout << "k";
             else std::cout << "K";
-        }else std::cout << "*";
+        } else std::cout << "*";
 
         if ((i+1)%8 == 0) {
             i-=16;
             std::cout << std::endl;
         }
+    }
+}
+
+void Board::updateCurrentColor(int initSquare, int endSquare){
+    if(whiteToMove){
+        whitePieces &= ~(1 << initSquare);
+        whitePieces |= (1 << endSquare);
+    }
+    else{
+        blackPieces &= ~(1 << initSquare);
+        blackPieces |= (1 << endSquare);
+    }
+}
+
+void Board::updateAnotherColor(int initSquare, int endSquare){
+    if(!whiteToMove){
+        whitePieces &= ~(1 << initSquare);
+        whitePieces |= (1 << endSquare);
+    }
+    else{
+        blackPieces &= ~(1 << initSquare);
+        blackPieces |= (1 << endSquare);
     }
 }
