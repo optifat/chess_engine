@@ -9,23 +9,8 @@
 
 Knight_move::Knight_move(): Move(){};
 
-void Knight_move::makeMove(Board *board, std::string move){
-    if(move.length() != 5){
-        std::cerr << "Wrong move input (length) \n";
-        return;
-    }else if(move[2] != '-' and move[2] != 'x'){
-        std::cerr << "Wrong move input (not - or x)\n";
-        return;
-    } else if(move[0]>'h' or move[0]<'a' or move[3]>'h' or move[3]<'a'){
-        std::cerr << "Wrong verticals, should be a-h \n";
-        return;
-    } else if(move[1]>'8' or move[1]<'1' or move[4]>'8' or move[4]<'1'){
-        std::cerr << "Wrong horizontals, should be 1-8 \n";
-        return;
-    }
-
-    int initSquare = move[0] - 'a' + 8*(move[1] - '1');
-    int endSquare = move[3] - 'a' + 8*(move[4] - '1');
+void Knight_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+    /*
     std::set<int> possibleMoves = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     if(!board->knights[initSquare] or !board->showCurrentColor()[initSquare]){
@@ -38,30 +23,25 @@ void Knight_move::makeMove(Board *board, std::string move){
         std::cerr << "Impossible move\n";
         return;
     }
+    */
+    //std::cout << endSquare/8 - initSquare/8 << ' ' << (initSquare-endSquare+1)/8 << std::endl;
 
-    std::cout << endSquare/8 - initSquare/8 << ' ' << (initSquare-endSquare+1)/8 << std::endl;
-
-    if(move[2] == '-'){
-        board->showCurrentColor()[initSquare] = false;
-        board->showCurrentColor()[endSquare]  = true;
-        board->knights[initSquare] = false;
-        board->knights[endSquare] = true;
+    if(!take){
+        board->updateCurrentColor(initSquare, endSquare);
+        board->bishops &= ~(1 << initSquare);
+        board->bishops |= (1 << endSquare);
         board->passTheMove();
     }
-    else if(move[2] == 'x'){
-        board->showCurrentColor()[initSquare] = false;
-        board->showCurrentColor()[endSquare] = true;
-        board->showAnotherColor()[endSquare] = false;
-        board->knights[initSquare] = false;
-        board->knights[endSquare] = true;
-        board->pawns[endSquare] = false;
-        board->bishops[endSquare] = false;
-        board->rooks[endSquare] = false;
-        board->queens[endSquare] = false;
-    }
     else{
-        std::cerr << "Impossible move\n";
-        return;
+        board->updateCurrentColor(initSquare, endSquare);
+        board->updateAnotherColor(endSquare, -1);
+        board->knights &= ~(1 << initSquare);
+        board->knights |= (1 << endSquare);
+        board->pawns &= ~(1 << endSquare);
+        board->rooks &= ~(1 << endSquare);
+        board->bishops &= ~(1 << endSquare);
+        board->queens &= ~(1 << endSquare);
+        board->passTheMove();
     }
 }
 

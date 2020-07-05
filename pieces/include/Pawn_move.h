@@ -7,7 +7,7 @@ class Pawn_move: public Move{
 
 public:
     Pawn_move();
-    void makeMove(Board *board, std::string move) override;
+    void makeMove(Board *board, int initSquare, int endSquare, bool take) override;
 
 private:
     void promotion(Board *board, int endSquare);

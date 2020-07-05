@@ -4,59 +4,30 @@
 
 King_move::King_move(): Move(){};
 
-void King_move::makeMove(Board *board, std::string move) {
-    if(move.length() != 5){
-        std::cerr << "Wrong move input (length) \n";
-        return;
-    }else if(move[2] != '-' && move[2] != 'x'){
-        std::cerr << "Wrong move input (not - or x)\n";
-        return;
-    } else if(move[0]>'h' || move[0]<'a' || move[3]>'h' || move[3]<'a'){
-        std::cerr << "Wrong verticals, should be a-h \n";
-        return;
-    } else if(move[1]>'8' || move[1]<'1' || move[4]>'8' || move[4]<'1'){
-        std::cerr << "Wrong horizontals, should be 1-8 \n";
-        return;
-    }
-    int initSquare = move[0] - 'a' + 8*(move[1] - '1');
-    int endSquare = move[3] - 'a' + 8*(move[4] - '1');
-
-    if(!board->kings[initSquare] || !board->showCurrentColor()[initSquare]){
-        std::cerr << "No king on " << move[0] << move[1]<<"\n";
-        return;
-    } else if(initSquare == endSquare){
-        std::cerr << "Impossible move\n";
-        return;
-    }
-
-    if(board->fieldIsAttacked(endSquare)){
-        std::cerr << "Impossible move\n";
-        return;
-    }
+void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
 
     if(abs(initSquare/8-endSquare/8) > 1 || abs(initSquare%8-endSquare%8) > 1){
         std::cerr << "Impossible move\n";
         return;
     }
 
-    if(move[2] == '-'){
-        board->showCurrentColor()[initSquare] = false;
-        board->showCurrentColor()[endSquare] = true;
-        board->kings[initSquare] = false;
-        board->kings[endSquare] = true;
+    if(!take){
+        board->updateCurrentColor(initSquare, endSquare);
+        board->kings &= ~(1 << initSquare);
+        board->kings |= (1 << endSquare);
         board->passTheMove();
         return;
     }
-    else if(move[2] == 'x'){
-        board->pawns[endSquare] = false;
-        board->bishops[endSquare] = false;
-        board->knights[endSquare] = false;
-        board->rooks[endSquare] = false;
-        board->showCurrentColor()[initSquare] = false;
-        board->showAnotherColor()[endSquare] = false;
-        board->showCurrentColor()[endSquare] = true;
-        board->kings[initSquare] = false;
-        board->kings[endSquare] = true;
+    else{
+        board->updateCurrentColor(initSquare, endSquare);
+        board->updateAnotherColor(endSquare, -1);
+        board->kings &= ~(1 << initSquare);
+        board->kings |= (1 << endSquare);
+        board->pawns &= ~(1 << endSquare);
+        board->bishops &= ~(1 << endSquare);
+        board->rooks &= ~(1 << endSquare);
+        board->knights &= ~(1 << endSquare);
+        board->queens &= ~(1 << endSquare);
         board->passTheMove();
         return;
     }

@@ -15,20 +15,20 @@ void Pawn_move::promotion(Board *board, int endSquare){
         std::cin >> promotion;
         switch(promotion) {
             case 'Q':
-                board->pawns[endSquare] = false;
-                board->queens[endSquare] = true;
+                board->pawns &= ~(1 << endSquare);
+                board->queens |= (1 << endSquare);
                 return;
             case 'R':
-                board->pawns[endSquare] = false;
-                board->rooks[endSquare] = true;
+                board->pawns &= ~(1 << endSquare);
+                board->rooks |= (1 << endSquare);
                 return;
             case 'B':
-                board->pawns[endSquare] = false;
-                board->bishops[endSquare] = true;
+                board->pawns &= ~(1 << endSquare);
+                board->bishops |= (1 << endSquare);
                 return;
             case 'N':
-                board->pawns[endSquare] = false;
-                board->knights[endSquare] = true;
+                board->pawns &= ~(1 << endSquare);
+                board->knights |= (1 << endSquare);
                 return;
             default:
                 std::cerr << "Impossible promotion";
@@ -36,29 +36,7 @@ void Pawn_move::promotion(Board *board, int endSquare){
     }
 }
 
-void Pawn_move::makeMove(Board *board, std::string move){
-    if(move.length() != 5){
-        std::cerr << "Wrong move input (length) \n";
-        return;
-    } else if(move[2] != '-' and move[2] != 'x'){
-        std::cerr << "Wrong move input (not - or x)\n";
-        return;
-    } else if(move[0]>'h' or move[0]<'a' or move[3]>'h' or move[3]<'a'){
-        std::cerr << "Wrong verticals, should be a-h \n";
-        return;
-    } else if(move[1]>'8' or move[1]<'1' or move[1]>'8' or move[3]<'1'){
-        std::cerr << "Wrong horizontals, should be 1-8 \n";
-        return;
-    }
-
-    int initSquare = move[0] - 'a' + 8*(move[1] - '1');
-    int endSquare = move[3] - 'a' + 8*(move[4] - '1');
-
-    if(!board->pawns[initSquare] or !board->showCurrentColor()[initSquare]){
-        std::cerr << "No pawn on " << move[0] << move[1]<<"\n";
-        return;
-    }
-
+void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
 
     /* k variable is defined by the side to move: 1 if white and -1 if black.
      * All the white pawns are going up the board while black vice versa.
@@ -84,26 +62,26 @@ void Pawn_move::makeMove(Board *board, std::string move){
     if(endSquare == board->possibleEnPassant())
         e = 8;
 
-    if(move[2] == '-'){
-        if((move[1] == '2' and endSquare - initSquare == 16*k) or (move[1] == '7' and endSquare - initSquare == 16*k)
-           and !board->showCurrentColor()[endSquare] and !board->showCurrentColor()[endSquare-8*k]
-           and !board->showAnotherColor()[endSquare] and !board->showAnotherColor()[endSquare-8*k]){
-            board->showCurrentColor()[initSquare] = false;
-            board->showCurrentColor()[endSquare]  = true;
-            board->pawns[initSquare] = false;
-            board->pawns[endSquare] = true;
+    if(!take){
+        if((initSquare/8 == 1 && endSquare - initSquare == 16*k) || (initSquare/8 == 6 && endSquare - initSquare == 16*k)
+           and !board->currentColorCheck(endSquare) and !board->currentColorCheck(endSquare-8*k)
+           and !board->anotherColorCheck(endSquare) and !board->anotherColorCheck(endSquare-8*k)){
+            board->updateCurrentColor(initSquare, endSquare);
+            board->pawns &= ~(1 << initSquare);
+            board->pawns |= (1 << endSquare);
+            board->passTheMove();
             board->editEnPassant(endSquare-8*k);
             board->passTheMove();
             return;
         } else if(endSquare - initSquare == 8*k
-                  and !board->showCurrentColor()[endSquare] and !board->showAnotherColor()[endSquare]){
-            board->showCurrentColor()[initSquare] = false;
-            board->showCurrentColor()[endSquare]  = true;
-            board->pawns[initSquare] = false;
-            board->pawns[endSquare] = true;
+                  and !board->currentColorCheck(endSquare) and !board->anotherColorCheck(endSquare)){
+            board->updateCurrentColor(initSquare, endSquare);
+            board->pawns &= ~(1 << initSquare);
+            board->pawns |= (1 << endSquare);
+            board->passTheMove();
             board->editEnPassant(-1);
 
-            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
+            if((k == 1 and endSquare/8 == 7) or (k == -1 and endSquare/8 == 0)){
                 this->promotion(board, endSquare);
             }
 
@@ -113,24 +91,23 @@ void Pawn_move::makeMove(Board *board, std::string move){
             std::cerr << "Impossible move \n";
             return;
         }
-    } else if(move[2] == 'x' and !board->showAnotherColor()[endSquare] and endSquare != board->possibleEnPassant()){
+    } else if(!board->anotherColorCheck(endSquare) and endSquare != board->possibleEnPassant()){
         std::cerr << "Nothing to take on there\n";
         return;
-    } else if(move[2] == 'x') {
+    } else{
         if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8)) {
-            board->showCurrentColor()[initSquare] = false;
-            board->showCurrentColor()[endSquare] = true;
-            board->showAnotherColor()[endSquare-e*k] = false;
-            board->pawns[initSquare] = false;
-            board->pawns[endSquare-e*k] = false;
-            board->pawns[endSquare] = true;
-            board->bishops[endSquare] = false;
-            board->rooks[endSquare] = false;
-            board->knights[endSquare] = false;
-            board->queens[endSquare] = false;
+            board->updateCurrentColor(initSquare, endSquare);
+            board->updateAnotherColor(endSquare, -1);
+            board->pawns &= ~(1 << initSquare);
+            board->pawns |= (1 << endSquare);
+            board->pawns &= ~(1 << endSquare);
+            board->rooks &= ~(1 << endSquare);
+            board->knights &= ~(1 << endSquare);
+            board->queens &= ~(1 << endSquare);
+            board->passTheMove();
             board->editEnPassant(-1);
 
-            if((k == 1 and move[4] == '8') or (k == -1 and move[4] == '1')){
+            if((k == 1 and endSquare/8 == 7) or (k == -1 and endSquare/8 == 0)){
                 this->promotion(board, endSquare);
             }
 
