@@ -15,19 +15,35 @@ void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
         board->updateCurrentColor(initSquare, endSquare);
         board->kings &= ~(1 << initSquare);
         board->kings |= (1 << endSquare);
+        if(board->whiteToMove){
+            board->whiteLongCastle = false;
+            board->whiteShortCastle = false;
+        }
+        else{
+            board->blackLongCastle = false;
+            board->blackShortCastle = false;
+        }
         board->passTheMove();
         return;
     }
     else{
         board->updateCurrentColor(initSquare, endSquare);
         board->updateAnotherColor(endSquare, -1);
-        board->kings &= ~(1 << initSquare);
-        board->kings |= (1 << endSquare);
-        board->pawns &= ~(1 << endSquare);
-        board->bishops &= ~(1 << endSquare);
-        board->rooks &= ~(1 << endSquare);
-        board->knights &= ~(1 << endSquare);
-        board->queens &= ~(1 << endSquare);
+        board->kings &= ~((uint64_t)1 << initSquare);
+        board->kings |= ((uint64_t)1 << endSquare);
+        board->pawns &= ~((uint64_t)1 << endSquare);
+        board->bishops &= ~((uint64_t)1 << endSquare);
+        board->rooks &= ~((uint64_t)1 << endSquare);
+        board->knights &= ~((uint64_t)1 << endSquare);
+        board->queens &= ~((uint64_t)1 << endSquare);
+        if(board->whiteToMove){
+            board->whiteLongCastle = false;
+            board->whiteShortCastle = false;
+        }
+        else{
+            board->blackLongCastle = false;
+            board->blackShortCastle = false;
+        }
         board->passTheMove();
         return;
     }

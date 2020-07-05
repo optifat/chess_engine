@@ -16,10 +16,10 @@ void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
             {
                 board->updateCurrentColor(7, 5);
                 board->updateCurrentColor(4, 6);
-                board->rooks &= ~(1 << 7);
-                board->rooks |= (1 << 5);
-                board->kings &= ~(1 << 4);
-                board->kings |= (1 << 6);
+                board->rooks &= ~((uint64_t)1 << 7);
+                board->rooks |= ((uint64_t)1 << 5);
+                board->kings &= ~((uint64_t)1 << 4);
+                board->kings |= ((uint64_t)1 << 6);
                 board->passTheMove();
                 return;
             }
@@ -53,10 +53,10 @@ void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
             {
                 board->updateCurrentColor(0, 3);
                 board->updateCurrentColor(4, 2);
-                board->rooks &= ~(1 << 0);
-                board->rooks |= (1 << 3);
-                board->kings &= ~(1 << 4);
-                board->kings |= (1 << 2);
+                board->rooks &= ~((uint64_t)1 << 0);
+                board->rooks |= ((uint64_t)1 << 3);
+                board->kings &= ~((uint64_t)1 << 4);
+                board->kings |= ((uint64_t)1 << 2);
                 board->passTheMove();
                 return;
             }

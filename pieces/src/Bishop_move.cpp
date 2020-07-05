@@ -18,167 +18,87 @@ void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
         k = -1;
 
     if(!take){
-        if(k == 1){
-            if((endSquare - initSquare) % 7 == 0){
-                int i = initSquare + 7;
-                for(; i <= endSquare; i+=7){
-                    if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                        std::cerr << "Impossible move\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
+        if(abs(endSquare - initSquare) % 7 == 0){
+            int i = initSquare + 7*k;
+            for(; i != endSquare; i+=7*k){
+                if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
+                    std::cerr << "Impossible move\n";
+                    return;
+                }
+                else if(i == endSquare){
+                    board->updateCurrentColor(initSquare, endSquare);
+                    board->bishops &= ~((uint64_t)1 << initSquare);
+                    board->bishops |= ((uint64_t)1 << endSquare);
+                    board->passTheMove();
+                    return;
                 }
             }
-            else if((endSquare - initSquare) % 9 == 0){
-                int i = initSquare + 9;
-                for(; i <= endSquare; i+=9){
-                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
-                        std::cerr << "Impossible move\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
+        }
+        else if(abs(endSquare - initSquare) % 9 == 0){
+            int i = initSquare + 9*k;
+            for(; i != endSquare; i+=9*k){
+                if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
+                    std::cerr << "Impossible move\n";
+                    return;
+                }
+                else if(i == endSquare){
+                    board->updateCurrentColor(initSquare, endSquare);
+                    board->bishops &= ~((uint64_t)1 << initSquare);
+                    board->bishops |= ((uint64_t)1 << endSquare);
+                    board->passTheMove();
+                    return;
                 }
             }
-            else std::cerr << "Impossible move\n";
         }
         else {
-            if((initSquare - endSquare) % 7 == 0){
-                int i = initSquare - 7;
-                for(; i >= endSquare; i-=7){
-                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
-                        std::cerr << "Impossible move\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
-                }
-            }
-            else if((initSquare - endSquare) % 9 == 0){
-                int i = initSquare - 9;
-                for(; i >= endSquare; i-=9){
-                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
-                        std::cerr << "Impossible move\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
-                }
-            }
-            else std::cerr << "Impossible move\n";
+            std::cerr << "Impossible move\n";
         }
     }
     else{
-        if(k == 1){
-            if((endSquare - initSquare) % 7 == 0){
-                int i = initSquare + 7;
-                for(; i <= endSquare; i+=7){
-                    if(board->currentColorCheck(i)){
-                        std::cerr << "Impossible move1\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->updateAnotherColor(endSquare, -1);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->pawns &= ~(1 << endSquare);
-                        board->rooks &= ~(1 << endSquare);
-                        board->knights &= ~(1 << endSquare);
-                        board->queens &= ~(1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
+        if(abs(endSquare - initSquare) % 7 == 0){
+            int i = initSquare + 7*k;
+            for(; i <= endSquare+7*k; i+=7*k){
+                if(i == endSquare){
+                    board->updateCurrentColor(initSquare, endSquare);
+                    board->updateAnotherColor(endSquare, -1);
+                    board->bishops &= ~((uint64_t)1 << initSquare);
+                    board->bishops |= ((uint64_t)1 << endSquare);
+                    board->pawns &= ~((uint64_t)1 << endSquare);
+                    board->rooks &= ~((uint64_t)1 << endSquare);
+                    board->knights &= ~((uint64_t)1 << endSquare);
+                    board->queens &= ~((uint64_t)1 << endSquare);
+                    board->passTheMove();
+                    return;
+                }
+                else if(board->currentColorCheck(i)){
+                    std::cerr << "Impossible move\n";
+                    return;
                 }
             }
-            else if((endSquare - initSquare) % 9 == 0){
-                int i = initSquare + 9;
-                for(; i <= endSquare; i+=9){
-                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
-                        std::cerr << "Impossible move2\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->updateAnotherColor(endSquare, -1);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->pawns &= ~(1 << endSquare);
-                        board->rooks &= ~(1 << endSquare);
-                        board->knights &= ~(1 << endSquare);
-                        board->queens &= ~(1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
+        }
+        else if(abs(endSquare - initSquare) % 9 == 0){
+            int i = initSquare + 9*k;
+            for(; i != endSquare + 9*k; i+=9*k){
+                if(i == endSquare){
+                    board->updateCurrentColor(initSquare, endSquare);
+                    board->updateAnotherColor(endSquare, -1);
+                    board->bishops &= ~((uint64_t)1 << initSquare);
+                    board->bishops |= ((uint64_t)1 << endSquare);
+                    board->pawns &= ~((uint64_t)1 << endSquare);
+                    board->rooks &= ~((uint64_t)1 << endSquare);
+                    board->knights &= ~((uint64_t)1 << endSquare);
+                    board->queens &= ~((uint64_t)1 << endSquare);
+                    board->passTheMove();
+                    return;
+                }
+                else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
+                    std::cerr << "Impossible move\n";
+                    return;
                 }
             }
-            else std::cerr << "Impossible move3\n";
         }
         else {
-            if((initSquare - endSquare) % 7 == 0){
-                int i = initSquare - 7;
-                for(; i >= endSquare; i-=7){
-                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
-                        std::cerr << "Impossible move\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->bishops -= powl(2, initSquare);
-                        board->bishops += powl(2, endSquare);
-                        board->pawns &= ~(1 << endSquare);
-                        board->rooks &= ~(1 << endSquare);
-                        board->knights &= ~(1 << endSquare);
-                        board->queens &= ~(1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
-                }
-            }
-            else if((initSquare - endSquare) % 9 == 0){
-                int i = initSquare - 9;
-                for(; i >= endSquare; i-=9){
-                    if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
-                        std::cerr << "Impossible move\n";
-                        return;
-                    }
-                    else if(i == endSquare){
-                        board->updateCurrentColor(initSquare, endSquare);
-                        board->updateAnotherColor(endSquare, -1);
-                        board->bishops &= ~(1 << initSquare);
-                        board->bishops |= (1 << endSquare);
-                        board->pawns &= ~(1 << endSquare);
-                        board->rooks &= ~(1 << endSquare);
-                        board->knights &= ~(1 << endSquare);
-                        board->queens &= ~(1 << endSquare);
-                        board->passTheMove();
-                        return;
-                    }
-                }
-            }
-            else std::cerr << "Impossible move\n";
+            std::cerr << "Impossible move3\n";
         }
     }
 }

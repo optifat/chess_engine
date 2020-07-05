@@ -80,6 +80,9 @@ Board::Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ
             case 'w':
                 whiteToMove = true;
                 break;
+            case 'b':
+                whiteToMove = false;
+                break;
             case 'K':
                 whiteShortCastle = true;
                 break;
@@ -367,22 +370,30 @@ void Board::showBoard() {
 
 void Board::updateCurrentColor(int initSquare, int endSquare){
     if(whiteToMove){
-        whitePieces &= ~(1 << initSquare);
-        whitePieces |= (1 << endSquare);
+        whitePieces &= ~((uint64_t)1 << initSquare);
+        if(endSquare>= 0) {
+            whitePieces |= ((uint64_t) 1 << endSquare);
+        }
     }
     else{
-        blackPieces &= ~(1 << initSquare);
-        blackPieces |= (1 << endSquare);
+        blackPieces &= ~((uint64_t)1 << initSquare);
+        if(endSquare>= 0) {
+            blackPieces |= ((uint64_t) 1 << endSquare);
+        }
     }
 }
 
 void Board::updateAnotherColor(int initSquare, int endSquare){
     if(!whiteToMove){
-        whitePieces &= ~(1 << initSquare);
-        whitePieces |= (1 << endSquare);
+        whitePieces &= ~((uint64_t)1 << initSquare);
+        if(endSquare >= 0) {
+            whitePieces |= ((uint64_t) 1 << endSquare);
+        }
     }
     else{
-        blackPieces &= ~(1 << initSquare);
-        blackPieces |= (1 << endSquare);
+        blackPieces &= ~((uint64_t)1 << initSquare);
+        if(endSquare >= 0) {
+            blackPieces |= ((uint64_t) 1 << endSquare);
+        }
     }
 }

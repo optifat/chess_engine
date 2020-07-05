@@ -25,7 +25,7 @@ void Input_processor::readMove(Board *board, std::string move) {
 
     char pieceType;
     if(move.length() == 6){
-        pieceType = move[1];
+        pieceType = move[0];
         move = move.substr(1, 5);
     }
     else if(move.length() == 5){
@@ -48,19 +48,20 @@ void Input_processor::readMove(Board *board, std::string move) {
         return;
     }
 
-    int initSquare = move[1] - 'a' + 8*(move[2] - '1');
-    int endSquare = move[4] - 'a' + 8*(move[5] - '1');
+    int initSquare = move[0] - 'a' + 8*(move[1] - '1');
+    int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
     if(initSquare == endSquare){
-        std::cerr << "Impossible move: squares must be different";
+        std::cerr << "Impossible move: squares must be different\n";
         return;
     }
 
     if(move[0]>'h' || move[0]<'a' || move[3]>'h' || move[3]<'a' || move[1]>'8' || move[1]<'1' || move[4]>'8' || move[4]<'1'){
-        std::cerr << "Wrong input";
+        std::cerr << "Wrong input\n";
         return;
     }
 
+    std::cout << "Init: " << initSquare << ", end: " << endSquare << ", piece type: " << pieceType << ", take: " << take << std::endl;
 
     if (pieceType == 'p') {
         Pawn_move nextMove;
@@ -111,6 +112,10 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "No bishop on " << move[0] << move[1] << " square\n";
             return;
         }
+        if(abs(initSquare%8 - endSquare%8) != abs(initSquare/8-endSquare/8)){
+            std::cerr << "Impossible move\n";
+            return;
+        }
         nextMove.makeMove(board, initSquare, endSquare, take);
         board->editEnPassant(-1);
     }
@@ -137,7 +142,7 @@ void Input_processor::readMove(Board *board, std::string move) {
         board->editEnPassant(-1);
     }
     else{
-        std::cerr << "Wrong input: there is no such piece";
+        std::cerr << "Wrong input: there is no such piece\n";
         return;
     }
 }

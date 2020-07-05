@@ -15,20 +15,20 @@ void Pawn_move::promotion(Board *board, int endSquare){
         std::cin >> promotion;
         switch(promotion) {
             case 'Q':
-                board->pawns &= ~(1 << endSquare);
-                board->queens |= (1 << endSquare);
+                board->pawns &= ~((uint64_t)1 << endSquare);
+                board->queens |= ((uint64_t)1 << endSquare);
                 return;
             case 'R':
-                board->pawns &= ~(1 << endSquare);
-                board->rooks |= (1 << endSquare);
+                board->pawns &= ~((uint64_t)1 << endSquare);
+                board->rooks |= ((uint64_t)1 << endSquare);
                 return;
             case 'B':
-                board->pawns &= ~(1 << endSquare);
-                board->bishops |= (1 << endSquare);
+                board->pawns &= ~((uint64_t)1 << endSquare);
+                board->bishops |= ((uint64_t)1 << endSquare);
                 return;
             case 'N':
-                board->pawns &= ~(1 << endSquare);
-                board->knights |= (1 << endSquare);
+                board->pawns &= ~((uint64_t)1 << endSquare);
+                board->knights |= ((uint64_t)1 << endSquare);
                 return;
             default:
                 std::cerr << "Impossible promotion";
@@ -67,18 +67,16 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
            and !board->currentColorCheck(endSquare) and !board->currentColorCheck(endSquare-8*k)
            and !board->anotherColorCheck(endSquare) and !board->anotherColorCheck(endSquare-8*k)){
             board->updateCurrentColor(initSquare, endSquare);
-            board->pawns &= ~(1 << initSquare);
-            board->pawns |= (1 << endSquare);
-            board->passTheMove();
+            board->pawns &= ~((uint64_t)1 << initSquare);
+            board->pawns |= ((uint64_t)1 << endSquare);
             board->editEnPassant(endSquare-8*k);
             board->passTheMove();
             return;
         } else if(endSquare - initSquare == 8*k
                   and !board->currentColorCheck(endSquare) and !board->anotherColorCheck(endSquare)){
             board->updateCurrentColor(initSquare, endSquare);
-            board->pawns &= ~(1 << initSquare);
-            board->pawns |= (1 << endSquare);
-            board->passTheMove();
+            board->pawns &= ~((uint64_t)1 << initSquare);
+            board->pawns |= ((uint64_t)1 << endSquare);
             board->editEnPassant(-1);
 
             if((k == 1 and endSquare/8 == 7) or (k == -1 and endSquare/8 == 0)){
@@ -98,13 +96,15 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
         if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8)) {
             board->updateCurrentColor(initSquare, endSquare);
             board->updateAnotherColor(endSquare, -1);
-            board->pawns &= ~(1 << initSquare);
-            board->pawns |= (1 << endSquare);
-            board->pawns &= ~(1 << endSquare);
-            board->rooks &= ~(1 << endSquare);
-            board->knights &= ~(1 << endSquare);
-            board->queens &= ~(1 << endSquare);
-            board->passTheMove();
+            board->pawns &= ~((uint64_t)1 << initSquare);
+            board->pawns |= ((uint64_t)1 << endSquare);
+            if(endSquare == board->possibleEnPassant()){
+                board->pawns &= ~((uint64_t)1 << (endSquare-8*k));
+            }
+            board->bishops &= ~((uint64_t)1 << endSquare);
+            board->rooks &= ~((uint64_t)1 << endSquare);
+            board->knights &= ~((uint64_t)1 << endSquare);
+            board->queens &= ~((uint64_t)1 << endSquare);
             board->editEnPassant(-1);
 
             if((k == 1 and endSquare/8 == 7) or (k == -1 and endSquare/8 == 0)){
