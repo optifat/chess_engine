@@ -5,7 +5,7 @@ Move::Move() = default;
 
 void Move::makeMove(Board *board, int initSquare, int endSquare, bool take){};
 
-bool Move::openingPin(Board *board, std::string move){
+bool Move::openingPin(Board *board, int initSquare, int endSquare){
 
     int kingPos = -1;
     for(int i = 0; i <= 63; i++){
@@ -14,9 +14,6 @@ bool Move::openingPin(Board *board, std::string move){
             break;
         }
     }
-
-    int initSquare = move[0] - 'a' + 8*(move[1] - '1');
-    int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
     if(!board->currentColorCheck(initSquare)){
         std::cerr << "No piece with current color here\n";

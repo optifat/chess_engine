@@ -12,85 +12,132 @@ void Input_processor::readMove(Board *board, std::string move) {
 
     if (move[0] == 'O') {
         Castling nextMove;
-        nextMove.makeMove(board, move);
+        if(move.compare("0-0-0")){
+            nextMove.makeMove(board, 56*!board->whiteOrder()+4, 56*!board->whiteOrder()+6);
+        }
+        if(move.compare("0-0")){
+            nextMove.makeMove(board, 56*!board->whiteOrder()+4, 56*!board->whiteOrder()+2);
+        }
+
         board->editEnPassant(-1);
         return;
     }
 
-    if(move.length() != 5){
+    char pieceType;
+    if(move.length() == 6){
+        pieceType = move[1];
+        move = move.substr(1, 5);
+    }
+    else if(move.length() == 5){
+        pieceType = 'p';
+    }
+    else{
         std::cerr << "Wrong move input (length) \n";
         return;
-    } else if(move[2] != '-' && move[2] != 'x'){
+    }
+
+    bool take;
+    if(move[2] == 'x'){
+        take = true;
+    }
+    else if(move[2] == '-'){
+        take = false;
+    }
+    else{
         std::cerr << "Wrong move input (not - or x)\n";
-        return;
-    } else if(move[0] == move[3] || move[1] == move[4]){
-        std::cerr << "Impossible move";
-        return;
-    } else if(move[0]>'h' || move[0]<'a' || move[3]>'h' || move[3]<'a' || move[1]>'8' || move[1]<'1' || move[4]>'8' || move[4]<'1'){
-        std::cerr << "Wrong input";
         return;
     }
 
     int initSquare = move[1] - 'a' + 8*(move[2] - '1');
     int endSquare = move[4] - 'a' + 8*(move[5] - '1');
 
-    if (move[0] >= 'a' && move[0] <= 'h') {
-        Pawn_move nextMove;
-        if(nextMove.openingPin(board, move)){
-            std::cerr << "This piece is pinned\n";
-            return;
-        }
-        nextMove.makeMove(board, move);
+    if(initSquare == endSquare){
+        std::cerr << "Impossible move: squares must be different";
+        return;
     }
-    else if (move[0] == 'R') {
-        Rook_move nextMove;
-        if(nextMove.openingPin(board, move.substr(1, 5))){
+
+    if(move[0]>'h' || move[0]<'a' || move[3]>'h' || move[3]<'a' || move[1]>'8' || move[1]<'1' || move[4]>'8' || move[4]<'1'){
+        std::cerr << "Wrong input";
+        return;
+    }
+
+
+    if (pieceType == 'p') {
+        Pawn_move nextMove;
+        if(nextMove.openingPin(board, initSquare, endSquare)){
             std::cerr << "This piece is pinned\n";
             return;
         }
-        nextMove.makeMove(board, move.substr(1, 5));
+        if(!board->pawnCheck(initSquare) || !board->currentColorCheck(initSquare)) {
+            std::cerr << "No pawn on " << move[0] << move[1] << " square\n";
+            return;
+        }
+        nextMove.makeMove(board, initSquare, endSquare, take);
+    }
+    else if (pieceType == 'R') {
+        Rook_move nextMove;
+        if(nextMove.openingPin(board, initSquare, endSquare)){
+            std::cerr << "This piece is pinned\n";
+            return;
+        }
+        if(!board->rookCheck(initSquare) || !board->currentColorCheck(initSquare)) {
+            std::cerr << "No rook on " << move[0] << move[1] << " square\n";
+            return;
+        }
+        nextMove.makeMove(board, initSquare, endSquare, take);
         board->editEnPassant(-1);
 
     }
-    else if (move[0] == 'N') {
+    else if (pieceType == 'N') {
         Knight_move nextMove;
-        if(nextMove.openingPin(board, move.substr(1, 5))){
+        if(nextMove.openingPin(board, initSquare, endSquare)){
             std::cerr << "This piece is pinned\n";
             return;
         }
-        nextMove.makeMove(board, move.substr(1, 5));
+        if(!board->knightCheck(initSquare) || !board->currentColorCheck(initSquare)) {
+            std::cerr << "No knight on " << move[0] << move[1] << " square\n";
+            return;
+        }
+        nextMove.makeMove(board, initSquare, endSquare, take);
         board->editEnPassant(-1);
     }
-    else if (move[0] == 'B') {
+    else if (pieceType == 'B') {
         Bishop_move nextMove;
-        if(nextMove.openingPin(board, move.substr(1, 5))){
+        if(nextMove.openingPin(board, initSquare, endSquare)){
             std::cerr << "This piece is pinned\n";
             return;
         }
-        if(!board->bishops[initSquare] or !board->showCurrentColor()[initSquare]) {
-            std::cerr << "No bishop on " << move[0] << move[1] << "\n";
+        if(!board->bishopCheck(initSquare) || !board->currentColorCheck(initSquare)) {
+            std::cerr << "No bishop on " << move[0] << move[1] << " square\n";
             return;
         }
-        nextMove.makeMove(board, move.substr(1, 5));
+        nextMove.makeMove(board, initSquare, endSquare, take);
         board->editEnPassant(-1);
     }
-    else if (move[0] == 'Q') {
+    else if (pieceType == 'Q') {
         Queen_move nextMove;
-        if(nextMove.openingPin(board, move.substr(1, 5))){
+        if(nextMove.openingPin(board, initSquare, endSquare)){
             std::cerr << "This piece is pinned\n";
             return;
         }
-        nextMove.makeMove(board, move.substr(1, 5));
+        if(!board->queenCheck(initSquare) || !board->currentColorCheck(initSquare)) {
+            std::cerr << "No queen on " << move[0] << move[1] << " square\n";
+            return;
+        }
+        nextMove.makeMove(board, initSquare, endSquare, take);
         board->editEnPassant(-1);
     }
-    else if (move[0] == 'O') {
-        Castling nextMove;
-        nextMove.makeMove(board, move);
-        board->editEnPassant(-1);
-    }
-    else if (move[0] == 'K') {
+    else if (pieceType == 'K') {
         King_move nextMove;
-        nextMove.makeMove(board, move.substr(1, 5));
+        if(!board->kingCheck(initSquare) || !board->currentColorCheck(initSquare)) {
+            std::cerr << "No king on " << move[0] << move[1] << " square\n";
+            return;
+        }
+        nextMove.makeMove(board, initSquare, endSquare, take);
         board->editEnPassant(-1);
+    }
+    else{
+        std::cerr << "Wrong input: there is no such piece";
+        return;
     }
 }
