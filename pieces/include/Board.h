@@ -3,6 +3,7 @@
 
 #include <string>
 #include <cinttypes>
+#include <sstream>
 
 class Board{
 
@@ -16,14 +17,14 @@ class Board{
     friend class Rook_move;
 
 private:
-/* These integers called bitboards represent a board
- * Each bit of integer - True or False
+/* These integers are called bitboards and represent a board
+ * Each bit of integer - true or false
  * True means that represented square has a piece mentioned in name of array
  * bool whiteToMove - if true - white to move, else - black
+ * enPassant variable shows, if this move is possible. Its values are field index where pawn moves after enPassant
  * as input data we use Forsyth–Edwards Notation (FEN)
  * for more info:       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
  * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" (default input FEN) - chess starting position
- * enPassant variable shows, if this move is possible. Its values is field index where pawn moves after enPassant
 */
     uint64_t whitePieces = 0;
     uint64_t blackPieces = 0;
@@ -41,7 +42,7 @@ private:
     bool blackShortCastle;
 
 public:
-    Board(std::string FEN);
+    Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq");
 
     ~Board();
 
@@ -91,6 +92,7 @@ public:
 
     void updateAnotherColor(int initSquare, int endSqure);
 
+    void printInfo();
 };
 
 #endif //CHESS_ENGINE_BOARD_H

@@ -15,7 +15,7 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
         if(!take){
             if((initSquare - initSquare % 8) == (endSquare - endSquare % 8)){
                 int i = initSquare + k;
-                for(; i != endSquare; i+=k){
+                for(; i != endSquare+k; i+=k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
@@ -31,7 +31,7 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
             }
             else if(abs(initSquare - endSquare)%8 == 0){
                 int i = initSquare + 8*k;
-                for(; i != endSquare; i+=8*k){
+                for(; i != endSquare+8*k; i+=8*k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
@@ -112,7 +112,7 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
         if(!take){
             if(abs(endSquare - initSquare) % 7 == 0){
                 int i = initSquare + 7*k;
-                for(; i != endSquare; i+=7*k){
+                for(; i != endSquare+7*k; i+=7*k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;
@@ -128,7 +128,7 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
             }
             else if(abs(endSquare - initSquare) % 9 == 0){
                 int i = initSquare + 9*k;
-                for(; i != endSquare; i+=9*k){
+                for(; i != endSquare+9*k; i+=9*k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
                         return;

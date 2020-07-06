@@ -5,7 +5,7 @@
 #include "../include/Board.h"
 
 
-Board::Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"){
+Board::Board(std::string FEN){
     int index = 55;
     int i = 0;
     bool flag = false;
@@ -20,52 +20,52 @@ Board::Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ
         } else{
             switch(FEN[i]){
                 case 'P':
-                    whitePieces += powl(2, index);
-                    pawns += powl(2, index);
+                    whitePieces += (uint64_t)1 << index;//powl(2, index);
+                    pawns += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'p':
-                    blackPieces += powl(2, index);
-                    pawns += powl(2, index);
+                    blackPieces += (uint64_t)1 << index;//powl(2, index);
+                    pawns += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'R':
-                    whitePieces += powl(2, index);
-                    rooks += powl(2, index);
+                    whitePieces += (uint64_t)1 << index;//powl(2, index);
+                    rooks += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'r':
-                    blackPieces += powl(2, index);
-                    rooks += powl(2, index);
+                    blackPieces += (uint64_t)1 << index;//powl(2, index);
+                    rooks += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'B':
-                    whitePieces += powl(2, index);
-                    bishops += powl(2, index);
+                    whitePieces += (uint64_t)1 << index;//powl(2, index);
+                    bishops += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'b':
-                    blackPieces += powl(2, index);
-                    bishops += powl(2, index);
+                    blackPieces += (uint64_t)1 << index;//powl(2, index);
+                    bishops += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'N':
-                    whitePieces += powl(2, index);
-                    knights += powl(2, index);
+                    whitePieces += (uint64_t)1 << index;//powl(2, index);
+                    knights += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'n':
-                    blackPieces += powl(2, index);
-                    knights += powl(2, index);
+                    blackPieces += (uint64_t)1 << index;//powl(2, index);
+                    knights += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'Q':
-                    whitePieces += powl(2, index);
-                    queens += powl(2, index);
+                    whitePieces += (uint64_t)1 << index;//powl(2, index);
+                    queens += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'q':
-                    blackPieces += powl(2, index);
-                    queens += powl(2, index);
+                    blackPieces += (uint64_t)1 << index;//powl(2, index);
+                    queens += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'K':
-                    whitePieces += powl(2, index);
-                    kings += powl(2, index);
+                    whitePieces += (uint64_t)1 << index;//powl(2, index);
+                    kings += (uint64_t)1 << index;//powl(2, index);
                     break;
                 case 'k':
-                    blackPieces += powl(2, index);
-                    kings += powl(2, index);
+                    blackPieces += (uint64_t)1 << index;//powl(2, index);
+                    kings += (uint64_t)1 << index;//powl(2, index);
                     break;
                 default:
                     flag = true;
@@ -183,7 +183,7 @@ bool Board::fieldIsAttacked(int position, int ignore){
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
             int checkedField = j*i + position;
-            if(checkedField/8 != position/8){
+            if(checkedField/8 != position/8 || checkedField > 63 || checkedField < 0){
                 continue;
             }
             else if(this->anotherColorCheck(checkedField) &&
@@ -233,9 +233,9 @@ bool Board::fieldIsAttacked(int position, int ignore){
 
 std::string Board::sideToMove(){
     if(whiteToMove)
-        return "White to whiteToMove";
+        return "White to move";
     else
-        return "Black to whiteToMove";
+        return "Black to move";
 }
 
 std::string Board::whiteCastle(){
@@ -396,4 +396,11 @@ void Board::updateAnotherColor(int initSquare, int endSquare){
             blackPieces |= ((uint64_t) 1 << endSquare);
         }
     }
+}
+
+void Board::printInfo(){
+    std::cout << "White: " << whitePieces << ", Black: " << blackPieces << std::endl;
+    std::cout << "Queens: " << queens << ", Kings: " << kings << std::endl;
+    std::cout << "Rooks: " << rooks << ", Bishops: " << bishops << std::endl;
+    std::cout << "Knights: " << knights << ", Pawns: " << pawns << std::endl;
 }
