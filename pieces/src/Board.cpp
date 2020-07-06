@@ -370,14 +370,18 @@ void Board::showBoard() {
 
 void Board::updateCurrentColor(int initSquare, int endSquare){
     if(whiteToMove){
-        whitePieces &= ~((uint64_t)1 << initSquare);
-        if(endSquare>= 0) {
+        if(initSquare >= 0) {
+            whitePieces &= ~((uint64_t) 1 << initSquare);
+        }
+        if(endSquare >= 0) {
             whitePieces |= ((uint64_t) 1 << endSquare);
         }
     }
     else{
-        blackPieces &= ~((uint64_t)1 << initSquare);
-        if(endSquare>= 0) {
+        if(initSquare >= 0) {
+            blackPieces &= ~((uint64_t) 1 << initSquare);
+        }
+        if(endSquare >= 0) {
             blackPieces |= ((uint64_t) 1 << endSquare);
         }
     }
@@ -385,13 +389,17 @@ void Board::updateCurrentColor(int initSquare, int endSquare){
 
 void Board::updateAnotherColor(int initSquare, int endSquare){
     if(!whiteToMove){
-        whitePieces &= ~((uint64_t)1 << initSquare);
+        if(initSquare >= 0) {
+            whitePieces &= ~((uint64_t) 1 << initSquare);
+        }
         if(endSquare >= 0) {
             whitePieces |= ((uint64_t) 1 << endSquare);
         }
     }
     else{
-        blackPieces &= ~((uint64_t)1 << initSquare);
+        if(initSquare >= 0) {
+            blackPieces &= ~((uint64_t) 1 << initSquare);
+        }
         if(endSquare >= 0) {
             blackPieces |= ((uint64_t) 1 << endSquare);
         }
