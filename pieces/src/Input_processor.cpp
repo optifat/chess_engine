@@ -10,12 +10,12 @@
 
 void Input_processor::readMove(Board *board, std::string move) {
 
-    if (move[0] == 'O') {
+    if (move[0] == '0') {
         Castling nextMove;
-        if(move.compare("0-0-0")){
+        if(!move.compare("0-0")){
             nextMove.makeMove(board, 56*!board->whiteOrder()+4, 56*!board->whiteOrder()+6);
         }
-        if(move.compare("0-0")){
+        else if(!move.compare("0-0-0")){
             nextMove.makeMove(board, 56*!board->whiteOrder()+4, 56*!board->whiteOrder()+2);
         }
 
