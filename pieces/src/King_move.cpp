@@ -11,6 +11,11 @@ void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
         return;
     }
 
+    if(board->fieldIsAttacked(endSquare)){
+        std::cerr << "Impossible move: this field is attacked" << std::endl;
+        return;
+    }
+
     if(!take){
         board->updateCurrentColor(initSquare, endSquare);
         board->kings &= ~(1 << initSquare);
