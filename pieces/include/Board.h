@@ -4,6 +4,7 @@
 #include <string>
 #include <cinttypes>
 #include <sstream>
+#include <vector>
 
 class Board{
 
@@ -86,6 +87,8 @@ public:
 
     bool fieldIsAttacked(int position, int ignore = -1);
 
+    std::vector<int> fieldAttackers(int position, int ignore = -1);
+
     bool isPinned(int position);
 
     void updateCurrentColor(int initSquare, int endSqure);
@@ -93,6 +96,8 @@ public:
     void updateAnotherColor(int initSquare, int endSqure);
 
     void printInfo();
+
+    bool checkmate();
 };
 
 #endif //CHESS_ENGINE_BOARD_H

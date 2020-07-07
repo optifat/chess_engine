@@ -231,6 +231,85 @@ bool Board::fieldIsAttacked(int position, int ignore){
     return false;
 }
 
+std::vector<int> Board::fieldAttackers(int position, int ignore) {
+    //if (!kings[position] && this->showCurrentColor()[position]){
+    //    std::cerr << "This field is occupied by allied piece which is not a king. Returning false.";
+    //    return false;
+    //}
+    //checking files
+
+    std::vector<int> attackers;
+    attackers.reserve(5);
+
+    for(int i = -1; i <= 1; i+=2){
+        for(int j = 1; j <= 7; j++){
+            int checkedField = 8*j*i + position;
+            if(checkedField > 63 || checkedField < 0){
+                continue;
+            }
+            else if(this->anotherColorCheck(checkedField) &&
+                    ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
+                     (j == 1 && this->kingCheck(checkedField)))){
+                attackers.push_back(checkedField);
+            }
+            else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
+                break;
+            }
+        }
+    }
+
+    //checking line
+    for(int i = -1; i <= 1; i+=2){
+        for(int j = 1; j <= 7; j++){
+            int checkedField = j*i + position;
+            if(checkedField/8 != position/8 || checkedField > 63 || checkedField < 0){
+                continue;
+            }
+            else if(this->anotherColorCheck(checkedField) &&
+                    ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
+                     (j == 1 && this->kingCheck(checkedField)))){
+                attackers.push_back(checkedField);
+            }
+            else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
+                break;
+            }
+        }
+    }
+
+    //checking diagonals
+    for(int i = -1; i <= 1; i+=2){
+        for(int j = -1; j <= 1; j+=2){
+            for(int k = 1; k <= 7; k++){
+                int checkedField = (8+i)*j*k + position;
+                if(checkedField > 63 || checkedField < 0 || abs(checkedField%8-position%8) != abs(checkedField/8-position/8)){
+                    continue;
+                } else if(this->anotherColorCheck(checkedField) &&
+                          (this->queenCheck(checkedField) || this->bishopCheck(checkedField) ||
+                           (k == 1 && ((this->pawnCheck(checkedField) && j == -1+2*this->whiteOrder())
+                                       || this->kingCheck(checkedField)))
+                          )){
+                    attackers.push_back(checkedField);
+                } else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
+                    break;
+                }
+            }
+        }
+    }
+
+    int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -18};
+
+    for(auto move: possibleKnightMoves){
+        int checkedField = position + move;
+        if(checkedField < 0 || checkedField > 63 || abs(checkedField/8-position/8)+abs(checkedField%8-position%8) != 3){
+            continue;
+        }
+        if(this->anotherColorCheck(checkedField) && this->knightCheck(checkedField)){
+            attackers.push_back(checkedField);
+        }
+    }
+    return attackers;
+}
+
 std::string Board::sideToMove(){
     if(whiteToMove)
         return "White to move";
@@ -411,4 +490,70 @@ void Board::printInfo(){
     std::cout << "Queens: " << queens << ", Kings: " << kings << std::endl;
     std::cout << "Rooks: " << rooks << ", Bishops: " << bishops << std::endl;
     std::cout << "Knights: " << knights << ", Pawns: " << pawns << std::endl;
+}
+
+bool Board::checkmate() {
+    int kingPos = -1;
+    for(int i = 0; i <= 63; i++){
+        if(this->kingCheck(i) && this->currentColorCheck(i)){
+            kingPos = i;
+            break;
+        }
+    }
+
+    if(!this->fieldIsAttacked(kingPos)){
+        return false;
+    }
+    for(int i = -1; i<=1; i++){
+        for(int j = -1; j<=1; j++){
+            int newKingPos = kingPos + 8*i + j;
+            if(newKingPos <= 63 && newKingPos >= 0){
+                if(!this->fieldIsAttacked(newKingPos)){
+                    return false;
+                }
+            }
+        }
+    }
+    std::vector<int> attackers = this-> fieldAttackers(kingPos);
+
+    // it's impossible to cover from double check
+    if(attackers.size() >= 2){
+        return true;
+    }
+
+    if(attackers[0]/8 == kingPos/8){
+        this->passTheMove();
+        int k = 2*(attackers[0] > kingPos) - 1;
+        for(int i = kingPos; i != attackers[0]; i+=k){
+            if(this->fieldAttackers(i).size() >= 2 || this->fieldAttackers(i)[0] != kingPos){
+                this->passTheMove();
+                return false;
+            }
+        }
+        this->passTheMove();
+    }
+    else if(attackers[0]%8 == kingPos%8){
+        this->passTheMove();
+        int k = 8*(2*(attackers[0] > kingPos)-1);
+        for(int i = kingPos; i != attackers[0]; i+=k){
+            if(this->fieldIsAttacked(i)){
+                this->passTheMove();
+                return false;
+            }
+        }
+        this->passTheMove();
+    }
+    else if(abs(attackers[0]%8 - kingPos%8) == abs(attackers[0]/8-kingPos/8)){
+        this->passTheMove();
+        int k = 8*(2*(attackers[0]%8 > kingPos%8)-1) + 2*((attackers[0]/8 > kingPos/8))-1;
+        for(int i = kingPos; i != attackers[0]; i+=k){
+            if(this->fieldIsAttacked(i)){
+                this->passTheMove();
+                return false;
+            }
+        }
+        this->passTheMove();
+    }
+
+    return true;
 }
