@@ -48,6 +48,11 @@ void Input_processor::readMove(Board *board, std::string move) {
         return;
     }
 
+    if(move[0]>'h' || move[0]<'a' || move[3]>'h' || move[3]<'a' || move[1]>'8' || move[1]<'1' || move[4]>'8' || move[4]<'1'){
+        std::cerr << "Wrong input\n";
+        return;
+    }
+
     int initSquare = move[0] - 'a' + 8*(move[1] - '1');
     int endSquare = move[3] - 'a' + 8*(move[4] - '1');
 
@@ -56,9 +61,28 @@ void Input_processor::readMove(Board *board, std::string move) {
         return;
     }
 
-    if(move[0]>'h' || move[0]<'a' || move[3]>'h' || move[3]<'a' || move[1]>'8' || move[1]<'1' || move[4]>'8' || move[4]<'1'){
-        std::cerr << "Wrong input\n";
+    int kingPos = -1;
+    for(int i = 0; i <= 63; i++){
+        if(board->kingCheck(i) && board->currentColorCheck(i)){
+            kingPos = i;
+            break;
+        }
+    }
+
+    if(board->fieldAttackers(kingPos).size() >= 2 && pieceType != 'K'){
+        std::cerr << "King is checked 1" << std::endl;
         return;
+    }
+    else if(board->fieldAttackers(kingPos).size() == 1 && pieceType != 'K'){
+        if(endSquare != board->fieldAttackers(kingPos)[0]){
+            board->updateCurrentColor(initSquare, endSquare);
+            if(board->fieldIsAttacked(kingPos)){
+                board->updateCurrentColor(initSquare, endSquare);
+                std::cerr << "King is checked" << std::endl;
+                return;
+            }
+            board->updateCurrentColor(endSquare, initSquare);
+        }
     }
 
     std::cout << "Init: " << initSquare << ", end: " << endSquare << ", piece type: " << pieceType << ", take: " << take << std::endl;
