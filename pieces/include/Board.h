@@ -98,6 +98,8 @@ public:
     void printInfo();
 
     bool checkmate();
+
+    bool stalemate();
 };
 
 #endif //CHESS_ENGINE_BOARD_H

@@ -501,13 +501,10 @@ bool Board::checkmate() {
         }
     }
 
-    if(!this->fieldIsAttacked(kingPos)){
-        return false;
-    }
     for(int i = -1; i<=1; i++){
         for(int j = -1; j<=1; j++){
             int newKingPos = kingPos + 8*i + j;
-            if(newKingPos <= 63 && newKingPos >= 0){
+            if(newKingPos <= 63 && newKingPos >= 0 && abs(kingPos/8-newKingPos/8) <= 1 && abs(kingPos%8-newKingPos%8) <= 1){
                 if(!this->fieldIsAttacked(newKingPos)){
                     return false;
                 }
@@ -553,6 +550,97 @@ bool Board::checkmate() {
             }
         }
         this->passTheMove();
+    }
+
+    return true;
+}
+
+bool Board::stalemate(){
+    int kingPos = -1;
+    for(int i = 0; i <= 63; i++){
+        if(this->kingCheck(i) && this->currentColorCheck(i)){
+            kingPos = i;
+            break;
+        }
+    }
+
+    if(this->fieldIsAttacked(kingPos)){
+        return false;
+    }
+
+    for(int i = -1; i<=1; i++){
+        for(int j = -1; j<=1; j++){
+            int newKingPos = kingPos + 8*i + j;
+            if(newKingPos <= 63 && newKingPos >= 0 && abs(kingPos/8-newKingPos/8) <= 1 && abs(kingPos%8-newKingPos%8) <= 1){
+                if(!this->fieldIsAttacked(newKingPos) && newKingPos != kingPos){
+                    return false;
+                }
+            }
+        }
+    }
+
+    for(int i = 0; i <= 63; i++){
+        if(this->currentColorCheck(i) && !this->isPinned(i)){
+            /*
+             * For queens, rooks and bishops it's enough to check only neighbour fields where this piece could move on an empty board
+             * If there is no piece of the same color there, then it's not a stalemate
+             */
+            if(this->queenCheck(i)){
+                for(int j = -1; j<=1; j++){
+                    for(int k = -1; k<=1; k++){
+                        int checkPos = i + 8*j+k;
+                        if(abs(i/8-checkPos/8) <= 1 && abs(i%8-checkPos%8) <= 1 && !this->currentColorCheck(checkPos)){
+                            return false;
+                        }
+                    }
+                }
+            }
+            else if(this->rookCheck(i)){
+                for(int j = -1; j<=1; j+=2){
+                    int checkPos = i + 8*j;
+                    if(!this->currentColorCheck(checkPos)){
+                        return false;
+                    }
+                    checkPos = i+j;
+                    if(!this->currentColorCheck(checkPos) && i/8 == checkPos/8){
+                        return false;
+                    }
+                }
+            }
+            else if(this->bishopCheck(i)){
+                for(int j = -1; j<=1; j+=2){
+                    for(int k = -1; k<=1; k+=2){
+                        int checkPos = i + 8*j+k;
+                        if(abs(i/8-checkPos/8) == 1 && abs(i%8-checkPos%8) == 1 && !this->currentColorCheck(checkPos)){
+                            return false;
+                        }
+                    }
+                }
+            }
+            else if(this->pawnCheck(i)){
+                for(int j = 7; j <= 9; j++){
+                    int checkPos = i + j * (2*this->whiteOrder()-1);
+                    if(abs(checkPos/8 - i/8) != 1){
+                        continue;
+                    }
+                    if(j == 8 && !this->currentColorCheck(checkPos)){
+                        return false;
+                    }
+                    if(j != 8 && (this->anotherColorCheck(checkPos) || checkPos == enPassant)){
+                        return false;
+                    }
+                }
+            } else if(this->knightCheck(i)){
+                std::vector<int> possibleDeltas = {-17, -15, -10, -6, 6, 10, 15, 17};
+                for(auto delta: possibleDeltas){
+                    int checkPos = i+delta;
+                    if(checkPos >=0 && checkPos <= 63 &&abs(i/8-checkPos/8)+abs(i%8-checkPos%8) == 3
+                                    && this->currentColorCheck(checkPos)){
+                        return false;
+                    }
+                }
+            }
+        }
     }
 
     return true;
