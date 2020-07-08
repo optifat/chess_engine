@@ -1,16 +1,13 @@
 #include "../include/Node.h"
 
-Node::Node() {
-
+Node::Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position){
+    this->parent = std::move(parent);
+    this->position = std::move(position);
+    this->positionValue = 0; // here must be evaluator
 }
 
-Node::~Node() {
-    for(auto child: this->children){
-        delete(child);
-    }
-    delete this;
-}
+Node::~Node() = default;
 
-void Node::addChild(Node* child) {
-    this->children.push_back(child);
+void Node::addChild(std::shared_ptr<Node> child) {
+    this->children.push_back(std::move(child));
 }

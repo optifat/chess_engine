@@ -2,22 +2,22 @@
 #define CHESS_ENGINE_NODE_H
 
 #include <vector>
+#include <memory>
 
 #include "../../pieces/include/Board.h"
 
 class Node{
 
-    friend class PositionNode;
-    friend class ValueNode;
-
 public:
-    Node();
+    Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position);
     ~Node();
-    void addChild(Node* child);
+    void addChild(std::shared_ptr<Node> child);
 
-protected:
-    std::vector<Node*> children;
-    Node* parent;
+private:
+    std::vector<std::shared_ptr<Node>> children;
+    std::shared_ptr<Node> parent;
+    std::shared_ptr<Board> position;
+    double positionValue;
 };
 
 #endif //CHESS_ENGINE_NODE_H
