@@ -231,6 +231,13 @@ bool Board::fieldIsAttacked(int position, int ignore){
     return false;
 }
 
+bool Board::fieldIsDefended(int position){
+    this->passTheMove();
+    bool result = fieldIsAttacked(position);
+    this->passTheMove();
+    return result;
+}
+
 std::vector<int> Board::fieldAttackers(int position, int ignore) {
     //if (!kings[position] && this->showCurrentColor()[position]){
     //    std::cerr << "This field is occupied by allied piece which is not a king. Returning false.";
@@ -308,6 +315,13 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
         }
     }
     return attackers;
+}
+
+std::vector<int> Board::fieldDefenders(int position){
+    this->passTheMove();
+    auto result = fieldAttackers(position);
+    this->passTheMove();
+    return result;
 }
 
 std::string Board::sideToMove(){
@@ -402,6 +416,7 @@ int Board::possibleEnPassant(){
 }
 
 bool Board::isPinned(int position){
+    bool currentColor = currentColorCheck(position);
     int kingPos = -1;
     for(int i = 0; i <= 63; i++){
         if(this->kingCheck(i) && this->currentColorCheck(i)){
@@ -409,7 +424,10 @@ bool Board::isPinned(int position){
             break;
         }
     }
-    return this->fieldIsAttacked(kingPos, position);
+    if(!currentColor) this->passTheMove();
+    bool result = this->fieldIsAttacked(kingPos, position);
+    if(!currentColor) this->passTheMove();
+    return result;
 }
 
 void Board::showBoard() {
@@ -505,7 +523,7 @@ bool Board::checkmate() {
         for(int j = -1; j<=1; j++){
             int newKingPos = kingPos + 8*i + j;
             if(newKingPos <= 63 && newKingPos >= 0 && abs(kingPos/8-newKingPos/8) <= 1 && abs(kingPos%8-newKingPos%8) <= 1){
-                if(!this->fieldIsAttacked(newKingPos)){
+                if(!(this->fieldIsAttacked(newKingPos) || this->currentColorCheck(newKingPos))){
                     return false;
                 }
             }
@@ -518,38 +536,42 @@ bool Board::checkmate() {
         return true;
     }
 
+    for(auto defender: this->fieldDefenders(attackers[0])){
+        if(!this->isPinned(defender)){
+            return false;
+        }
+    }
+
     if(attackers[0]/8 == kingPos/8){
         this->passTheMove();
         int k = 2*(attackers[0] > kingPos) - 1;
-        for(int i = kingPos; i != attackers[0]; i+=k){
-            if(this->fieldAttackers(i).size() >= 2 || this->fieldAttackers(i)[0] != kingPos){
-                this->passTheMove();
-                return false;
+        for(int i = kingPos+k; i != attackers[0]; i+=k){
+            for(auto defender: this->fieldDefenders(attackers[0])){
+                if(!this->isPinned(defender) || defender == kingPos){
+                    return false;
+                }
             }
         }
-        this->passTheMove();
     }
     else if(attackers[0]%8 == kingPos%8){
-        this->passTheMove();
         int k = 8*(2*(attackers[0] > kingPos)-1);
-        for(int i = kingPos; i != attackers[0]; i+=k){
-            if(this->fieldIsAttacked(i)){
-                this->passTheMove();
-                return false;
+        for(int i = kingPos+k; i != attackers[0]; i+=k){
+            for(auto defender: this->fieldDefenders(attackers[0])){
+                if(!this->isPinned(defender) || defender == kingPos){
+                    return false;
+                }
             }
         }
-        this->passTheMove();
     }
     else if(abs(attackers[0]%8 - kingPos%8) == abs(attackers[0]/8-kingPos/8)){
-        this->passTheMove();
         int k = 8*(2*(attackers[0]%8 > kingPos%8)-1) + 2*((attackers[0]/8 > kingPos/8))-1;
-        for(int i = kingPos; i != attackers[0]; i+=k){
-            if(this->fieldIsAttacked(i)){
-                this->passTheMove();
-                return false;
+        for(int i = kingPos+k; i != attackers[0]+k; i+=k){
+            for(auto defender: this->fieldDefenders(attackers[0])){
+                if(!this->isPinned(defender) || defender == kingPos){
+                    return false;
+                }
             }
         }
-        this->passTheMove();
     }
 
     return true;

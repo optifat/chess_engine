@@ -87,7 +87,11 @@ public:
 
     bool fieldIsAttacked(int position, int ignore = -1);
 
+    bool fieldIsDefended(int position);
+
     std::vector<int> fieldAttackers(int position, int ignore = -1);
+
+    std::vector<int> fieldDefenders(int position);
 
     bool isPinned(int position);
 
