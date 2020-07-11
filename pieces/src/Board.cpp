@@ -523,14 +523,13 @@ bool Board::checkmate() {
         for(int j = -1; j<=1; j++){
             int newKingPos = kingPos + 8*i + j;
             if(newKingPos <= 63 && newKingPos >= 0 && abs(kingPos/8-newKingPos/8) <= 1 && abs(kingPos%8-newKingPos%8) <= 1){
-                if(!(this->fieldIsAttacked(newKingPos) || this->currentColorCheck(newKingPos))){
+                if(!(this->fieldIsAttacked(newKingPos) || (this->currentColorCheck(newKingPos) && !this->kingCheck(newKingPos)))){
                     return false;
                 }
             }
         }
     }
     std::vector<int> attackers = this-> fieldAttackers(kingPos);
-
     // it's impossible to cover from double check
     if(attackers.size() >= 2){
         return true;
