@@ -523,7 +523,8 @@ bool Board::checkmate() {
         for(int j = -1; j<=1; j++){
             int newKingPos = kingPos + 8*i + j;
             if(newKingPos <= 63 && newKingPos >= 0 && abs(kingPos/8-newKingPos/8) <= 1 && abs(kingPos%8-newKingPos%8) <= 1){
-                if(!(this->fieldIsAttacked(newKingPos) || (this->currentColorCheck(newKingPos) && !this->kingCheck(newKingPos)))){
+                if(!(this->fieldIsAttacked(newKingPos, kingPos) || (this->currentColorCheck(newKingPos) && !this->kingCheck(newKingPos)))){
+                    std::cout << newKingPos << std::endl;
                     return false;
                 }
             }
