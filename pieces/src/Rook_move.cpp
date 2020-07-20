@@ -101,7 +101,7 @@ void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                         return;
                     }
                 }
-                else if(board->anotherColorCheck(i) or board->currentColorCheck(i)) {
+                else if(board->anotherColorCheck(i) || board->currentColorCheck(i)) {
                     std::cerr << "Impossible move: something is blocking\n";
                     return;
                 }
