@@ -11,7 +11,7 @@ Board::Board(std::string FEN){
     bool flag = false;
     for(i; i < FEN.length(); i++){
         index++;
-        if(FEN[i] < '9' and FEN[i] > '0'){
+        if(FEN[i] < '9' && FEN[i] > '0'){
             index += FEN[i] - '1';
             continue;
         } else if(FEN[i] == '/'){
@@ -96,7 +96,7 @@ Board::Board(std::string FEN){
                 blackLongCastle = true;
                 break;
             default:
-                if(FEN[i]<='h' and FEN[i] >= 'a'){
+                if(FEN[i]<='h' && FEN[i] >= 'a'){
                     if(FEN[i+1]=='3'){
                         enPassant = FEN[i] - 'a';
                     } else if(FEN[i+1] == '6'){
@@ -112,9 +112,9 @@ Board::~Board() = default;
 std::string Board::pieceOnSquare(std::string square){
     if(square.length() > 2)
         return "Wrong input, input should contain two symbols";
-    else if(square[0] > 'h' or square[0] < 'a')
+    else if(square[0] > 'h' || square[0] < 'a')
         return "Wrong input, verticals are a-h";
-    else if(square[1] > '8' or square[1]<'1')
+    else if(square[1] > '8' || square[1]<'1')
         return "Wrong input, horizontals are 1-8";
     else{
         int index = square[0] - 'a' + 8*(square[1] - '1');

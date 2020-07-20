@@ -64,8 +64,8 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
 
     if(!take){
         if((initSquare/8 == 1 && endSquare - initSquare == 16*k) || (initSquare/8 == 6 && endSquare - initSquare == 16*k)
-           and !board->currentColorCheck(endSquare) and !board->currentColorCheck(endSquare-8*k)
-           and !board->anotherColorCheck(endSquare) and !board->anotherColorCheck(endSquare-8*k)){
+           && !board->currentColorCheck(endSquare) && !board->currentColorCheck(endSquare-8*k)
+           && !board->anotherColorCheck(endSquare) && !board->anotherColorCheck(endSquare-8*k)){
             board->updateCurrentColor(initSquare, endSquare);
             board->pawns &= ~((uint64_t)1 << initSquare);
             board->pawns |= ((uint64_t)1 << endSquare);
@@ -73,13 +73,13 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->passTheMove();
             return;
         } else if(endSquare - initSquare == 8*k
-                  and !board->currentColorCheck(endSquare) and !board->anotherColorCheck(endSquare)){
+                  && !board->currentColorCheck(endSquare) && !board->anotherColorCheck(endSquare)){
             board->updateCurrentColor(initSquare, endSquare);
             board->pawns &= ~((uint64_t)1 << initSquare);
             board->pawns |= ((uint64_t)1 << endSquare);
             board->editEnPassant(-1);
 
-            if((k == 1 and endSquare/8 == 7) or (k == -1 and endSquare/8 == 0)){
+            if((k == 1 && endSquare/8 == 7) || (k == -1 && endSquare/8 == 0)){
                 this->promotion(board, endSquare);
             }
 
@@ -89,7 +89,7 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             std::cerr << "Impossible move \n";
             return;
         }
-    } else if(!board->anotherColorCheck(endSquare) and endSquare != board->possibleEnPassant()){
+    } else if(!board->anotherColorCheck(endSquare) && endSquare != board->possibleEnPassant()){
         std::cerr << "Nothing to take on there\n";
         return;
     } else{
@@ -107,7 +107,7 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->queens &= ~((uint64_t)1 << endSquare);
             board->editEnPassant(-1);
 
-            if((k == 1 and endSquare/8 == 7) or (k == -1 and endSquare/8 == 0)){
+            if((k == 1 && endSquare/8 == 7) || (k == -1 && endSquare/8 == 0)){
                 this->promotion(board, endSquare);
             }
 

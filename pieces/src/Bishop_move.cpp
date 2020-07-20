@@ -37,7 +37,7 @@ void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
         else if(abs(endSquare - initSquare) % 9 == 0){
             int i = initSquare + 9*k;
             for(; i != endSquare+9*k; i+=9*k){
-                if(board->anotherColorCheck(i) or board->currentColorCheck(i)){
+                if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move\n";
                     return;
                 }
