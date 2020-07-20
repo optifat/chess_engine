@@ -41,7 +41,6 @@ void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
         else if(abs(initSquare-endSquare)%8 == 0){
             int i = initSquare + 8*k;
             for(; i != endSquare+8*k; i+=8*k){
-                std::cout << "I'm here" << std::endl;
                 if(i == endSquare){
                     board->updateCurrentColor(initSquare, endSquare);
                     board->rooks &= ~((uint64_t)1 << initSquare);

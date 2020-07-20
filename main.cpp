@@ -3,7 +3,7 @@
 #include "pieces/include/Input_processor.h"
 
 int main() {
-    std::string FEN = "8/4N1pk/8/7R/8/8/8/K7 b - - 0 1";
+    std::string FEN = "6k1/6P1/5K1R/8/8/8/8/8 w - - 0 1";
     Board board(FEN);
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
@@ -12,6 +12,7 @@ int main() {
         board.printInfo();
         board.showBoard();
         if(board.checkmate()){
+            std::cout << board.whiteOrder() << std::endl;
             std::cout << "Checkmate.";
             if(board.whiteOrder()){
                 std::cout << "Black wins." << std::endl;

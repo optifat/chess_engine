@@ -542,7 +542,6 @@ bool Board::checkmate() {
     }
 
     if(attackers[0]/8 == kingPos/8){
-        this->passTheMove();
         int k = 2*(attackers[0] > kingPos) - 1;
         for(int i = kingPos+k; i != attackers[0]; i+=k){
             for(auto defender: this->fieldDefenders(attackers[0])){
