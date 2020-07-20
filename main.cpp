@@ -3,8 +3,8 @@
 #include "pieces/include/Input_processor.h"
 
 int main() {
-    std::string FEN = "7k/8/8/8/8/q7/1Q6/K7 w KQkq - 0 1";
-    Board board;//(FEN);
+    std::string FEN = "8/4N1pk/8/7R/8/8/8/K7 b - - 0 1";
+    Board board(FEN);
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
 
