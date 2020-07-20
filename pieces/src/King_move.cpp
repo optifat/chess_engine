@@ -18,8 +18,8 @@ void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
 
     if(!take){
         board->updateCurrentColor(initSquare, endSquare);
-        board->kings &= ~(1 << initSquare);
-        board->kings |= (1 << endSquare);
+        board->kings &= ~((uint64_t)1 << initSquare);
+        board->kings |= ((uint64_t)1 << endSquare);
         if(board->whiteToMove){
             board->whiteLongCastle = false;
             board->whiteShortCastle = false;
