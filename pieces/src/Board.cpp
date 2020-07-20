@@ -217,7 +217,7 @@ bool Board::fieldIsAttacked(int position, int ignore){
         }
     }
 
-    int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -18};
+    int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -17};
 
     for(auto move: possibleKnightMoves){
         int checkedField = position + move;
@@ -303,7 +303,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
         }
     }
 
-    int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -18};
+    int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -17};
 
     for(auto move: possibleKnightMoves){
         int checkedField = position + move;
