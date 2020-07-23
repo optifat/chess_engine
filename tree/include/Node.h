@@ -12,6 +12,7 @@ public:
     Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position);
     ~Node();
     void addChild(std::shared_ptr<Node> child);
+    void createChildren();
 
 private:
     std::vector<std::shared_ptr<Node>> children;
