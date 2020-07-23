@@ -107,6 +107,25 @@ Board::Board(std::string FEN){
     }
 }
 
+Board::Board(const Board &copy) {
+    whitePieces = copy.whitePieces;
+    blackPieces = copy.blackPieces;
+    rooks = copy.rooks;
+    knights = copy.knights;
+    bishops = copy.bishops;
+    queens = copy.queens;
+    kings = copy.kings;
+    pawns = copy.pawns;
+    enPassant = copy.enPassant;
+    whiteToMove = copy.whiteToMove;
+    whiteLongCastle = copy.whiteLongCastle;
+    blackLongCastle = copy.blackLongCastle;
+    whiteShortCastle = copy.whiteShortCastle;
+    blackShortCastle = copy.blackShortCastle;
+}
+
+Board& Board::operator=(const Board &board) = default;
+
 Board::~Board() = default;
 
 std::string Board::pieceOnSquare(std::string square){
