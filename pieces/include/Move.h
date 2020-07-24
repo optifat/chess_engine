@@ -11,8 +11,9 @@ class Move{
 public:
     Move();
 
-    virtual void makeMove(Board *board, std::string move);
+    virtual void makeMove(Board *board, int initSquare, int endSquare, bool take);
 
+    bool openingPin(Board *board, int initSquare, int endSquare);
 };
 
 

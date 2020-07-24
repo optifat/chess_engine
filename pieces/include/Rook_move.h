@@ -10,7 +10,7 @@ class Rook_move: public Move{
 
 public:
     Rook_move();
-    void makeMove(Board *board, std::string move) override;
+    void makeMove(Board *board, int initSquare, int endSquare, bool take) override;
 };
 
 #endif //CHESS_ENGINE_ROOK_MOVE_H
