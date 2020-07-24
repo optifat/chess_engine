@@ -1,9 +1,9 @@
 #include <iostream>
-
+#include <chrono>
 #include "pieces/include/Input_processor.h"
 
 int main() {
-    std::string FEN = "7K/8/8/8/8/5NR1/8/7k w - - 0 1";
+    std::string FEN = "8/7b/8/8/8/8/8/B7 w - - 0 1";
     Board board(FEN);
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
@@ -32,7 +32,11 @@ int main() {
         if (input == "stop") {
             break;
         } else {
+            auto start = std::chrono::high_resolution_clock::now();
             Input_processor::readMove(&board, input);
+            auto end = std::chrono::high_resolution_clock::now();
+            std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()
+            << " microseconds" << std::endl;
         }
     }
     //board.showBoard();
