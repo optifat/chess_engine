@@ -7,7 +7,7 @@
 
 Rook_move::Rook_move(): Move(){};
 
-void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+bool Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
     // k variable shows "move direction".
     int k = 1;
     if(initSquare > endSquare)
@@ -30,11 +30,11 @@ void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                     }else if(initSquare == 63 || !board->whiteOrder()){
                         board->blackShortCastle = false;
                     }
-                    return;
+                    return true;
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move: some other piece is blocking\n";
-                    return;
+                    return false;
                 }
             }
         }
@@ -55,17 +55,17 @@ void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                     }else if(initSquare == 63 || !board->whiteOrder()){
                         board->blackShortCastle = false;
                     }
-                    return;
+                    return true;
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move: some other piece is blocking\n";
-                    return;
+                    return false;
                 }
             }
         }
         else{
             std::cerr << "Impossible move\n";
-            return;
+            return false;
         }
     }
     else{
@@ -92,21 +92,21 @@ void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                         }else if(initSquare == 63 || !board->whiteOrder()){
                             board->blackShortCastle = false;
                         }
-                        return;
+                        return true;
                     }
 
                     else{
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)) {
                     std::cerr << "Impossible move: something is blocking\n";
-                    return;
+                    return false;
                 }
                 else{
                     std::cerr << "Something went wrong\n";
-                    return;
+                    return false;
                 }
             }
         }
@@ -133,22 +133,23 @@ void Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                         }else if(initSquare == 63 || !board->whiteOrder()){
                             board->blackShortCastle = false;
                         }
-                        return;
+                        return true;
                     }
                     else{
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                 }
                 if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move: some other piece is blocking\n";
-                    return;
+                    return false;
                 }
             }
         }
         else{
             std::cerr << "Impossible move\n";
-            return;
+            return false;
         }
     }
+    return false;
 }

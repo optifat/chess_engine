@@ -4,16 +4,16 @@
 
 King_move::King_move(): Move(){};
 
-void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
+bool King_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
 
     if(abs(initSquare/8-endSquare/8) > 1 || abs(initSquare%8-endSquare%8) > 1){
         std::cerr << "Impossible move\n";
-        return;
+        return false;
     }
 
     if(board->fieldIsAttacked(endSquare)){
         std::cerr << "Impossible move: this field is attacked" << std::endl;
-        return;
+        return false;
     }
 
     if(!take){
@@ -29,7 +29,7 @@ void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->blackShortCastle = false;
         }
         board->passTheMove();
-        return;
+        return true;
     }
     else{
         board->updateCurrentColor(initSquare, endSquare);
@@ -50,6 +50,6 @@ void King_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->blackShortCastle = false;
         }
         board->passTheMove();
-        return;
+        return true;
     }
 }

@@ -5,7 +5,7 @@ Castling::Castling(): Move(){};
 
 // This is too shitty code, MUST be rewritten lately in smarter way
 
-void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) {
+bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) {
     if(endSquare%8 == 6){
         if(board->whiteOrder() && board->whiteShortCastle){
             if(!board->fieldIsAttacked(4) && !board->fieldIsAttacked(5) && !board->fieldIsAttacked(6) &&
@@ -21,7 +21,7 @@ void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->kings &= ~((uint64_t)1 << 4);
                 board->kings |= ((uint64_t)1 << 6);
                 board->passTheMove();
-                return;
+                return true;
             }
         }
 
@@ -39,7 +39,7 @@ void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->kings &= ~((uint64_t)1 << 60);
                 board->kings |= ((uint64_t)1 << 62);
                 board->passTheMove();
-                return;
+                return true;
             }
         }
     }
@@ -58,7 +58,7 @@ void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->kings &= ~((uint64_t)1 << 4);
                 board->kings |= ((uint64_t)1 << 2);
                 board->passTheMove();
-                return;
+                return true;
             }
         }
 
@@ -76,9 +76,10 @@ void Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->kings &= ~((uint64_t)1 << 60);
                 board->kings |= ((uint64_t)1 << 58);
                 board->passTheMove();
-                return;
+                return true;
             }
         }
     }
     std::cerr << "Impossible move" << std::endl;
+    return false;
 }

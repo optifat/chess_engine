@@ -4,7 +4,7 @@
 
 Queen_move::Queen_move(): Move(){};
 
-void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
+bool Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
 
     // k variable shows "move direction".
     int k = 1;
@@ -18,14 +18,14 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                 for(; i != endSquare+k; i+=k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                     else if(i == endSquare){
                         board->updateCurrentColor(initSquare, endSquare);
                         board->queens &= ~((uint64_t)1 << initSquare);
                         board->queens |= ((uint64_t)1 << endSquare);
                         board->passTheMove();
-                        return;
+                        return true;
                     }
                 }
             }
@@ -34,20 +34,20 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                 for(; i != endSquare+8*k; i+=8*k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                     else if(i == endSquare){
                         board->updateCurrentColor(initSquare, endSquare);
                         board->queens &= ~((uint64_t)1 << initSquare);
                         board->queens |= ((uint64_t)1 << endSquare);
                         board->passTheMove();
-                        return;
+                        return true;
                     }
                 }
             }
             else{
                 std::cerr << "Impossible move\n";
-                return;
+                return false;
             }
         }
 
@@ -66,16 +66,16 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                             board->knights &= ~((uint64_t)1 << endSquare);
                             board->bishops &= ~((uint64_t)1 << endSquare);
                             board->passTheMove();
-                            return;
+                            return true;
                         }
                         else{
                             std::cerr << "Impossible move\n";
-                            return;
+                            return false;
                         }
                     }
                     else if(board->anotherColorCheck(i) || board->currentColorCheck(i)) {
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                 }
             }
@@ -93,16 +93,16 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                             board->knights &= ~((uint64_t)1 << endSquare);
                             board->bishops &= ~((uint64_t)1 << endSquare);
                             board->passTheMove();
-                            return;
+                            return true;
                         }
                         else{
                             std::cerr << "Impossible move\n";
-                            return;
+                            return false;
                         }
                     }
                     else if(board->anotherColorCheck(i) || board->currentColorCheck(i)) {
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                 }
             }
@@ -115,14 +115,14 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                 for(; i != endSquare+7*k; i+=7*k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                     else if(i == endSquare){
                         board->updateCurrentColor(initSquare, endSquare);
                         board->queens &= ~((uint64_t)1 << initSquare);
                         board->queens |= ((uint64_t)1 << endSquare);
                         board->passTheMove();
-                        return;
+                        return true;
                     }
                 }
             }
@@ -131,19 +131,20 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                 for(; i != endSquare+9*k; i+=9*k){
                     if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                     else if(i == endSquare){
                         board->updateCurrentColor(initSquare, endSquare);
                         board->queens &= ~((uint64_t)1 << initSquare);
                         board->queens |= ((uint64_t)1 << endSquare);
                         board->passTheMove();
-                        return;
+                        return true;
                     }
                 }
             }
             else{
                 std::cerr << "Impossible move\n";
+                return false;
             }
         }
         else{
@@ -160,11 +161,11 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                         board->knights &= ~((uint64_t)1 << endSquare);
                         board->bishops &= ~((uint64_t)1 << endSquare);
                         board->passTheMove();
-                        return;
+                        return true;
                     }
                     else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                 }
             }
@@ -181,17 +182,19 @@ void Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
                         board->knights &= ~((uint64_t)1 << endSquare);
                         board->bishops &= ~((uint64_t)1 << endSquare);
                         board->passTheMove();
-                        return;
+                        return true;
                     }
                     else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                         std::cerr << "Impossible move\n";
-                        return;
+                        return false;
                     }
                 }
             }
             else{
                 std::cerr << "Impossible move\n";
+                return false;
             }
         }
     }
+    return false;
 }

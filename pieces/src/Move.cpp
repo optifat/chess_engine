@@ -3,7 +3,7 @@
 
 Move::Move() = default;
 
-void Move::makeMove(Board *board, int initSquare, int endSquare, bool take){};
+//void Move::makeMove(Board *board, int initSquare, int endSquare, bool take){};
 
 bool Move::openingPin(Board *board, int initSquare, int endSquare){
 

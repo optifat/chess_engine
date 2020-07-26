@@ -7,10 +7,10 @@ class Pawn_move: public Move{
 
 public:
     Pawn_move();
-    void makeMove(Board *board, int initSquare, int endSquare, bool take) override;
+    static bool makeMove(Board *board, int initSquare, int endSquare, bool take);
 
 private:
-    void promotion(Board *board, int endSquare);
+    static void promotion(Board *board, int endSquare);
 };
 
 #endif //CHESS_ENGINE_PAWN_MOVE_H

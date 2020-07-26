@@ -36,7 +36,7 @@ void Pawn_move::promotion(Board *board, int endSquare){
     }
 }
 
-void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
 
     /* k variable is defined by the side to move: 1 if white and -1 if black.
      * All the white pawns are going up the board while black vice versa.
@@ -71,7 +71,7 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->pawns |= ((uint64_t)1 << endSquare);
             board->editEnPassant(endSquare-8*k);
             board->passTheMove();
-            return;
+            return true;
         } else if(endSquare - initSquare == 8*k
                   && !board->currentColorCheck(endSquare) && !board->anotherColorCheck(endSquare)){
             board->updateCurrentColor(initSquare, endSquare);
@@ -80,18 +80,18 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->editEnPassant(-1);
 
             if((k == 1 && endSquare/8 == 7) || (k == -1 && endSquare/8 == 0)){
-                this->promotion(board, endSquare);
+                Pawn_move::promotion(board, endSquare);
             }
 
             board->passTheMove();
-            return;
+            return true;
         } else{
             std::cerr << "Impossible move \n";
-            return;
+            return false;
         }
     } else if(!board->anotherColorCheck(endSquare) && endSquare != board->possibleEnPassant()){
         std::cerr << "Nothing to take on there\n";
-        return;
+        return false;
     } else{
         if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8)) {
             board->updateCurrentColor(initSquare, endSquare);
@@ -108,14 +108,14 @@ void Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->editEnPassant(-1);
 
             if((k == 1 && endSquare/8 == 7) || (k == -1 && endSquare/8 == 0)){
-                this->promotion(board, endSquare);
+                Pawn_move::promotion(board, endSquare);
             }
 
             board->passTheMove();
-            return;
+            return true;
         } else{
             std::cerr << "Impossible take \n";
-            return;
+            return false;
         }
     }
 }

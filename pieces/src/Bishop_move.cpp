@@ -10,7 +10,7 @@
 
 Bishop_move::Bishop_move(): Move(){};
 
-void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
 
     // k variable shows move direction: to the upper lines (k == 1) or lower ones (k == -1).
     int k = 1;
@@ -23,14 +23,14 @@ void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
             for(; i != endSquare+9*k; i+=7*k){
                 if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move\n";
-                    return;
+                    return false;
                 }
                 else if(i == endSquare){
                     board->updateCurrentColor(initSquare, endSquare);
                     board->bishops &= ~((uint64_t)1 << initSquare);
                     board->bishops |= ((uint64_t)1 << endSquare);
                     board->passTheMove();
-                    return;
+                    return true;
                 }
             }
         }
@@ -39,19 +39,20 @@ void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
             for(; i != endSquare+9*k; i+=9*k){
                 if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move\n";
-                    return;
+                    return false;
                 }
                 else if(i == endSquare){
                     board->updateCurrentColor(initSquare, endSquare);
                     board->bishops &= ~((uint64_t)1 << initSquare);
                     board->bishops |= ((uint64_t)1 << endSquare);
                     board->passTheMove();
-                    return;
+                    return true;
                 }
             }
         }
         else {
             std::cerr << "Impossible move\n";
+            return false;
         }
     }
     else{
@@ -68,11 +69,11 @@ void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
                     board->knights &= ~((uint64_t)1 << endSquare);
                     board->queens &= ~((uint64_t)1 << endSquare);
                     board->passTheMove();
-                    return;
+                    return true;
                 }
                 else if(board->currentColorCheck(i)){
                     std::cerr << "Impossible move\n";
-                    return;
+                    return false;
                 }
             }
         }
@@ -89,17 +90,19 @@ void Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
                     board->knights &= ~((uint64_t)1 << endSquare);
                     board->queens &= ~((uint64_t)1 << endSquare);
                     board->passTheMove();
-                    return;
+                    return true;
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move\n";
-                    return;
+                    return false;
                 }
             }
         }
         else {
-            std::cerr << "Impossible move3\n";
+            std::cerr << "Impossible move\n";
+            return false;
         }
     }
+    return false;
 }
 

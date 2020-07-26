@@ -7,7 +7,7 @@ class Queen_move: public Move{
 
 public:
     Queen_move();
-    void makeMove(Board *board, int initSquare, int endSquare, bool take) override;
+    static bool makeMove(Board *board, int initSquare, int endSquare, bool take);
 };
 
 #endif //CHESS_ENGINE_QUEEN_MOVE_H
