@@ -16,8 +16,9 @@ public:
     int currentLayer();
     void addChildrenInQueue(std::queue<std::shared_ptr<Node>> &queue);
     void showBoard();
+    int childrenSize();
 
-private:
+public:
     void addChild(std::shared_ptr<Node> child);
 
     std::vector<std::shared_ptr<Node>> children;
