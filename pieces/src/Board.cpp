@@ -9,7 +9,7 @@ Board::Board(std::string FEN){
     int index = 55;
     int i = 0;
     bool flag = false;
-    for(i; i < FEN.length(); i++){
+    for(; i < (int)FEN.length(); i++){
         index++;
         if(FEN[i] < '9' && FEN[i] > '0'){
             index += FEN[i] - '1';
@@ -75,7 +75,7 @@ Board::Board(std::string FEN){
         if (flag)
             break;
     }
-    for(i; i < FEN.length(); i++){
+    for(; i < (int)FEN.length(); i++){
         switch (FEN[i]){
             case 'w':
                 whiteToMove = true;

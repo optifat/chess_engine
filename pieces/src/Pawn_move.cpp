@@ -58,12 +58,8 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
      * If e == 0 nothing changes otherwise we move to current-k vertical when removing the opponent's pawn
      */
 
-    int e = 0;
-    if(endSquare == board->possibleEnPassant())
-        e = 8;
-
     if(!take){
-        if((initSquare/8 == 1 && endSquare - initSquare == 16*k) || (initSquare/8 == 6 && endSquare - initSquare == 16*k)
+        if(((initSquare/8 == 1 && endSquare - initSquare == 16*k) || (initSquare/8 == 6 && endSquare - initSquare == 16*k))
            && !board->currentColorCheck(endSquare) && !board->currentColorCheck(endSquare-8*k)
            && !board->anotherColorCheck(endSquare) && !board->anotherColorCheck(endSquare-8*k)){
             board->updateCurrentColor(initSquare, endSquare);

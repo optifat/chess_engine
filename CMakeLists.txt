@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.8)
 project(chess_engine)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS  "-O3")
+#set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 
 set(MAIN main.cpp)
 set(PIECES_FILES pieces/include/Input_processor.h pieces/src/Input_processor.cpp
