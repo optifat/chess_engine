@@ -1,13 +1,17 @@
 #include <iostream>
 #include <chrono>
 #include "pieces/include/Input_processor.h"
+#include "tree/include/Tree.h"
 
 int main() {
-    std::string FEN = "8/7b/8/8/8/8/8/B7 w - - 0 1";
+
+    std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
     Board board(FEN);
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
-
+    Tree tree(std::make_shared<Board>(board));
+    tree.generateTree(1);
+    /*
     while(true) {
         board.printInfo();
         board.showBoard();
@@ -34,8 +38,13 @@ int main() {
         } else {
             auto start = std::chrono::high_resolution_clock::now();
             Input_processor::readMove(&board, input);
+            auto end = std::chrono::high_resolution_clock::now();
+            std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()
+            << " microseconds" << std::endl;
+
         }
-    }
+    }//*/
+
     //board.showBoard();
     //std::cout << sizeof(board) << "\n";
     return 0;

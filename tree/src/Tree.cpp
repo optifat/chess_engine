@@ -1,17 +1,17 @@
 #include "../include/Tree.h"
 
 #include <memory>
+#include <iostream>
 
-Tree::Tree(std::shared_ptr<Board> currentPosition, int depth = 5) {
-    this->root = std::make_shared<Node>(nullptr, std::move(currentPosition));
-    this->depth = depth;
-    this->currentDepth = 1;
+Tree::Tree(std::shared_ptr<Board> currentPosition) {
+    this->root = std::make_shared<Node>(nullptr, std::move(currentPosition), 0);
+    this->depth = 0;
     this->queue.push(this->root);
 }
 
 Tree::~Tree() {}
 
-void Tree::createNewLayer() {
+/*void Tree::createNewLayer() {
     if(currentDepth == depth){
         return;
     }
@@ -26,6 +26,20 @@ void Tree::createNewLayer() {
 
         std::shared_ptr<Node> newNode = std::make_shared<Node>(current, newPosition);
         this->queue.push(std::move(newNode));
+        break;
     }
     this->queue.pop();
+}*/
+
+void Tree::generateTree(int maxDepth) {
+    while(this->depth <= maxDepth){
+        if (this->queue.front()->currentLayer() > maxDepth){
+            return;
+        }
+        this->queue.front()->showBoard();
+        this->depth = this->queue.front()->currentLayer();
+        this->queue.front()->createChildren();
+        this->queue.front()->addChildrenInQueue(queue);
+        this->queue.pop();
+    }
 }

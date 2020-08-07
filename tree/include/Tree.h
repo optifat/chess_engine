@@ -6,9 +6,10 @@
 
 class Tree{
 public:
-    Tree(std::shared_ptr<Board> currentPosition, int depth);
+    Tree(std::shared_ptr<Board> currentPosition);
     ~Tree();
     void createNewLayer();
+    void generateTree(int maxDepth);
 
 private:
     int currentDepth;
