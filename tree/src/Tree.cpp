@@ -32,7 +32,7 @@ Tree::~Tree() {}
 }*/
 
 void Tree::generateTree(int maxDepth) {
-    //while(this->depth <= maxDepth){
+    while(this->depth <= maxDepth){
         if (this->queue.front()->currentLayer() > maxDepth){
             return;
         }
@@ -40,11 +40,7 @@ void Tree::generateTree(int maxDepth) {
         this->depth = this->queue.front()->currentLayer();
         this->queue.front()->createChildren();
         std::cout << this->queue.front()->childrenSize() << std::endl;
-    for(auto child: queue.front()->children){
-        child->showBoard();
-        std::cout << std::endl;
-    }
         this->queue.front()->addChildrenInQueue(queue);
         this->queue.pop();
-    //}
+    }
 }

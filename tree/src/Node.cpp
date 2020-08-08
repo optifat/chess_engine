@@ -31,6 +31,9 @@ void Node::createChildren() {
                 for(int i = -1; i <= 1; i++){
                     for(int j = -1; j <= 1; j++){
                         int endSquare = square + 8*i + j;
+                        if(endSquare < 0 || (endSquare == square)){
+                            continue;
+                        }
                         if(King_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                             //newPosition->showBoard();
                             this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
@@ -48,6 +51,9 @@ void Node::createChildren() {
                  */
                 for(int i = 1; i <= 7; i++){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -63,6 +69,9 @@ void Node::createChildren() {
                 }
                 for(int i = -1; i >= -7; i--){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -78,6 +87,9 @@ void Node::createChildren() {
                 }
                 for(int i = 8; i <= 56; i += 8){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -93,6 +105,9 @@ void Node::createChildren() {
                 }
                 for(int i = -8; i >= -56; i -= 8){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -108,6 +123,9 @@ void Node::createChildren() {
                 }
                 for(int i = 7; i <= 63; i += 7){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -123,6 +141,9 @@ void Node::createChildren() {
                 }
                 for(int i = -7; i >= -63; i -= 7){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -138,6 +159,9 @@ void Node::createChildren() {
                 }
                 for(int i = 9; i <= 63; i += 9){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -153,6 +177,9 @@ void Node::createChildren() {
                 }
                 for(int i = -9; i >= -63; i -= 9){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -170,6 +197,9 @@ void Node::createChildren() {
             else if(position->rookCheck(square)){
                 for(int i = 1; i <= 7; i++){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -185,6 +215,9 @@ void Node::createChildren() {
                 }
                 for(int i = -1; i >= -7; i--){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -201,6 +234,9 @@ void Node::createChildren() {
                 }
                 for(int i = 8; i <= 56; i += 8){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -216,6 +252,9 @@ void Node::createChildren() {
                 }
                 for(int i = -8; i >= -56; i -= 8){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -233,6 +272,9 @@ void Node::createChildren() {
             else if(position->bishopCheck(square)){
                 for(int i = 7; i <= 63; i += 7){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -248,6 +290,9 @@ void Node::createChildren() {
                 }
                 for(int i = -7; i >= -63; i -= 7){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -263,6 +308,9 @@ void Node::createChildren() {
                 }
                 for(int i = 9; i <= 63; i += 9){
                     int endSquare = square + i;
+                    if(endSquare > 63){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -278,6 +326,9 @@ void Node::createChildren() {
                 }
                 for(int i = -9; i >= -63; i -= 9){
                     int endSquare = square + i;
+                    if(endSquare < 0){
+                        break;
+                    }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         break;
                     }
@@ -295,6 +346,9 @@ void Node::createChildren() {
             else if(position->knightCheck(square)){
                 for(int delta: Knight_move::possibleKnightMoves){
                     int endSquare = square + delta;
+                    if(endSquare < 0 || endSquare > 63){
+                        continue;
+                    }
                     std::cout << "Current position " << square << " " << endSquare << std::endl;
                     //newPosition->showBoard();
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
