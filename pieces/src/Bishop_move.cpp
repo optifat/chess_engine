@@ -12,6 +12,10 @@ Bishop_move::Bishop_move(): Move(){};
 
 bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
 
+    if(board->currentColorCheck(endSquare)){
+        return false;
+    }
+
     // k variable shows move direction: to the upper lines (k == 1) or lower ones (k == -1).
     int k = 1;
     if(initSquare > endSquare)

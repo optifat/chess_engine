@@ -10,6 +10,9 @@
 Knight_move::Knight_move(): Move(){};
 
 bool Knight_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+    if(board->currentColorCheck(endSquare)){
+        return false;
+    }
 
     std::set<int> possibleMoves = {-17, -15, -10, -6, 6, 10, 15, 17};
 

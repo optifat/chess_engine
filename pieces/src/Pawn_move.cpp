@@ -37,6 +37,9 @@ void Pawn_move::promotion(Board *board, int endSquare){
 }
 
 bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+    if(board->currentColorCheck(endSquare)){
+        return false;
+    }
 
     /* k variable is defined by the side to move: 1 if white and -1 if black.
      * All the white pawns are going up the board while black vice versa.

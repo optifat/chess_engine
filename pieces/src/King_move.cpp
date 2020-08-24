@@ -5,6 +5,9 @@
 King_move::King_move(): Move(){};
 
 bool King_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
+    if(board->currentColorCheck(endSquare)){
+        return false;
+    }
 
     if(abs(initSquare/8-endSquare/8) > 1 || abs(initSquare%8-endSquare%8) > 1){
         std::cerr << "Impossible move\n";

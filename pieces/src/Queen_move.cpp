@@ -6,6 +6,10 @@ Queen_move::Queen_move(): Move(){};
 
 bool Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take) {
 
+    if(board->currentColorCheck(endSquare)){
+        return false;
+    }
+
     // k variable shows "move direction".
     int k = 1;
     if(initSquare > endSquare)
