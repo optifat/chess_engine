@@ -12,12 +12,11 @@ Tree::Tree(std::shared_ptr<Board> currentPosition) {
 Tree::~Tree() {}
 
 void Tree::generateTree(int maxDepth) {
-    while(this->depth <= maxDepth){
+    while(this->depth < maxDepth){
         if (this->queue.front()->currentLayer() > maxDepth){
             return;
         }
         this->queue.front()->showBoard();
-        this->depth = this->queue.front()->currentLayer();
         this->queue.front()->createChildren();
         std::cout << this->queue.front()->childrenSize() << std::endl;
         this->queue.front()->addChildrenInQueue(queue);
@@ -25,5 +24,7 @@ void Tree::generateTree(int maxDepth) {
             child->showBoard();
         }
         this->queue.pop();
+        this->depth = this->queue.front()->currentLayer();
+        std::cout << this->depth << std::endl;
     }
 }
