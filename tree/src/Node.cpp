@@ -18,7 +18,7 @@ Node::Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int la
 Node::~Node() = default;
 
 void Node::addChild(std::shared_ptr<Node> child) {
-    this->children.push_back(child);
+    this->children.push_back(std::move(child));
 }
 
 void Node::createChildren() {
@@ -36,7 +36,7 @@ void Node::createChildren() {
                         }
                         if(King_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                             //newPosition->showBoard();
-                            this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                            this->addChild(std::make_shared<Node>(shared_from_this(),
                                                                   newPosition, this->layerNumber+1));
                             newPosition = std::make_shared<Board>(*position.get());
                         }
@@ -59,7 +59,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -77,7 +77,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -95,7 +95,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -113,7 +113,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -131,7 +131,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -149,7 +149,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -167,7 +167,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -185,7 +185,7 @@ void Node::createChildren() {
                     }
                     else if(Queen_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -205,7 +205,7 @@ void Node::createChildren() {
                     }
                     else if(Rook_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -223,7 +223,7 @@ void Node::createChildren() {
                     }
                     else if(Rook_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition,
                                                               this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
@@ -242,7 +242,7 @@ void Node::createChildren() {
                     }
                     else if(Rook_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -260,8 +260,8 @@ void Node::createChildren() {
                     }
                     else if(Rook_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
-                                                              newPosition, this->layerNumber+1));
+                        this->children.push_back(std::move(std::make_shared<Node>(shared_from_this(),
+                                                              newPosition, this->layerNumber+1)));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
                     else{
@@ -280,7 +280,7 @@ void Node::createChildren() {
                     }
                     else if(Bishop_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -298,7 +298,7 @@ void Node::createChildren() {
                     }
                     else if(Bishop_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -316,7 +316,7 @@ void Node::createChildren() {
                     }
                     else if(Bishop_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -334,7 +334,7 @@ void Node::createChildren() {
                     }
                     else if(Bishop_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                               newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -358,7 +358,7 @@ void Node::createChildren() {
                         std::cout << "Generated position\n";
                         std::cout << square << " " << endSquare << std::endl;
                         //newPosition->showBoard();
-                        this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
                                                                     newPosition, this->layerNumber+1));
                         newPosition = std::make_shared<Board>(*position.get());
                     }
@@ -374,7 +374,7 @@ void Node::createChildren() {
                         }
                         else if(Pawn_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
                             //newPosition->showBoard();
-                            this->addChild(std::make_shared<Node>(static_cast<std::shared_ptr<Node>>(this),
+                            this->addChild(std::make_shared<Node>(shared_from_this(),
                                                                         newPosition, this->layerNumber+1));
                             newPosition = std::make_shared<Board>(*position.get());
                         }

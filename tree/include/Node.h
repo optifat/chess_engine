@@ -7,7 +7,7 @@
 
 #include "../../pieces/include/Board.h"
 
-class Node{
+class Node: public std::enable_shared_from_this<Node>{
 
 public:
     Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int layerNumber);
@@ -22,7 +22,7 @@ public:
     void addChild(std::shared_ptr<Node> child);
 
     std::vector<std::shared_ptr<Node>> children;
-    std::shared_ptr<Node> parent;
+    std::weak_ptr<Node> parent;
     std::shared_ptr<Board> position;
     double positionValue;
     int layerNumber;
