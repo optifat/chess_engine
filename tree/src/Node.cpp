@@ -31,7 +31,7 @@ void Node::createChildren() {
                 for(int i = -1; i <= 1; i++){
                     for(int j = -1; j <= 1; j++){
                         int endSquare = square + 8*i + j;
-                        if(endSquare < 0 || (endSquare == square)){
+                        if(endSquare < 0 || endSquare > 63 || endSquare == square){
                             continue;
                         }
                         if(King_move::makeMove(&*newPosition.get(), square, endSquare, newPosition->anotherColorCheck(endSquare))){
@@ -272,7 +272,7 @@ void Node::createChildren() {
             else if(position->bishopCheck(square)){
                 for(int i = 7; i <= 63; i += 7){
                     int endSquare = square + i;
-                    if(endSquare < 0){
+                    if(endSquare > 63){
                         break;
                     }
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
@@ -367,7 +367,10 @@ void Node::createChildren() {
             else if(position->pawnCheck(square)){
                 for(int i = 7; i <= 9; i++){
                     for(int j = 0; j <= 1; j++){
-                        int endSquare = square + i + 8*j;
+                        int endSquare = square + (i + 8*j)*(-1+2*position->whiteOrder());
+                        if(endSquare > 63 || endSquare < 0){
+                            break;
+                        }
                         std::cout << square << " " << endSquare << std::endl;
                         if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                             break;
