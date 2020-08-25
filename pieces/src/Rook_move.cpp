@@ -107,10 +107,6 @@ bool Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                     std::cerr << "Impossible move: something is blocking\n";
                     return false;
                 }
-                else{
-                    std::cerr << "Something went wrong\n";
-                    return false;
-                }
             }
         }
         else if(abs(initSquare-endSquare)%8 == 0){
