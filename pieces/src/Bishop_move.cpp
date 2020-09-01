@@ -24,7 +24,7 @@ bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
     if(!take){
         if(abs(endSquare - initSquare) % 7 == 0){
             int i = initSquare + 7*k;
-            for(; i != endSquare+9*k; i+=7*k){
+            for(; i != endSquare+7*k; i+=7*k){
                 if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
                     std::cerr << "Impossible move\n";
                     return false;
@@ -62,7 +62,8 @@ bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
     else{
         if(abs(endSquare - initSquare) % 7 == 0){
             int i = initSquare + 7*k;
-            for(; i <= endSquare+7*k; i+=7*k){
+            for(; i != endSquare+7*k; i+=7*k){
+                std::cout << i << std::endl;
                 if(i == endSquare){
                     board->updateCurrentColor(initSquare, endSquare);
                     board->updateAnotherColor(endSquare, -1);
