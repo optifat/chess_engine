@@ -443,10 +443,10 @@ bool Board::isPinned(int position){
             break;
         }
     }
-    if(!currentColor) this->passTheMove();
-    bool result = this->fieldIsAttacked(kingPos, position);
-    if(!currentColor) this->passTheMove();
-    return result;
+    // The piece is pinned if after taking it off the board the number of king field attackers increases
+    int initialAttackersNumber = fieldAttackers(kingPos).size();
+    int endAttackersNumber = fieldAttackers(kingPos, position).size();
+    return endAttackersNumber > initialAttackersNumber;
 }
 
 void Board::showBoard() {
@@ -562,9 +562,9 @@ bool Board::checkmate() {
 
     if(attackers[0]/8 == kingPos/8){
         int k = 2*(attackers[0] > kingPos) - 1;
-        for(int i = kingPos+k; i != attackers[0]; i+=k){
-            for(auto defender: this->fieldDefenders(attackers[0])){
-                if(!this->isPinned(defender) || defender == kingPos){
+        for(int i = kingPos+k; i != attackers[0]+k; i+=k){
+            for(auto defender: this->fieldDefenders(i)){
+                if(!this->isPinned(defender)){
                     return false;
                 }
             }
@@ -572,25 +572,25 @@ bool Board::checkmate() {
     }
     else if(attackers[0]%8 == kingPos%8){
         int k = 8*(2*(attackers[0] > kingPos)-1);
-        for(int i = kingPos+k; i != attackers[0]; i+=k){
-            for(auto defender: this->fieldDefenders(attackers[0])){
-                if(!this->isPinned(defender) || defender == kingPos){
+        for(int i = kingPos+k; i != attackers[0]+k; i+=k){
+            for(auto defender: this->fieldDefenders(i)){
+                std::cout << defender << " " << this->isPinned(defender) << std::endl;
+                if(!this->isPinned(defender)){
                     return false;
                 }
             }
         }
     }
     else if(abs(attackers[0]%8 - kingPos%8) == abs(attackers[0]/8-kingPos/8)){
-        int k = 8*(2*(attackers[0]%8 > kingPos%8)-1) + 2*((attackers[0]/8 > kingPos/8))-1;
+        int k = 8*(2*(attackers[0]/8 > kingPos/8)-1) + 2*((attackers[0]%8 > kingPos%8))-1;
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->fieldDefenders(attackers[0])){
-                if(!this->isPinned(defender) || defender == kingPos){
+            for(auto defender: this->fieldDefenders(i)){
+                if(!this->isPinned(defender)){
                     return false;
                 }
             }
         }
     }
-
     return true;
 }
 
