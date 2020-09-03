@@ -14,6 +14,7 @@ Node::Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int la
     this->position = std::move(position);
     this->positionValue = Evaluator::evaluatePosition(*this->position.get());
     this->layerNumber = layerNumber;
+    this->updateParentsPositionValue();
 }
 
 Node::~Node() = default;
