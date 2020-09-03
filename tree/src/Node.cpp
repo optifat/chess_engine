@@ -409,3 +409,14 @@ void Node::showBoard() {
 int Node::childrenSize() {
     return this->children.size();
 }
+
+void Node::updateParentsPositionValue() {
+    if(this->parent.lock()->positionValue > this->positionValue && this->parent.lock()->position->whiteOrder()){
+        return;
+    }
+    else if(this->parent.lock()->positionValue < this->positionValue && !this->parent.lock()->position->whiteOrder()){
+        return;
+    }
+    this->parent.lock()->positionValue = this->positionValue;
+    this->parent.lock()->updateParentsPositionValue();
+}

@@ -20,11 +20,12 @@ public:
 
 public:
     void addChild(std::shared_ptr<Node> child);
+    void updateParentsPositionValue();
 
     std::vector<std::shared_ptr<Node>> children;
     std::weak_ptr<Node> parent;
     std::shared_ptr<Board> position;
-    double positionValue;
+    float positionValue;
     int layerNumber;
 };
 
