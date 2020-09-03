@@ -1,4 +1,5 @@
 #include "../include/Node.h"
+#include "../include/Evaluator.h"
 #include "../../pieces/include/King_move.h"
 #include "../../pieces/include/Pawn_move.h"
 #include "../../pieces/include/Knight_move.h"
@@ -11,7 +12,7 @@
 Node::Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int layerNumber){
     this->parent = std::move(parent);
     this->position = std::move(position);
-    this->positionValue = 0; // here must be evaluator
+    this->positionValue = Evaluator::evaluatePosition(*this->position.get());
     this->layerNumber = layerNumber;
 }
 

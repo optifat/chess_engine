@@ -19,6 +19,6 @@ set(PIECES_FILES pieces/include/Input_processor.h pieces/src/Input_processor.cpp
         )
 set(TREE_FILES tree/include/Node.h tree/src/Node.cpp
                tree/include/Tree.h tree/src/Tree.cpp
-        )
+               tree/src/Evaluator.cpp tree/include/Evaluator.h)
 
 add_executable(chess_engine ${MAIN} ${PIECES_FILES} ${TREE_FILES})
