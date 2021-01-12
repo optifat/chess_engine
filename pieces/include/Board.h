@@ -45,70 +45,40 @@ private:
 
 public:
     Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq");
-
     Board(const Board &copy);
-
     Board& operator=(const Board &board);
-
     ~Board();
-
     std::string pieceOnSquare(std::string square);
-
     std::string sideToMove();
-
     std::string whiteCastle();
-
     std::string blackCastle();
-
     bool whitePieceCheck(int square);
-
     bool blackPieceCheck(int square);
-
     bool anotherColorCheck(int square);
-
     bool currentColorCheck(int square);
-
     bool rookCheck(int square);
-
     bool knightCheck(int square);
-
     bool bishopCheck(int square);
-
     bool queenCheck(int square);
-
     bool kingCheck(int square);
-
     bool pawnCheck(int square);
-
     bool whiteOrder();
-
     void passTheMove();
-
     void editEnPassant(int index);
-
     int possibleEnPassant();
-
     void showBoard();
-
     bool fieldIsAttacked(int position, int ignore = -1);
-
     bool fieldIsDefended(int position);
-
     std::vector<int> fieldAttackers(int position, int ignore = -1);
-
     std::vector<int> fieldDefenders(int position);
-
     bool isPinned(int position);
-
     void updateCurrentColor(int initSquare, int endSqure);
-
     void updateAnotherColor(int initSquare, int endSqure);
-
     void printInfo();
-
     bool checkmate();
-
     bool stalemate();
+    int currentColorKingPosition();
+    int anotherColorKingPosition();
 };
 
 #endif //CHESS_ENGINE_BOARD_H

@@ -1,3 +1,12 @@
+#ifdef _MSC_VER
+#  include <intrin.h>
+#  define clz(x) (63-__lzcnt64(x))
+#endif
+
+#ifdef __GNUC__
+#  define clz(x) x?(x?__builtin_clz(x):64)
+#endif
+
 #include <string>
 #include <iostream>
 #include <cmath>
@@ -683,4 +692,12 @@ bool Board::stalemate(){
     }
 
     return true;
+}
+
+int Board::currentColorKingPosition() {
+    return this->whiteToMove ? clz(this->whitePieces & this->kings) : clz(this->blackPieces & this->kings);
+}
+
+int Board::anotherColorKingPosition() {
+    return !this->whiteToMove ? clz(this->whitePieces & this->kings) : clz(this->blackPieces & this->kings);
 }

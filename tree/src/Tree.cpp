@@ -1,4 +1,5 @@
 #include "../include/Tree.h"
+#include "../include/Evaluator.h"
 
 #include <memory>
 #include <iostream>
@@ -16,13 +17,14 @@ void Tree::generateTree(int maxDepth) {
         if (this->queue.front()->currentLayer() > maxDepth){
             return;
         }
-        this->queue.front()->showBoard();
+        //this->queue.front()->showBoard();
         this->queue.front()->createChildren();
-        std::cout << this->queue.front()->childrenSize() << std::endl;
+        //std::cout << this->queue.front()->childrenSize() << std::endl;
         this->queue.front()->addChildrenInQueue(queue);
-        for(auto child: this->queue.front()->children){
-            child->showBoard();
-        }
+        this->queue.front()->updatePositionValue();
+        //for(auto child: this->queue.front()->children){
+        //    child->showBoard();
+        //}
         this->queue.pop();
         this->depth = this->queue.front()->currentLayer();
         //std::cout << this->depth << std::endl;

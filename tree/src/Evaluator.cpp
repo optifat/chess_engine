@@ -20,6 +20,5 @@ float Evaluator::evaluatePosition(Board &position) {
     positionValue -= 3 * __builtin_popcountl(position.knights & position.blackPieces);
     positionValue += __builtin_popcountl(position.pawns & position.whitePieces);
     positionValue -= __builtin_popcountl(position.pawns & position.blackPieces);
-    std::cout << "value " << (position.queens & position.blackPieces) << std::endl;
     return positionValue;
 }

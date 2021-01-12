@@ -20,6 +20,7 @@ public:
     void showBoard();
     int childrenSize();
     float getPositionValue();
+    void updatePositionValue();
 
 private:
     void addChild(std::shared_ptr<Node> child);
