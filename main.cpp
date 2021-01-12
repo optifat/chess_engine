@@ -6,11 +6,13 @@
 int main() {
 
     std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
-    Board board(FEN);
+    Board board("5rk1/2RR2pp/8/8/8/8/8/K7 w - - 0 1");
     std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
     std::cout << "Print stop to exit the program \n";
     Tree tree(std::make_shared<Board>(board));
-    tree.generateTree(1);
+    tree.generateTree(3);
+    std::cout << tree.getPositionValue() << std::endl;
+    tree.optimalSequence();
     /*
     while(true) {
         board.printInfo();

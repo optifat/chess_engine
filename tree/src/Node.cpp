@@ -425,3 +425,7 @@ void Node::updateParentsPositionValue() {
     this->parent.lock()->positionValue = this->positionValue;
     this->parent.lock()->updateParentsPositionValue();
 }
+
+float Node::getPositionValue() {
+    return this->positionValue;
+}

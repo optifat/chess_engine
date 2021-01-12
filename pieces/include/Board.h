@@ -16,6 +16,7 @@ class Board{
     friend class Pawn_move;
     friend class Queen_move;
     friend class Rook_move;
+    friend class Evaluator;
 
 private:
 /* These integers are called bitboards and represent a board

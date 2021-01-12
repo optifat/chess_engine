@@ -9,6 +9,8 @@
 
 class Node: public std::enable_shared_from_this<Node>{
 
+    friend class Tree;
+
 public:
     Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int layerNumber);
     ~Node();
@@ -17,8 +19,9 @@ public:
     void addChildrenInQueue(std::queue<std::shared_ptr<Node>> &queue);
     void showBoard();
     int childrenSize();
+    float getPositionValue();
 
-public:
+private:
     void addChild(std::shared_ptr<Node> child);
     void updateParentsPositionValue();
 

@@ -28,3 +28,21 @@ void Tree::generateTree(int maxDepth) {
         //std::cout << this->depth << std::endl;
     }
 }
+
+float Tree::getPositionValue() {
+    return this->root->getPositionValue();
+}
+
+void Tree::optimalSequence() {
+    auto current = this->root;
+    for (int i = 0; i <= this->depth; i++) {
+        current->showBoard();
+        std::cout << std::endl;
+        for (auto child : current->children) {
+            if (child->getPositionValue() == this->getPositionValue()) {
+                current = child;
+                continue;
+            }
+        }
+    }
+}

@@ -9,6 +9,8 @@ public:
     Tree(std::shared_ptr<Board> currentPosition);
     ~Tree();
     void generateTree(int maxDepth);
+    float getPositionValue();
+    void optimalSequence();
 
 private:
     int depth;

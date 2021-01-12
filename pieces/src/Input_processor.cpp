@@ -69,7 +69,7 @@ void Input_processor::readMove(Board *board, std::string move) {
     }
 
     if(board->fieldAttackers(kingPos).size() >= 2 && pieceType != 'K'){
-        std::cerr << "King is checked 1" << std::endl;
+        std::cerr << "King is checked" << std::endl;
         return;
     }
     else if(board->fieldAttackers(kingPos).size() == 1 && pieceType != 'K'){
