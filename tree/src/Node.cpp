@@ -413,7 +413,10 @@ int Node::childrenSize() {
 }
 
 void Node::updateParentsPositionValue() {
-    if(this->parent.lock()->positionValue > this->positionValue && this->parent.lock()->position->whiteOrder()){
+    if (this->layerNumber == 0) {
+        return;
+    }
+    else if(this->parent.lock()->positionValue > this->positionValue && this->parent.lock()->position->whiteOrder()){
         return;
     }
     else if(this->parent.lock()->positionValue < this->positionValue && !this->parent.lock()->position->whiteOrder()){

@@ -25,6 +25,6 @@ void Tree::generateTree(int maxDepth) {
         }
         this->queue.pop();
         this->depth = this->queue.front()->currentLayer();
-        std::cout << this->depth << std::endl;
+        //std::cout << this->depth << std::endl;
     }
 }
