@@ -551,12 +551,13 @@ bool Board::checkmate() {
             }
         }
     }
+    
     std::vector<int> attackers = this-> fieldAttackers(kingPos);
     // it's impossible to cover from double check
     if(attackers.size() >= 2){
         return true;
     }
-
+    
     for(auto defender: this->fieldDefenders(attackers[0])){
         if(!this->isPinned(defender) && defender != kingPos){
             return false;
@@ -589,7 +590,7 @@ bool Board::checkmate() {
         int k = 8*(2*(attackers[0]/8 > kingPos/8)-1) + 2*((attackers[0]%8 > kingPos%8))-1;
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
             for(auto defender: this->fieldDefenders(i)){
-                if(!this->isPinned(defender && defender != kingPos)){
+                if(!this->isPinned(defender) && defender != kingPos){
                     return false;
                 }
             }
