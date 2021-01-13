@@ -21,6 +21,11 @@ bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
     if(initSquare > endSquare)
         k = -1;
 
+    if (abs(endSquare / 8 - initSquare / 8) != abs(endSquare % 8 - initSquare % 8)) {
+        std::cerr << "Impossible move\n";
+        return false;
+    }
+
     if(!take){
         if(abs(endSquare - initSquare) % 7 == 0){
             int i = initSquare + 7*k;
