@@ -464,15 +464,17 @@ void Node::updateParentsPositionValue() {
 void Node::updatePositionValue() {
     float val;
     if (this->position->whiteOrder()) {
-        val = -FLT_MAX;
+        val = -MAX_POS_VAL;
         for (auto child : this->children) {
-            val = val > child->positionValue ? val : child->positionValue;
+            float childValue = child->positionValue > MAX_POS_VAL - 100 ? child->positionValue-1 : child->positionValue;
+            val = val > childValue ? val : childValue;
         }
     }
     else {
-        val = FLT_MAX;
+        val = MAX_POS_VAL;
         for (auto child : this->children) {
-            val = val < child->positionValue ? val : child->positionValue;
+            float childValue = child->positionValue < -MAX_POS_VAL + 100 ? child->positionValue+1 : child->positionValue;
+            val = val < childValue ? val : childValue;
         }
     }
     this->positionValue = val;

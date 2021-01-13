@@ -539,14 +539,8 @@ void Board::printInfo(){
 }
 
 bool Board::checkmate() {
-    int kingPos = -1;
-    for(int i = 0; i <= 63; i++){
-        if(this->kingCheck(i) && this->currentColorCheck(i)){
-            kingPos = i;
-            break;
-        }
-    }
-
+    int kingPos = this->currentColorKingPosition();
+   
     for(int i = -1; i<=1; i++){
         for(int j = -1; j<=1; j++){
             int newKingPos = kingPos + 8*i + j;
@@ -564,7 +558,7 @@ bool Board::checkmate() {
     }
 
     for(auto defender: this->fieldDefenders(attackers[0])){
-        if(!this->isPinned(defender)){
+        if(!this->isPinned(defender) && defender != kingPos){
             return false;
         }
     }
@@ -573,7 +567,7 @@ bool Board::checkmate() {
         int k = 2*(attackers[0] > kingPos) - 1;
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
             for(auto defender: this->fieldDefenders(i)){
-                if(!this->isPinned(defender)){
+                if(!this->isPinned(defender) && defender != kingPos){
                     return false;
                 }
             }
@@ -584,7 +578,8 @@ bool Board::checkmate() {
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
             for(auto defender: this->fieldDefenders(i)){
                 std::cout << defender << " " << this->isPinned(defender) << std::endl;
-                if(!this->isPinned(defender)){
+                if(!this->isPinned(defender) && defender != kingPos){
+                    std::cout << "here" << std::endl;
                     return false;
                 }
             }
@@ -594,7 +589,7 @@ bool Board::checkmate() {
         int k = 8*(2*(attackers[0]/8 > kingPos/8)-1) + 2*((attackers[0]%8 > kingPos%8))-1;
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
             for(auto defender: this->fieldDefenders(i)){
-                if(!this->isPinned(defender)){
+                if(!this->isPinned(defender && defender != kingPos)){
                     return false;
                 }
             }

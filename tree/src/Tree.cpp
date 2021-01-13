@@ -41,9 +41,19 @@ void Tree::optimalSequence() {
         current->showBoard();
         std::cout << std::endl;
         for (auto child : current->children) {
-            if (child->getPositionValue() == this->getPositionValue()) {
+            if (child->getPositionValue() == current->getPositionValue()) {
                 current = child;
-                continue;
+                break;
+            }
+            else if (current->position->whiteOrder() && current->positionValue > MAX_POS_VAL - 100 && 
+                     child->positionValue - current->positionValue == 1) {
+                current = child;
+                break;
+            }
+            else if (!current->position->whiteOrder() && current->positionValue < -MAX_POS_VAL + 100 &&
+                child->positionValue - current->positionValue == -1) {
+                current = child;
+                break;
             }
         }
     }
