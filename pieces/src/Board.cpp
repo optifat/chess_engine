@@ -4,7 +4,7 @@
 #endif
 
 #ifdef __GNUC__
-#  define clz(x) x?(x?__builtin_clz(x):64)
+#  define clz(x) x?__builtin_clz(x):64
 #endif
 
 #include <string>
