@@ -112,7 +112,7 @@ bool Queen_move::makeMove(Board *board, int initSquare, int endSquare, bool take
             }
         }
     }
-    else{
+    else if (abs(initSquare/8 - endSquare/8) == abs(initSquare%8 - endSquare%8)){
         if(!take){
             if(abs(endSquare - initSquare) % 7 == 0){
                 int i = initSquare + 7*k;

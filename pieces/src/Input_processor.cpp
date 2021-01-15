@@ -76,7 +76,7 @@ void Input_processor::readMove(Board *board, std::string move) {
         if(endSquare != board->fieldAttackers(kingPos)[0]){
             board->updateCurrentColor(initSquare, endSquare);
             if(board->fieldIsAttacked(kingPos)){
-                board->updateCurrentColor(initSquare, endSquare);
+                board->updateCurrentColor(endSquare, initSquare);
                 std::cerr << "King is checked" << std::endl;
                 return;
             }
