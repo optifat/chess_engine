@@ -40,6 +40,9 @@ void Tree::optimalSequence() {
     for (int i = 0; i <= this->depth; i++) {
         current->showBoard();
         std::cout << std::endl;
+        if (abs(current->positionValue) == MAX_POS_VAL) {
+            break;
+        }
         for (auto child : current->children) {
             if (child->getPositionValue() == current->getPositionValue() && 
                 ((current->positionValue <= MAX_POS_VAL - 100) && current->position->whiteOrder()) || 

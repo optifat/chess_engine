@@ -435,7 +435,9 @@ int Node::currentLayer(){
 
 void Node::addChildrenInQueue(std::queue<std::shared_ptr<Node>> &queue){
     for(auto child: this->children){
-        queue.push(child);
+        if (abs(child->positionValue) != MAX_POS_VAL) {
+            queue.push(child);
+        }
     }
 }
 
