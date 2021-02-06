@@ -43,7 +43,7 @@ void Tree::optimalSequence() {
         for (auto child : current->children) {
             if (child->getPositionValue() == current->getPositionValue() && 
                 ((current->positionValue <= MAX_POS_VAL - 100) && current->position->whiteOrder()) || 
-                ((current->positionValue >= MAX_POS_VAL - 100) && !current->position->whiteOrder())) {
+                ((current->positionValue >= -MAX_POS_VAL + 100) && !current->position->whiteOrder())) {
                 current = child;
                 break;
             }
