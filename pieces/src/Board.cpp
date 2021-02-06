@@ -4,7 +4,7 @@
 #endif
 
 #ifdef __GNUC__
-#  define clz(x) x?__builtin_clz(x):64
+#  define clz(x) x?__builtin_clz(x):63
 #endif
 
 #include <string>
@@ -352,6 +352,100 @@ std::vector<int> Board::fieldDefenders(int position){
     return result;
 }
 
+std::vector<int> Board::piecesAbleToMoveHere(int position) {
+    std::vector<int> result;
+    result.reserve(5);
+
+    for (int i = -1; i <= 1; i += 2) {
+        for (int j = 1; j <= 7; j++) {
+            int checkedField = 8 * j * i + position;
+            if (checkedField > 63 || checkedField < 0) {
+                continue;
+            }
+            /*else if (this->currentColorCheck(checkedField) &&
+                ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
+                    (j == 1 && (this->kingCheck(checkedField) || 
+                    (this->pawnCheck(checkedField) && i*(-1 + 2 * this->whiteOrder()) < 0 && !this->anotherColorCheck(checkedField))) ||
+                    (j == 2 && this->pawnCheck(checkedField) && ((checkedField/8 == 6 && !this->whiteOrder()) || (checkedField / 8 == 1 && this->whiteOrder())))))){
+                result.push_back(checkedField);
+            }*/
+            else if (this->currentColorCheck(checkedField)) {
+                if (this->queenCheck(checkedField) || this->rookCheck(checkedField)) {
+                    result.push_back(checkedField);
+                }
+                else if (j == 1 && this->kingCheck(checkedField)){
+                    result.push_back(checkedField);
+                }
+                else if (j == 1 && this->pawnCheck(checkedField) && i * (-1 + 2 * this->whiteOrder()) < 0 && !this->anotherColorCheck(position)) {
+                    result.push_back(checkedField);
+                }
+                else if (j == 2 && this->pawnCheck(checkedField) && !this->anotherColorCheck(position)){
+                    if ((checkedField / 8 == 6 && !this->whiteOrder()) || (checkedField / 8 == 1 && this->whiteOrder())) {
+                        result.push_back(checkedField);
+                    }
+                }
+                break;
+            }
+            else if (this->anotherColorCheck(checkedField)) {
+                break;
+            }
+        }
+    }
+
+    //checking line
+    for (int i = -1; i <= 1; i += 2) {
+        for (int j = 1; j <= 7; j++) {
+            int checkedField = j * i + position;
+            if (checkedField / 8 != position / 8 || checkedField > 63 || checkedField < 0) {
+                continue;
+            }
+            else if (this->currentColorCheck(checkedField) &&
+                ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
+                    (j == 1 && this->kingCheck(checkedField)))) {
+                result.push_back(checkedField);
+            }
+            else if (this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) {
+                break;
+            }
+        }
+    }
+
+    //checking diagonals
+    for (int i = -1; i <= 1; i += 2) {
+        for (int j = -1; j <= 1; j += 2) {
+            for (int k = 1; k <= 7; k++) {
+                int checkedField = (8 + i) * j * k + position;
+                if (checkedField > 63 || checkedField < 0 || abs(checkedField % 8 - position % 8) != abs(checkedField / 8 - position / 8)) {
+                    continue;
+                }
+                else if (this->currentColorCheck(checkedField) &&
+                    (this->queenCheck(checkedField) || this->bishopCheck(checkedField) ||
+                        (k == 1 && ((this->pawnCheck(checkedField) && j == -1 + 2 * this->whiteOrder() && this->anotherColorCheck(checkedField))
+                            || this->kingCheck(checkedField)))
+                        )) {
+                    result.push_back(checkedField);
+                }
+                else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField))) {
+                    break;
+                }
+            }
+        }
+    }
+
+    int possibleKnightMoves[8] = { 6, 10, 15, 17, -6, -10, -15, -17 };
+
+    for (auto move : possibleKnightMoves) {
+        int checkedField = position + move;
+        if (checkedField < 0 || checkedField > 63 || abs(checkedField / 8 - position / 8) + abs(checkedField % 8 - position % 8) != 3) {
+            continue;
+        }
+        if (this->currentColorCheck(checkedField) && this->knightCheck(checkedField)) {
+            result.push_back(checkedField);
+        }
+    }
+    return result;
+}
+
 std::string Board::sideToMove(){
     if(whiteToMove)
         return "White to move";
@@ -553,6 +647,7 @@ bool Board::checkmate() {
     }
     
     std::vector<int> attackers = this-> fieldAttackers(kingPos);
+
     // it's impossible to cover from double check
     if(attackers.size() >= 2){
         return true;
@@ -567,7 +662,7 @@ bool Board::checkmate() {
     if(attackers[0]/8 == kingPos/8){
         int k = 2*(attackers[0] > kingPos) - 1;
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->fieldDefenders(i)){
+            for(auto defender: this->piecesAbleToMoveHere(i)){
                 if(!this->isPinned(defender) && defender != kingPos){
                     return false;
                 }
@@ -577,10 +672,8 @@ bool Board::checkmate() {
     else if(attackers[0]%8 == kingPos%8){
         int k = 8*(2*(attackers[0] > kingPos)-1);
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->fieldDefenders(i)){
-                std::cout << defender << " " << this->isPinned(defender) << std::endl;
+            for(auto defender: this->piecesAbleToMoveHere(i)){
                 if(!this->isPinned(defender) && defender != kingPos){
-                    std::cout << "here" << std::endl;
                     return false;
                 }
             }
@@ -589,8 +682,9 @@ bool Board::checkmate() {
     else if(abs(attackers[0]%8 - kingPos%8) == abs(attackers[0]/8-kingPos/8)){
         int k = 8*(2*(attackers[0]/8 > kingPos/8)-1) + 2*((attackers[0]%8 > kingPos%8))-1;
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->fieldDefenders(i)){
+            for(auto defender: this->piecesAbleToMoveHere(i)){
                 if(!this->isPinned(defender) && defender != kingPos){
+                    std::cout << "Here " << defender << std::endl;
                     return false;
                 }
             }
