@@ -6,6 +6,7 @@
 #include "../../pieces/include/Bishop_move.h"
 #include "../../pieces/include/Rook_move.h"
 #include "../../pieces/include/Queen_move.h"
+#include "../../pieces/include/Castling.h"
 
 #include <iostream>
 
@@ -30,6 +31,30 @@ void Node::createChildren() {
             std::shared_ptr<Board> newPosition = std::make_shared<Board>(*position.get());
 
             if(position->kingCheck(square)){
+                if (position->whiteOrder() && square == 4) {
+                    if (Castling::makeMove(&*newPosition.get(), square, square + 2)) {
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
+                            newPosition, this->layerNumber + 1));
+                        newPosition = std::make_shared<Board>(*position.get());
+                    }
+                    if (Castling::makeMove(&*newPosition.get(), square, square - 2)) {
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
+                            newPosition, this->layerNumber + 1));
+                        newPosition = std::make_shared<Board>(*position.get());
+                    }
+                }
+                else if(!position->whiteOrder() && square == 60) {
+                    if (Castling::makeMove(&*newPosition.get(), square, square + 2)) {
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
+                            newPosition, this->layerNumber + 1));
+                        newPosition = std::make_shared<Board>(*position.get());
+                    }
+                    if (Castling::makeMove(&*newPosition.get(), square, square - 2)) {
+                        this->addChild(std::make_shared<Node>(shared_from_this(),
+                            newPosition, this->layerNumber + 1));
+                        newPosition = std::make_shared<Board>(*position.get());
+                    }
+                }
                 
                 for(int i = -1; i <= 1; i++){
                     for(int j = -1; j <= 1; j++){
