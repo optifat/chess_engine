@@ -95,7 +95,7 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "No pawn on " << move[0] << move[1] << " square\n";
             return;
         }
-        Pawn_move::makeMove(board, initSquare, endSquare, take);
+        Pawn_move::makeMove(board, initSquare, endSquare, take, ' ');
     }
     else if (pieceType == 'R') {
         if(Move::openingPin(board, initSquare, endSquare)){

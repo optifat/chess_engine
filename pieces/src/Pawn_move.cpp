@@ -8,11 +8,12 @@
 
 Pawn_move::Pawn_move(): Move(){};
 
-void Pawn_move::promotion(Board *board, int endSquare){
-    std::cout << "Choose the piece for pawn promotion (Q, R, N, B): ";
-    char promotion;
+void Pawn_move::promotion(Board *board, int endSquare, char promotion){
     while(true){
-        std::cin >> promotion;
+        if(promotion == ' '){
+            std::cout << "Choose the piece for pawn promotion (Q, R, N, B): ";
+            std::cin >> promotion;
+        }
         switch(promotion) {
             case 'Q':
                 board->pawns &= ~((uint64_t)1 << endSquare);
@@ -36,7 +37,7 @@ void Pawn_move::promotion(Board *board, int endSquare){
     }
 }
 
-bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take, char promotion){
     if(board->currentColorCheck(endSquare)){
         return false;
     }
@@ -79,7 +80,7 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->editEnPassant(-1);
 
             if((k == 1 && endSquare/8 == 7) || (k == -1 && endSquare/8 == 0)){
-                Pawn_move::promotion(board, endSquare);
+                Pawn_move::promotion(board, endSquare, promotion);
             }
 
             board->passTheMove();
@@ -107,7 +108,7 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
             board->editEnPassant(-1);
 
             if((k == 1 && endSquare/8 == 7) || (k == -1 && endSquare/8 == 0)){
-                Pawn_move::promotion(board, endSquare);
+                Pawn_move::promotion(board, endSquare, promotion);
             }
 
             board->passTheMove();
