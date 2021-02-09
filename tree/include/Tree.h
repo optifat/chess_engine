@@ -11,11 +11,13 @@ public:
     void generateTree(int maxDepth);
     float getPositionValue();
     void optimalSequence();
+    int totalNodesGenerated();
 
 private:
     int depth;
     std::shared_ptr<Node> root;
     std::queue<std::shared_ptr<Node>> queue;
+    int totalNodes;
 };
 
 #endif //CHESS_ENGINE_TREE_H

@@ -7,6 +7,7 @@
 Tree::Tree(std::shared_ptr<Board> currentPosition) {
     this->root = std::make_shared<Node>(nullptr, std::move(currentPosition), 0);
     this->depth = 0;
+    this->totalNodes = 1;
     this->queue.push(this->root);
 }
 
@@ -20,6 +21,7 @@ void Tree::generateTree(int maxDepth) {
         //this->queue.front()->showBoard();
         this->queue.front()->createChildren();
         //std::cout << this->queue.front()->childrenSize() << std::endl;
+        this->totalNodes += this->queue.front()->childrenSize();
         this->queue.front()->addChildrenInQueue(queue);
         this->queue.front()->updatePositionValue();
         //for(auto child: this->queue.front()->children){
@@ -62,4 +64,8 @@ void Tree::optimalSequence() {
             }
         }
     }
+}
+
+int Tree::totalNodesGenerated() {
+    return this->totalNodes;
 }
