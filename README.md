@@ -1,29 +1,28 @@
-## chess_engine
+# chess_engine
 
-# Board.h
-Board class has private arrays called bitboards, which in summary represent a board.  
-Each element of array - True or False.  
-True means that represented square has a piece mentioned in name of array.  
-Bool move - if true - white to move, else - black.  
-As input data we use Forsyth–Edwards Notation (FEN).  
-For more info:       <link>https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation  
-"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" (default input FEN) - chess starting position.  
-enPassant array shows, if this move is possible. First 8 cells - move to the third horizontal, other 8 - sixth horizontal.  
+## About
+This is my hobby project I slowly write from time to time. Right now it has no name, but I'll fix that later.
+But it has lots of bugs and performance problems (:
 
-# Moves.h
-Function "readMove" will be define by the first letter, which piece should move and pass it over  
-to the next function (pawnMove, queenMove an so on).  
+## Build and run
 
-# Pawn_Move.h
-Function "pawnMove" moves the pawn.  
-k variable is defined by the side to move: 1 if white and -1 if black.
-All the white pawns are going up the board while black vice versa.
-That means for us, that the difference between end and initial pawn squares is positive in case of white
-and negative in case of black.
-Also, in case of A or H verticals, the possible takes are only to vertical B and G respectively.
-As example for A vertical:
-      white pawn move: A(i) x B(i+1), the difference between end and initial pawn squares is 9
-      black pawn move: A(i) x B(i-1), the difference between end and initial pawn squares is -7
-So the possible difference can be defined as (8 + k)*k
-Similarly for H vertical with change of previous equation to (8 - k)*k
+This project uses CMake as main build and run. To build it you can use the next commands:<br/>
+1.``` mkdir build && cd build # creating a build directory and navigating to it  ``` <br/>
+2.``` cmake .. # configuring generating building files```<br/>
+3.``` cmake --build . # building project```<br/>
+4.``` ./chess_engine # running project```<br/>
+<br/>
+To set the position paste FEN Board constructor in main.cpp.
+Right now the program doesn't check the FEN correctness, so be careful.
+You can generate it [here](https://lichess.org/editor).
+The number in tree.generateTree function sets the calculation depth.
+## Computing performance
+### Linux
+I've tested on Intel(R) Pentium(R) 3558U CPU, compiler was GNU 8.3.0.
+The average result was ~60000 generated positions/sec.
 
+### Windows 10
+
+I've tested on i7-8750H CPU whith both MSVC and Clang compilers (Visual Studio Community 2019).
+The results were similar: ~350 positions/sec with current CMakeLists.txt and ~1300 positions/sec with all optimization flags.
+Right now I have no clue about reasons of such a bad performance.
