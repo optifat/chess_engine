@@ -4,7 +4,7 @@
 #endif
 
 #ifdef __GNUC__
-#  define clz(x) x?__builtin_clz(x):63
+#  define ctz(x) x?__builtin_ctzl(x):63
 #endif
 
 #include <string>
@@ -785,9 +785,9 @@ bool Board::stalemate(){
 }
 
 int Board::currentColorKingPosition() {
-    return this->whiteToMove ? clz(this->whitePieces & this->kings) : clz(this->blackPieces & this->kings);
+    return this->whiteToMove ? ctz(this->whitePieces & this->kings) : ctz(this->blackPieces & this->kings);
 }
 
 int Board::anotherColorKingPosition() {
-    return !this->whiteToMove ? clz(this->whitePieces & this->kings) : clz(this->blackPieces & this->kings);
+    return !this->whiteToMove ? ctz(this->whitePieces & this->kings) : ctz(this->blackPieces & this->kings);
 }
