@@ -7,10 +7,10 @@ But it has lots of bugs and performance problems (:
 ## Build and run
 
 This project uses CMake as main build and run. To build it you can use the next commands:<br/>
-1.``` mkdir build && cd build # creating a build directory and navigating to it  ``` <br/>
-2.``` cmake .. # configuring generating building files```<br/>
-3.``` cmake --build . # building project```<br/>
-4.``` ./chess_engine # running project```<br/>
+1.```mkdir build && cd build # creating a build directory and navigating to it  ``` <br/>
+2.```cmake .. # configuring generating building files```<br/>
+3.```cmake --build . # building project```<br/>
+4.```./chess_engine # running project```<br/>
 <br/>
 To set the position paste FEN Board constructor in main.cpp.
 Right now the program doesn't check the FEN correctness, so be careful.
@@ -19,7 +19,7 @@ The number in tree.generateTree function sets the calculation depth.
 ## Computing performance
 ### Linux
 I've tested on Intel(R) Pentium(R) 3558U CPU, compiler was GNU 8.3.0.
-The average result was ~60000 generated positions/sec.
+The average result was ~315000 generated positions/sec.
 
 ### Windows 10
 

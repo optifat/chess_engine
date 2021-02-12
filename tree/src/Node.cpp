@@ -409,7 +409,6 @@ void Node::createChildren() {
                     if(endSquare < 0 || endSquare > 63){
                         continue;
                     }
-                    std::cout << "Current position " << square << " " << endSquare << std::endl;
                     //newPosition->showBoard();
                     if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                         continue;
@@ -431,7 +430,6 @@ void Node::createChildren() {
                         if(endSquare > 63 || endSquare < 0){
                             break;
                         }
-                        std::cout << square << " " << endSquare << std::endl;
                         if(Move::openingPin(&*newPosition.get(), square, endSquare)){
                             break;
                         }
