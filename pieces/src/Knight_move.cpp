@@ -17,10 +17,8 @@ bool Knight_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
     std::set<int> possibleMoves = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     if(possibleMoves.find(initSquare - endSquare) == possibleMoves.end()){
-        std::cerr << "Impossible move\n";
         return false;
     } else if(abs(initSquare/8-endSquare/8)+abs(initSquare%8-endSquare%8) != 3){
-        std::cerr << "Impossible move\n";
         return false;
     }
 

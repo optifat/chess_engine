@@ -86,11 +86,9 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take,
             board->passTheMove();
             return true;
         } else{
-            std::cerr << "Impossible move \n";
             return false;
         }
     } else if(!board->anotherColorCheck(endSquare) && endSquare != board->possibleEnPassant()){
-        std::cerr << "Nothing to take on there\n";
         return false;
     } else{
         if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8)) {
@@ -114,7 +112,6 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take,
             board->passTheMove();
             return true;
         } else{
-            std::cerr << "Impossible take \n";
             return false;
         }
     }

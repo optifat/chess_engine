@@ -95,7 +95,11 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "No pawn on " << move[0] << move[1] << " square\n";
             return;
         }
-        Pawn_move::makeMove(board, initSquare, endSquare, take, ' ');
+        auto result = Pawn_move::makeMove(board, initSquare, endSquare, take, ' ');
+        if (!result){
+            std::cerr << "Impossible move" << std::endl;
+        }
+
     }
     else if (pieceType == 'R') {
         if(Move::openingPin(board, initSquare, endSquare)){
@@ -106,7 +110,10 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "No rook on " << move[0] << move[1] << " square\n";
             return;
         }
-        Rook_move::makeMove(board, initSquare, endSquare, take);
+        auto result = Rook_move::makeMove(board, initSquare, endSquare, take);
+        if (!result){
+            std::cerr << "Impossible move" << std::endl;
+        }
         board->editEnPassant(-1);
 
     }
@@ -135,7 +142,10 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "Impossible move\n";
             return;
         }
-        Bishop_move::makeMove(board, initSquare, endSquare, take);
+        auto result = Bishop_move::makeMove(board, initSquare, endSquare, take);
+        if (!result){
+            std::cerr << "Impossible move" << std::endl;
+        }
         board->editEnPassant(-1);
     }
     else if (pieceType == 'Q') {
@@ -147,7 +157,10 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "No queen on " << move[0] << move[1] << " square\n";
             return;
         }
-        Queen_move::makeMove(board, initSquare, endSquare, take);
+        auto result = Queen_move::makeMove(board, initSquare, endSquare, take);
+        if (!result){
+            std::cerr << "Impossible move" << std::endl;
+        }
         board->editEnPassant(-1);
     }
     else if (pieceType == 'K') {
@@ -155,7 +168,10 @@ void Input_processor::readMove(Board *board, std::string move) {
             std::cerr << "No king on " << move[0] << move[1] << " square\n";
             return;
         }
-        King_move::makeMove(board, initSquare, endSquare, take);
+        auto result = King_move::makeMove(board, initSquare, endSquare, take);
+        if (!result){
+            std::cerr << "Impossible move" << std::endl;
+        }
         board->editEnPassant(-1);
     }
     else{

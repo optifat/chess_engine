@@ -80,6 +80,5 @@ bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
             }
         }
     }
-    std::cerr << "Impossible move" << std::endl;
     return false;
 }

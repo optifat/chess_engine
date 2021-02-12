@@ -36,7 +36,6 @@ bool Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                     return true;
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                    std::cerr << "Impossible move: some other piece is blocking\n";
                     return false;
                 }
             }
@@ -61,13 +60,11 @@ bool Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                     return true;
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                    std::cerr << "Impossible move: some other piece is blocking\n";
                     return false;
                 }
             }
         }
         else{
-            std::cerr << "Impossible move\n";
             return false;
         }
     }
@@ -99,12 +96,10 @@ bool Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                     }
 
                     else{
-                        std::cerr << "Impossible move\n";
                         return false;
                     }
                 }
                 else if(board->anotherColorCheck(i) || board->currentColorCheck(i)) {
-                    std::cerr << "Impossible move: something is blocking\n";
                     return false;
                 }
             }
@@ -135,18 +130,15 @@ bool Rook_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
                         return true;
                     }
                     else{
-                        std::cerr << "Impossible move\n";
                         return false;
                     }
                 }
                 if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                    std::cerr << "Impossible move: some other piece is blocking\n";
                     return false;
                 }
             }
         }
         else{
-            std::cerr << "Impossible move\n";
             return false;
         }
     }

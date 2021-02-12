@@ -18,7 +18,6 @@ bool Move::openingPin(Board * position, int initSquare, int endSquare){
     }
 
     if(!board.currentColorCheck(initSquare)){
-        std::cerr << "No piece with current color here\n";
         return false;
     }
 

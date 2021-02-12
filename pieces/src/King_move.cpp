@@ -10,12 +10,10 @@ bool King_move::makeMove(Board *board, int initSquare, int endSquare, bool take)
     }
 
     if(abs(initSquare/8-endSquare/8) > 1 || abs(initSquare%8-endSquare%8) > 1){
-        std::cerr << "Impossible move\n";
         return false;
     }
 
     if(board->fieldIsAttacked(endSquare)){
-        std::cerr << "Impossible move: this field is attacked" << std::endl;
         return false;
     }
 
