@@ -24,5 +24,5 @@ The average result was ~315000 generated positions/sec.
 ### Windows 10
 
 I've tested on i7-8750H CPU whith both MSVC and Clang compilers (Visual Studio Community 2019).
-The results were similar: ~350 positions/sec with current CMakeLists.txt and ~1300 positions/sec with all optimization flags.
+The results were similar: ~40000 positions/sec.
 Right now I have no clue about reasons of such a bad performance.
