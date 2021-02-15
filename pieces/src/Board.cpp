@@ -135,6 +135,23 @@ Board::Board(const Board &copy) {
 
 Board& Board::operator=(const Board &board) = default;
 
+bool Board::operator==(const Board &board){
+    return this->whitePieces == board.whitePieces &&
+           this->blackPieces == board.blackPieces &&
+           this->rooks == board.rooks &&
+           this->knights == board.knights &&
+           this->bishops == board.bishops &&
+           this->queens == board.queens &&
+           this->kings == board.kings &&
+           this->pawns == board.pawns &&
+           this->enPassant == board.enPassant &&
+           this->whiteToMove == board.whiteToMove &&
+           this->whiteLongCastle == board.whiteLongCastle &&
+           this->blackLongCastle == board.blackLongCastle &&
+           this->whiteShortCastle == board.whiteShortCastle &&
+           this->blackShortCastle == board.blackShortCastle;
+}
+
 Board::~Board() = default;
 
 std::string Board::pieceOnSquare(std::string square){
@@ -286,6 +303,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
                     ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
                      (j == 1 && this->kingCheck(checkedField)))){
                 attackers.push_back(checkedField);
+                break;
             }
             else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                 break;
@@ -304,6 +322,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
                     ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
                      (j == 1 && this->kingCheck(checkedField)))){
                 attackers.push_back(checkedField);
+                break;
             }
             else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                 break;
@@ -324,6 +343,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
                                        || this->kingCheck(checkedField)))
                           )){
                     attackers.push_back(checkedField);
+                    break;
                 } else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                     break;
                 }

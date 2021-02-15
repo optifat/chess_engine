@@ -47,6 +47,7 @@ public:
     Board(std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq");
     Board(const Board &copy);
     Board& operator=(const Board &board);
+    bool operator==(const Board &board);
     ~Board();
     std::string pieceOnSquare(std::string square);
     std::string sideToMove();
