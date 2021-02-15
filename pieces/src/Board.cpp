@@ -634,7 +634,7 @@ void Board::printInfo(){
 
 bool Board::checkmate() {
     int kingPos = this->currentColorKingPosition();
-   
+
     for(int i = -1; i<=1; i++){
         for(int j = -1; j<=1; j++){
             int newKingPos = kingPos + 8*i + j;
@@ -684,7 +684,6 @@ bool Board::checkmate() {
         for(int i = kingPos+k; i != attackers[0]+k; i+=k){
             for(auto defender: this->piecesAbleToMoveHere(i)){
                 if(!this->isPinned(defender) && defender != kingPos){
-                    std::cout << "Here " << defender << std::endl;
                     return false;
                 }
             }
@@ -693,6 +692,7 @@ bool Board::checkmate() {
     return true;
 }
 
+// works wrong right now
 bool Board::stalemate(){
     int kingPos = -1;
     for(int i = 0; i <= 63; i++){

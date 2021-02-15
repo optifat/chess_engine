@@ -505,14 +505,14 @@ void Node::updateParentsPositionValue() {
 void Node::updatePositionValue() {
     float val;
     if (this->position->whiteOrder()) {
-        val = -MAX_POS_VAL;
+        val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : -MAX_POS_VAL;
         for (auto child : this->children) {
             float childValue = child->positionValue > MAX_POS_VAL - 100 ? child->positionValue-1 : child->positionValue;
             val = val > childValue ? val : childValue;
         }
     }
     else {
-        val = MAX_POS_VAL;
+        val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : MAX_POS_VAL;
         for (auto child : this->children) {
             float childValue = child->positionValue < -MAX_POS_VAL + 100 ? child->positionValue+1 : child->positionValue;
             val = val < childValue ? val : childValue;

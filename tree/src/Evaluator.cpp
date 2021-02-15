@@ -11,9 +11,10 @@ float Evaluator::evaluatePosition(Board &position) {
     if (position.checkmate()) {
         return position.whiteOrder() ? -MAX_POS_VAL : MAX_POS_VAL; // float isn't precise enough, so FLT_MAX - 1 == FLT_MAX 
     }
+    /* doesn't work right now
     if (position.stalemate()) {
         return 0;
-    }
+    }*/
     // counting material
     positionValue += 9 * __builtin_popcountl(position.queens & position.whitePieces);
     positionValue -= 9 * __builtin_popcountl(position.queens & position.blackPieces);
