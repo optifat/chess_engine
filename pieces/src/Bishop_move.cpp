@@ -10,7 +10,7 @@
 
 Bishop_move::Bishop_move(): Move(){};
 
-bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool take){
+bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare){
 
     if(board->currentColorCheck(endSquare)){
         return false;
@@ -25,83 +25,28 @@ bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare, bool tak
         return false;
     }
 
-    if(!take){
-        if(abs(endSquare - initSquare) % 7 == 0){
-            int i = initSquare + 7*k;
-            for(; i != endSquare+7*k; i+=7*k){
-                if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                    return false;
-                }
-                else if(i == endSquare){
-                    board->updateCurrentColor(initSquare, endSquare);
-                    board->bishops &= ~((uint64_t)1 << initSquare);
-                    board->bishops |= ((uint64_t)1 << endSquare);
-                    board->passTheMove();
-                    return true;
-                }
-            }
-        }
-        else if(abs(endSquare - initSquare) % 9 == 0){
-            int i = initSquare + 9*k;
-            for(; i != endSquare+9*k; i+=9*k){
-                if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                    return false;
-                }
-                else if(i == endSquare){
-                    board->updateCurrentColor(initSquare, endSquare);
-                    board->bishops &= ~((uint64_t)1 << initSquare);
-                    board->bishops |= ((uint64_t)1 << endSquare);
-                    board->passTheMove();
-                    return true;
-                }
-            }
-        }
-        else {
-            return false;
-        }
+    int delta = 0;
+    if(abs(endSquare - initSquare) % 9 == 0){
+        delta = 9;
     }
-    else{
-        if(abs(endSquare - initSquare) % 7 == 0){
-            int i = initSquare + 7*k;
-            for(; i != endSquare+7*k; i+=7*k){
-                if(i == endSquare){
-                    board->updateCurrentColor(initSquare, endSquare);
-                    board->updateAnotherColor(endSquare, -1);
-                    board->bishops &= ~((uint64_t)1 << initSquare);
-                    board->bishops |= ((uint64_t)1 << endSquare);
-                    board->pawns &= ~((uint64_t)1 << endSquare);
-                    board->rooks &= ~((uint64_t)1 << endSquare);
-                    board->knights &= ~((uint64_t)1 << endSquare);
-                    board->queens &= ~((uint64_t)1 << endSquare);
-                    board->passTheMove();
-                    return true;
-                }
-                else if(board->currentColorCheck(i)){
-                    return false;
-                }
-            }
+    else if(abs(endSquare - initSquare) % 7 == 0){
+        delta = 7;
+    }
+
+    for(int i = initSquare + delta*k; i != endSquare+delta*k; i+=delta*k){
+        if(i == endSquare){
+            board->updateCurrentColor(initSquare, endSquare);
+            board->bishops &= ~((uint64_t)1 << initSquare);
+            board->bishops |= ((uint64_t)1 << endSquare);
+            board->updateAnotherColor(endSquare, -1);
+            board->pawns &= ~((uint64_t)1 << endSquare);
+            board->rooks &= ~((uint64_t)1 << endSquare);
+            board->knights &= ~((uint64_t)1 << endSquare);
+            board->queens &= ~((uint64_t)1 << endSquare);
+            board->passTheMove();
+            return true;
         }
-        else if(abs(endSquare - initSquare) % 9 == 0){
-            int i = initSquare + 9*k;
-            for(; i != endSquare + 9*k; i+=9*k){
-                if(i == endSquare){
-                    board->updateCurrentColor(initSquare, endSquare);
-                    board->updateAnotherColor(endSquare, -1);
-                    board->bishops &= ~((uint64_t)1 << initSquare);
-                    board->bishops |= ((uint64_t)1 << endSquare);
-                    board->pawns &= ~((uint64_t)1 << endSquare);
-                    board->rooks &= ~((uint64_t)1 << endSquare);
-                    board->knights &= ~((uint64_t)1 << endSquare);
-                    board->queens &= ~((uint64_t)1 << endSquare);
-                    board->passTheMove();
-                    return true;
-                }
-                else if(board->anotherColorCheck(i) || board->currentColorCheck(i)){
-                    return false;
-                }
-            }
-        }
-        else {
+        else if(board->currentColorCheck(i) || board->anotherColorCheck(i)){
             return false;
         }
     }

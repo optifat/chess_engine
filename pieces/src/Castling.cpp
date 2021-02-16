@@ -3,9 +3,9 @@
 
 Castling::Castling(): Move(){};
 
-// This is too shitty code, MUST be rewritten lately in smarter way
+// This is too shitty code, MUST be rewritten later in a smarter way
 
-bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) {
+bool Castling::makeMove(Board *board, int initSquare, int endSquare) {
     if(endSquare%8 == 6){
         if(board->whiteOrder() && board->whiteShortCastle){
             if(!board->fieldIsAttacked(4) && !board->fieldIsAttacked(5) && !board->fieldIsAttacked(6) &&
@@ -21,6 +21,8 @@ bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->kings &= ~((uint64_t)1 << 4);
                 board->kings |= ((uint64_t)1 << 6);
                 board->passTheMove();
+                board->whiteShortCastle = false;
+                board->whiteLongCastle = false;
                 return true;
             }
         }
@@ -38,6 +40,8 @@ bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->rooks |= ((uint64_t)1 << 61);
                 board->kings &= ~((uint64_t)1 << 60);
                 board->kings |= ((uint64_t)1 << 62);
+                board->blackShortCastle = false;
+                board->blackLongCastle = false;
                 board->passTheMove();
                 return true;
             }
@@ -57,6 +61,8 @@ bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->rooks |= ((uint64_t)1 << 3);
                 board->kings &= ~((uint64_t)1 << 4);
                 board->kings |= ((uint64_t)1 << 2);
+                board->whiteShortCastle = false;
+                board->whiteLongCastle = false;
                 board->passTheMove();
                 return true;
             }
@@ -75,6 +81,8 @@ bool Castling::makeMove(Board *board, int initSquare, int endSquare, bool take) 
                 board->rooks |= ((uint64_t)1 << 59);
                 board->kings &= ~((uint64_t)1 << 60);
                 board->kings |= ((uint64_t)1 << 58);
+                board->blackShortCastle = false;
+                board->blackLongCastle = false;
                 board->passTheMove();
                 return true;
             }

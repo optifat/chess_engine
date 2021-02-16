@@ -10,7 +10,7 @@ class Rook_move: public Move{
 
 public:
     Rook_move();
-    static bool makeMove(Board *board, int initSquare, int endSquare, bool take);
+    static bool makeMove(Board *board, int initSquare, int endSquare);
 };
 
 #endif //CHESS_ENGINE_ROOK_MOVE_H

@@ -6,7 +6,7 @@
 class King_move: public Move{
 public:
     King_move();
-    static bool makeMove(Board *board, int initSquare, int endSquare, bool take);
+    static bool makeMove(Board *board, int initSquare, int endSquare);
 
 };
 

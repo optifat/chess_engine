@@ -72,7 +72,8 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take,
             board->editEnPassant(endSquare-8*k);
             board->passTheMove();
             return true;
-        } else if(endSquare - initSquare == 8*k
+        }
+        else if(endSquare - initSquare == 8*k
                   && !board->currentColorCheck(endSquare) && !board->anotherColorCheck(endSquare)){
             board->updateCurrentColor(initSquare, endSquare);
             board->pawns &= ~((uint64_t)1 << initSquare);
@@ -85,19 +86,23 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take,
 
             board->passTheMove();
             return true;
-        } else{
+        }
+        else{
             return false;
         }
-    } else if(!board->anotherColorCheck(endSquare) && endSquare != board->possibleEnPassant()){
+    }
+    else if(!board->anotherColorCheck(endSquare) && endSquare != board->possibleEnPassant()){
         return false;
-    } else{
-        if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8)) {
+    }
+    else{
+        if (abs(initSquare/8-endSquare/8) == abs(initSquare%8-endSquare%8) && abs(initSquare/8-endSquare/8) == 1) {
             board->updateCurrentColor(initSquare, endSquare);
             board->updateAnotherColor(endSquare, -1);
             board->pawns &= ~((uint64_t)1 << initSquare);
             board->pawns |= ((uint64_t)1 << endSquare);
             if(endSquare == board->possibleEnPassant()){
                 board->pawns &= ~((uint64_t)1 << (endSquare-8*k));
+                board->updateAnotherColor(endSquare-8*k, -1);
             }
             board->bishops &= ~((uint64_t)1 << endSquare);
             board->rooks &= ~((uint64_t)1 << endSquare);
@@ -111,7 +116,8 @@ bool Pawn_move::makeMove(Board *board, int initSquare, int endSquare, bool take,
 
             board->passTheMove();
             return true;
-        } else{
+        }
+        else{
             return false;
         }
     }
