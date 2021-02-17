@@ -1,8 +1,7 @@
-# chess_engine
+# Samurai chess engine
 
 ## About
-This is my hobby project I slowly write from time to time. Right now it has no name, but I'll fix that later.
-But it has lots of bugs and performance problems (:
+This is my hobby project I slowly write from time to time. Right now it might have bugs and performance problems
 
 ## Build and run
 

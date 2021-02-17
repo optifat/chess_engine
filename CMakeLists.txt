@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(chess_engine)
+project(Samurai_chess_engine)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS  "-O3")
@@ -21,4 +21,4 @@ set(TREE_FILES tree/include/Node.h tree/src/Node.cpp
                tree/include/Tree.h tree/src/Tree.cpp
                tree/src/Evaluator.cpp tree/include/Evaluator.h)
 
-add_executable(chess_engine ${MAIN} ${PIECES_FILES} ${TREE_FILES})
+add_executable(Samurai ${MAIN} ${PIECES_FILES} ${TREE_FILES})
