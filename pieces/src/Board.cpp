@@ -1,6 +1,6 @@
 #ifdef _MSC_VER
 #  include <intrin.h>
-#  define clz(x) (63-__lzcnt64(x))
+#  define ctz(x) (63-__lzcnt64(x))
 #endif
 
 #ifdef __GNUC__
