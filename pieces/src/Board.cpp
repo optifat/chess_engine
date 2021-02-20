@@ -811,3 +811,10 @@ int Board::currentColorKingPosition() {
 int Board::anotherColorKingPosition() {
     return !this->whiteToMove ? ctz(this->whitePieces & this->kings) : ctz(this->blackPieces & this->kings);
 }
+
+uint64_t Board::currentColor() {
+    if(this->whiteToMove){
+        return this->whitePieces;
+    }
+    return this->blackPieces;
+}

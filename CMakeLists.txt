@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(Samurai_chess_engine)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS  "-O3")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS  "-Ofast -funsafe-math-optimizations -fprofile-use")
 #set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 
 set(MAIN main.cpp)

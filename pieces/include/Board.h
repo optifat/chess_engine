@@ -17,6 +17,7 @@ class Board{
     friend class Queen_move;
     friend class Rook_move;
     friend class Evaluator;
+    friend class Node;
 
 private:
 /* These integers are called bitboards and represent a board
@@ -81,6 +82,7 @@ public:
     bool stalemate();
     int currentColorKingPosition();
     int anotherColorKingPosition();
+    uint64_t currentColor();
 };
 
 #endif //CHESS_ENGINE_BOARD_H
