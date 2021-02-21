@@ -114,6 +114,11 @@ bool Pawn_move::makeMove(Board& board, int initSquare, int endSquare, bool take,
                 Pawn_move::promotion(board, endSquare, promotion);
             }
 
+            board.whiteLongCastle = (board.whiteLongCastle && endSquare != 0);
+            board.whiteShortCastle = (board.whiteShortCastle && endSquare != 7);
+            board.blackLongCastle = (board.blackLongCastle && endSquare != 56);
+            board.blackShortCastle = (board.blackShortCastle && endSquare != 63);
+
             board.passTheMove();
             return true;
         }

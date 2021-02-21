@@ -30,6 +30,12 @@ bool Knight_move::makeMove(Board& board, int initSquare, int endSquare){
     board.rooks &= ~((uint64_t)1 << endSquare);
     board.bishops &= ~((uint64_t)1 << endSquare);
     board.queens &= ~((uint64_t)1 << endSquare);
+
+    board.whiteLongCastle = (board.whiteLongCastle && endSquare != 0);
+    board.whiteShortCastle = (board.whiteShortCastle && endSquare != 7);
+    board.blackLongCastle = (board.blackLongCastle && endSquare != 56);
+    board.blackShortCastle = (board.blackShortCastle && endSquare != 63);
+
     board.passTheMove();
     return true;
 }

@@ -34,19 +34,13 @@ bool Rook_move::makeMove(Board& board, int initSquare, int endSquare){
             board.bishops &= ~((uint64_t)1 << endSquare);
             board.knights &= ~((uint64_t)1 << endSquare);
             board.queens &= ~((uint64_t)1 << endSquare);
+
+            board.whiteLongCastle = (board.whiteLongCastle && initSquare != 0);
+            board.whiteShortCastle = (board.whiteShortCastle && initSquare != 7);
+            board.blackLongCastle = (board.blackLongCastle && initSquare != 56);
+            board.blackShortCastle = (board.blackShortCastle && initSquare != 63);
+
             board.passTheMove();
-            if(initSquare == 0 || board.whiteOrder()){
-                board.whiteLongCastle = false;
-            }
-            else if(initSquare == 7 || board.whiteOrder()){
-                board.whiteShortCastle = false;
-            }
-            else if(initSquare == 56 || !board.whiteOrder()){
-                board.blackLongCastle = false;
-            }
-            else if(initSquare == 63 || !board.whiteOrder()){
-                board.blackShortCastle = false;
-            }
             return true;
         }
         else if(board.anotherColorCheck(i) || board.currentColorCheck(i)) {
