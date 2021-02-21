@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
                 break;
             } else {
                 auto start = std::chrono::high_resolution_clock::now();
-                Input_processor::readMove(&board, input);
+                Input_processor::readMove(board, input);
                 auto end = std::chrono::high_resolution_clock::now();
                 std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()
                 << " microseconds" << std::endl;

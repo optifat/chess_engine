@@ -6,9 +6,7 @@
 
 class Input_processor {
 public:
-    Input_processor();
-    ~Input_processor();
-    static void readMove(Board* board, std::string move);
+    static void readMove(Board& board, std::string move);
 };
 
 

@@ -10,9 +10,9 @@
 
 Bishop_move::Bishop_move(): Move(){};
 
-bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare){
+bool Bishop_move::makeMove(Board& board, int initSquare, int endSquare){
 
-    if(board->currentColorCheck(endSquare)){
+    if(board.currentColorCheck(endSquare)){
         return false;
     }
 
@@ -35,18 +35,18 @@ bool Bishop_move::makeMove(Board *board, int initSquare, int endSquare){
 
     for(int i = initSquare + delta*k; i != endSquare+delta*k; i+=delta*k){
         if(i == endSquare){
-            board->updateCurrentColor(initSquare, endSquare);
-            board->bishops &= ~((uint64_t)1 << initSquare);
-            board->bishops |= ((uint64_t)1 << endSquare);
-            board->updateAnotherColor(endSquare, -1);
-            board->pawns &= ~((uint64_t)1 << endSquare);
-            board->rooks &= ~((uint64_t)1 << endSquare);
-            board->knights &= ~((uint64_t)1 << endSquare);
-            board->queens &= ~((uint64_t)1 << endSquare);
-            board->passTheMove();
+            board.updateCurrentColor(initSquare, endSquare);
+            board.bishops &= ~((uint64_t)1 << initSquare);
+            board.bishops |= ((uint64_t)1 << endSquare);
+            board.updateAnotherColor(endSquare, -1);
+            board.pawns &= ~((uint64_t)1 << endSquare);
+            board.rooks &= ~((uint64_t)1 << endSquare);
+            board.knights &= ~((uint64_t)1 << endSquare);
+            board.queens &= ~((uint64_t)1 << endSquare);
+            board.passTheMove();
             return true;
         }
-        else if(board->currentColorCheck(i) || board->anotherColorCheck(i)){
+        else if(board.currentColorCheck(i) || board.anotherColorCheck(i)){
             return false;
         }
     }

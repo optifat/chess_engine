@@ -10,10 +10,7 @@ class Move{
 
 public:
     Move();
-
-    //virtual void makeMove(Board *board, int initSquare, int endSquare, bool take);
-
-    static bool openingPin(Board *board, int initSquare, int endSquare);
+    static bool openingPin(Board board, int initSquare, int endSquare);
 };
 
 

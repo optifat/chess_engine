@@ -7,8 +7,8 @@
 
 Rook_move::Rook_move(): Move(){};
 
-bool Rook_move::makeMove(Board *board, int initSquare, int endSquare){
-    if(board->currentColorCheck(endSquare)){
+bool Rook_move::makeMove(Board& board, int initSquare, int endSquare){
+    if(board.currentColorCheck(endSquare)){
         return false;
     }
     // k variable shows "move direction".
@@ -26,30 +26,30 @@ bool Rook_move::makeMove(Board *board, int initSquare, int endSquare){
 
     for(int i = initSquare + delta*k; i != endSquare+k; i+=delta*k){
         if(i == endSquare){
-            board->updateCurrentColor(initSquare, endSquare);
-            board->rooks &= ~((uint64_t)1 << initSquare);
-            board->rooks |= ((uint64_t)1 << endSquare);
-            board->updateAnotherColor(endSquare, -1);
-            board->pawns &= ~((uint64_t)1 << endSquare);
-            board->bishops &= ~((uint64_t)1 << endSquare);
-            board->knights &= ~((uint64_t)1 << endSquare);
-            board->queens &= ~((uint64_t)1 << endSquare);
-            board->passTheMove();
-            if(initSquare == 0 || board->whiteOrder()){
-                board->whiteLongCastle = false;
+            board.updateCurrentColor(initSquare, endSquare);
+            board.rooks &= ~((uint64_t)1 << initSquare);
+            board.rooks |= ((uint64_t)1 << endSquare);
+            board.updateAnotherColor(endSquare, -1);
+            board.pawns &= ~((uint64_t)1 << endSquare);
+            board.bishops &= ~((uint64_t)1 << endSquare);
+            board.knights &= ~((uint64_t)1 << endSquare);
+            board.queens &= ~((uint64_t)1 << endSquare);
+            board.passTheMove();
+            if(initSquare == 0 || board.whiteOrder()){
+                board.whiteLongCastle = false;
             }
-            else if(initSquare == 7 || board->whiteOrder()){
-                board->whiteShortCastle = false;
+            else if(initSquare == 7 || board.whiteOrder()){
+                board.whiteShortCastle = false;
             }
-            else if(initSquare == 56 || !board->whiteOrder()){
-                board->blackLongCastle = false;
+            else if(initSquare == 56 || !board.whiteOrder()){
+                board.blackLongCastle = false;
             }
-            else if(initSquare == 63 || !board->whiteOrder()){
-                board->blackShortCastle = false;
+            else if(initSquare == 63 || !board.whiteOrder()){
+                board.blackShortCastle = false;
             }
             return true;
         }
-        else if(board->anotherColorCheck(i) || board->currentColorCheck(i)) {
+        else if(board.anotherColorCheck(i) || board.currentColorCheck(i)) {
             return false;
         }
     }
