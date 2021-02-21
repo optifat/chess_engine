@@ -28,6 +28,7 @@ The average result was ~525000 generated positions/sec.
 
 ### Windows 10
 
-I've tested on i7-8750H CPU with both MSVC and Clang compilers (Visual Studio Community 2019).
-The results were similar: ~60000 positions/sec.
-Right now I have no clue about reasons of such a bad performance.
+I've tested on i7-8750H CPU with both MSVC 19.28.29337.0 and Clang 10.0 compilers (Visual Studio Community 2019).
+Clang: ~880000 position/sec <br/>
+MSVC: ~65000 position/sec <br/>
+For better experience it's recommended to use Clang compiler in Visual studio.
