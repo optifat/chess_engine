@@ -1,7 +1,7 @@
 #ifdef _MSC_VER
 #  include <intrin.h>
 #  define ctz(x) (63-__lzcnt64(x))
-#  define __builtin_popcountl __popcnt64
+#  define popcount __popcnt64
 #endif
 
 #ifdef __GNUC__
