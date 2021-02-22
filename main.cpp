@@ -47,8 +47,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Total nodes generated: " << tree.totalNodesGenerated() << std::endl;
         std::cout << "Total tree generation time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()
                   << " microseconds" << std::endl;
-        std::cout << std::setprecision(7)
-                  << 1000000*(double)tree.totalNodesGenerated() / std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()
+        std::cout << (int)(1000000*(double)tree.totalNodesGenerated() / std::chrono::duration_cast<std::chrono::microseconds>(end-start).count())
                   <<" nodes per sec" << std::endl;
     }
     else {

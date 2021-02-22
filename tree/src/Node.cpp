@@ -62,9 +62,11 @@ void Node::createChildren() {
         }
     }
 
+    int endSquare;
+
     for(int i = -1; i <= 1; i++){
         for(int j = -1; j <= 1; j++){
-            int endSquare = square + 8*i + j;
+            endSquare = square + 8*i + j;
             if(endSquare < 0 || endSquare > 63 || endSquare == square){
                 continue;
             }
@@ -88,7 +90,7 @@ void Node::createChildren() {
          * This is also true for rooks, bishops and first pawn move (like e2-e4)
          */
         for(int i = 1; i <= 7; i++){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -107,7 +109,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -1; i >= -7; i--){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -126,7 +128,7 @@ void Node::createChildren() {
             }
         }
         for(int i = 8; i <= 56; i += 8){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -145,7 +147,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -8; i >= -56; i -= 8){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -164,7 +166,7 @@ void Node::createChildren() {
             }
         }
         for(int i = 7; i <= 63; i += 7){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -183,7 +185,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -7; i >= -63; i -= 7){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -202,7 +204,7 @@ void Node::createChildren() {
             }
         }
         for(int i = 9; i <= 63; i += 9){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -221,7 +223,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -9; i >= -63; i -= 9){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -247,7 +249,7 @@ void Node::createChildren() {
     for(int rookNumber = 0; rookNumber < totalRookNumber; rookNumber++) {
         square = ctz(currentColorRooks);
         for(int i = 1; i <= 7; i++){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -266,7 +268,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -1; i >= -7; i--){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -285,7 +287,7 @@ void Node::createChildren() {
             }
         }
         for(int i = 8; i <= 56; i += 8){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -304,7 +306,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -8; i >= -56; i -= 8){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -330,7 +332,7 @@ void Node::createChildren() {
     for(int bishopNumber = 0; bishopNumber < totalBishopNumber; bishopNumber++) {
         square = ctz(currentColorBishops);
         for(int i = 7; i <= 63; i += 7){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -349,7 +351,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -7; i >= -63; i -= 7){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -368,7 +370,7 @@ void Node::createChildren() {
             }
         }
         for(int i = 9; i <= 63; i += 9){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare > 63){
                 break;
             }
@@ -387,7 +389,7 @@ void Node::createChildren() {
             }
         }
         for(int i = -9; i >= -63; i -= 9){
-            int endSquare = square + i;
+            endSquare = square + i;
             if(endSquare < 0){
                 break;
             }
@@ -413,7 +415,7 @@ void Node::createChildren() {
     for(int knightNumber = 0; knightNumber < totalKnightNumber; knightNumber++) {
         square = ctz(currentColorKnights);
         for(int delta: Knight_move::possibleKnightMoves){
-            int endSquare = square + delta;
+            endSquare = square + delta;
             if(endSquare < 0 || endSquare > 63){
                 continue;
             }
@@ -437,7 +439,7 @@ void Node::createChildren() {
         square = ctz(currentColorPawns);
         for(int i = 7; i <= 9; i++){
             for(int j = 0; j <= 1; j++){
-                int endSquare = square + (i + 8*j)*(-1+2*position->whiteOrder());
+                endSquare = square + (i + 8*j)*(-1+2*position->whiteOrder());
                 if(endSquare > 63 || endSquare < 0){
                     break;
                 }
@@ -512,17 +514,18 @@ void Node::updateParentsPositionValue() {
 
 void Node::updatePositionValue() {
     float val;
+    float childValue;
     if (this->position->whiteOrder()) {
         val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : -MAX_POS_VAL;
         for (const auto& child : this->children) {
-            float childValue = child->positionValue > MAX_POS_VAL - 100 ? child->positionValue-1 : child->positionValue;
+            childValue = child->positionValue > MAX_POS_VAL - 100 ? child->positionValue-1 : child->positionValue;
             val = val > childValue ? val : childValue;
         }
     }
     else {
         val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : MAX_POS_VAL;
         for (const auto& child : this->children) {
-            float childValue = child->positionValue < -MAX_POS_VAL + 100 ? child->positionValue+1 : child->positionValue;
+            childValue = child->positionValue < -MAX_POS_VAL + 100 ? child->positionValue+1 : child->positionValue;
             val = val < childValue ? val : childValue;
         }
     }
