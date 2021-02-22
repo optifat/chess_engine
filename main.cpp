@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <iomanip>
 #include "pieces/include/Input_processor.h"
 #include "tree/include/Tree.h"
 #include "tree/include/Evaluator.h"
@@ -46,8 +47,9 @@ int main(int argc, char* argv[]) {
         std::cout << "Total nodes generated: " << tree.totalNodesGenerated() << std::endl;
         std::cout << "Total tree generation time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()
                   << " microseconds" << std::endl;
-        std::cout << 1000000*(double)tree.totalNodesGenerated() / std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() <<
-        " nodes per sec" << std::endl;
+        std::cout << std::setprecision(7)
+                  << 1000000*(double)tree.totalNodesGenerated() / std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()
+                  <<" nodes per sec" << std::endl;
     }
     else {
         std::cout << "Print pawn move (e2-e4 for example), the program should return initial and final pieces on these squares \n";
