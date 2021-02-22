@@ -1,3 +1,14 @@
+#ifdef _MSC_VER
+#  include <intrin.h>
+#  define ctz(x) (63-__lzcnt64(x))
+#  define popcount __popcnt64
+#endif
+
+#ifdef __GNUC__
+#  define ctz(x) x?__builtin_ctzl(x):63
+#  define popcount __builtin_popcountl
+#endif
+
 #include <iostream>
 #include "../include/Input_processor.h"
 #include "../include/Pawn_move.h"
@@ -68,12 +79,12 @@ void Input_processor::readMove(Board& board, std::string move) {
         }
     }
 
-    if(board.fieldAttackers(kingPos).size() >= 2 && pieceType != 'K'){
+    if(popcount(board.fieldAttackers(kingPos)) >= 2 && pieceType != 'K'){
         std::cerr << "King is checked" << std::endl;
         return;
     }
-    else if(board.fieldAttackers(kingPos).size() == 1 && pieceType != 'K'){
-        if(endSquare != board.fieldAttackers(kingPos)[0]){
+    else if(popcount(board.fieldAttackers(kingPos)) == 1 && pieceType != 'K'){
+        if(endSquare != ctz(board.fieldAttackers(kingPos))){
             board.updateCurrentColor(initSquare, endSquare);
             if(board.fieldIsAttacked(kingPos)){
                 board.updateCurrentColor(endSquare, initSquare);

@@ -71,9 +71,9 @@ public:
     void showBoard();
     bool fieldIsAttacked(int position, int ignore = -1);
     bool fieldIsDefended(int position);
-    std::vector<int> fieldAttackers(int position, int ignore = -1);
-    std::vector<int> fieldDefenders(int position);
-    std::vector<int> piecesAbleToMoveHere(int position);
+    uint64_t fieldAttackers(int position, int ignore = -1);
+    uint64_t fieldDefenders(int position);
+    uint64_t piecesAbleToMoveHere(int position);
     bool isPinned(int position);
     void updateCurrentColor(int initSquare, int endSqure);
     void updateAnotherColor(int initSquare, int endSqure);

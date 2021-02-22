@@ -1,10 +1,12 @@
 #ifdef _MSC_VER
 #  include <intrin.h>
 #  define ctz(x) (63-__lzcnt64(x))
+#  define popcount __popcnt64
 #endif
 
 #ifdef __GNUC__
 #  define ctz(x) x?__builtin_ctzl(x):63
+#  define popcount __builtin_popcountl
 #endif
 
 #include <string>
@@ -285,15 +287,16 @@ bool Board::fieldIsDefended(int position){
     return result;
 }
 
-std::vector<int> Board::fieldAttackers(int position, int ignore) {
+uint64_t Board::fieldAttackers(int position, int ignore) {
     //if (!kings[position] && this->showCurrentColor()[position]){
     //    std::cerr << "This field is occupied by allied piece which is not a king. Returning false.";
     //    return false;
     //}
     //checking files
 
-    std::vector<int> attackers;
-    attackers.reserve(5);
+    //std::vector<int> attackers;
+    //attackers.reserve(5);
+    uint64_t attackers = 0;
 
     int checkedField;
     for(int i = -1; i <= 1; i+=2){
@@ -305,7 +308,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
             else if(this->anotherColorCheck(checkedField) &&
                     ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
                      (j == 1 && this->kingCheck(checkedField)))){
-                attackers.push_back(checkedField);
+                attackers |= (uint64_t) 1 << checkedField;
                 break;
             }
             else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
@@ -324,7 +327,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
             else if(this->anotherColorCheck(checkedField) &&
                     ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
                      (j == 1 && this->kingCheck(checkedField)))){
-                attackers.push_back(checkedField);
+                attackers |= (uint64_t) 1 << checkedField;
                 break;
             }
             else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
@@ -345,7 +348,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
                            (k == 1 && ((this->pawnCheck(checkedField) && j == -1+2*this->whiteOrder())
                                        || this->kingCheck(checkedField)))
                           )){
-                    attackers.push_back(checkedField);
+                    attackers |= (uint64_t) 1 << checkedField;
                     break;
                 } else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) && ignore != checkedField){
                     break;
@@ -362,22 +365,21 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
             continue;
         }
         if(this->anotherColorCheck(checkedField) && this->knightCheck(checkedField)){
-            attackers.push_back(checkedField);
+            attackers |= (uint64_t) 1 << checkedField;
         }
     }
     return attackers;
 }
 
-std::vector<int> Board::fieldDefenders(int position){
+uint64_t Board::fieldDefenders(int position){
     this->passTheMove();
     auto result = fieldAttackers(position);
     this->passTheMove();
     return result;
 }
 
-std::vector<int> Board::piecesAbleToMoveHere(int position) {
-    std::vector<int> result;
-    result.reserve(5);
+uint64_t Board::piecesAbleToMoveHere(int position) {
+    uint64_t result = 0;
 
     int checkedField;
     for (int i = -1; i <= 1; i += 2) {
@@ -388,17 +390,17 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
             }
             else if (this->currentColorCheck(checkedField)) {
                 if (this->queenCheck(checkedField) || this->rookCheck(checkedField)) {
-                    result.push_back(checkedField);
+                    result |= (uint64_t) 1 << checkedField;
                 }
                 else if (j == 1 && this->kingCheck(checkedField)){
-                    result.push_back(checkedField);
+                    result |= (uint64_t) 1 << checkedField;
                 }
                 else if (j == 1 && this->pawnCheck(checkedField) && i * (-1 + 2 * this->whiteOrder()) < 0 && !this->anotherColorCheck(position)) {
-                    result.push_back(checkedField);
+                    result |= (uint64_t) 1 << checkedField;
                 }
                 else if (j == 2 && this->pawnCheck(checkedField) && !this->anotherColorCheck(position)){
                     if ((checkedField / 8 == 6 && !this->whiteOrder()) || (checkedField / 8 == 1 && this->whiteOrder())) {
-                        result.push_back(checkedField);
+                        result |= (uint64_t) 1 << checkedField;
                     }
                 }
                 break;
@@ -419,7 +421,7 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
             else if (this->currentColorCheck(checkedField) &&
                 ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
                     (j == 1 && this->kingCheck(checkedField)))) {
-                result.push_back(checkedField);
+                result |= (uint64_t) 1 << checkedField;
             }
             else if (this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField)) {
                 break;
@@ -440,7 +442,7 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
                         (k == 1 && ((this->pawnCheck(checkedField) && j == -1 + 2 * this->whiteOrder() && this->anotherColorCheck(checkedField))
                             || this->kingCheck(checkedField)))
                         )) {
-                    result.push_back(checkedField);
+                    result |= (uint64_t) 1 << checkedField;
                 }
                 else if ((this->currentColorCheck(checkedField) || this->anotherColorCheck(checkedField))) {
                     break;
@@ -457,7 +459,7 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
             continue;
         }
         if (this->currentColorCheck(checkedField) && this->knightCheck(checkedField)) {
-            result.push_back(checkedField);
+            result |= (uint64_t) 1 << checkedField;
         }
     }
     return result;
@@ -557,8 +559,8 @@ int Board::possibleEnPassant(){
 bool Board::isPinned(int position){
     int kingPos = this->currentColorKingPosition();
     // The piece is pinned if after taking it off the board the number of king field attackers increases
-    int initialAttackersNumber = fieldAttackers(kingPos).size();
-    int endAttackersNumber = fieldAttackers(kingPos, position).size();
+    int initialAttackersNumber = popcount(fieldAttackers(kingPos));
+    int endAttackersNumber = popcount(fieldAttackers(kingPos, position));
     return endAttackersNumber > initialAttackersNumber;
 }
 
@@ -657,46 +659,71 @@ bool Board::checkmate() {
         }
     }
     
-    std::vector<int> attackers = this-> fieldAttackers(kingPos);
+    uint64_t attackers = this->fieldAttackers(kingPos);
 
     // it's impossible to cover from double check
-    if(attackers.size() >= 2){
+    if(popcount(attackers) >= 2){
         return true;
     }
-    
-    for(auto defender: this->fieldDefenders(attackers[0])){
+
+    /*for(auto defender: this->fieldDefenders(attackers[0])){
         if(!this->isPinned(defender) && defender != kingPos){
             return false;
         }
+    }*/
+
+    int attacker = ctz(attackers);
+    uint64_t defenders = this->fieldDefenders(attacker);
+    int defenderNum = popcount(defenders);
+    int defender;
+
+    for(int j = 0; j < defenderNum; j++){
+        defender = ctz(defenders);
+        if(!this->isPinned(defender) && defender != kingPos){
+            return false;
+        }
+        defenders &= ~((uint64_t)1 << defender);
     }
 
-    if(attackers[0]/8 == kingPos/8){
-        int k = 2*(attackers[0] > kingPos) - 1;
-        for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->piecesAbleToMoveHere(i)){
+    if(attacker/8 == kingPos/8){
+        int k = 2*(attacker > kingPos) - 1;
+        for(int i = kingPos+k; i != attacker+k; i+=k){
+            defenders = this->piecesAbleToMoveHere(i);
+            defenderNum = popcount(defenders);
+            for(int j = 0; j < defenderNum; j++){
+                defender = ctz(defenders);
                 if(!this->isPinned(defender) && defender != kingPos){
                     return false;
                 }
+                defenders &= ~((uint64_t)1 << defender);
             }
         }
     }
-    else if(attackers[0]%8 == kingPos%8){
-        int k = 8*(2*(attackers[0] > kingPos)-1);
-        for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->piecesAbleToMoveHere(i)){
+    else if(attacker%8 == kingPos%8){
+        int k = 8*(2*(attacker > kingPos)-1);
+        for(int i = kingPos+k; i != attacker+k; i+=k){
+            defenders = this->piecesAbleToMoveHere(i);
+            defenderNum = popcount(defenders);
+            for(int j = 0; j < defenderNum; j++){
+                defender = ctz(defenders);
                 if(!this->isPinned(defender) && defender != kingPos){
                     return false;
                 }
+                defenders &= ~((uint64_t)1 << defender);
             }
         }
     }
-    else if(abs(attackers[0]%8 - kingPos%8) == abs(attackers[0]/8-kingPos/8)){
-        int k = 8*(2*(attackers[0]/8 > kingPos/8)-1) + 2*((attackers[0]%8 > kingPos%8))-1;
-        for(int i = kingPos+k; i != attackers[0]+k; i+=k){
-            for(auto defender: this->piecesAbleToMoveHere(i)){
+    else if(abs(attacker%8 - kingPos%8) == abs(attacker/8-kingPos/8)){
+        int k = 8*(2*(attacker/8 > kingPos/8)-1) + 2*((attacker%8 > kingPos%8))-1;
+        for(int i = kingPos+k; i != attacker+k; i+=k){
+            defenders = this->piecesAbleToMoveHere(i);
+            defenderNum = popcount(defenders);
+            for(int j = 0; j < defenderNum; j++){
+                defender = ctz(defenders);
                 if(!this->isPinned(defender) && defender != kingPos){
                     return false;
                 }
+                defenders &= ~((uint64_t)1 << defender);
             }
         }
     }
