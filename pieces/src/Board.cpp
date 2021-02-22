@@ -207,9 +207,11 @@ bool Board::fieldIsAttacked(int position, int ignore){
     //}
 
     //checking files
+
+    int checkedField;
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
-            int checkedField = 8*j*i + position;
+            checkedField = 8*j*i + position;
             if(checkedField > 63 || checkedField < 0){
                 continue;
             }
@@ -227,7 +229,7 @@ bool Board::fieldIsAttacked(int position, int ignore){
     //checking line
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
-            int checkedField = j*i + position;
+            checkedField = j*i + position;
             if(checkedField/8 != position/8 || checkedField > 63 || checkedField < 0){
                 continue;
             }
@@ -246,7 +248,7 @@ bool Board::fieldIsAttacked(int position, int ignore){
     for(int i = -1; i <= 1; i+=2){
         for(int j = -1; j <= 1; j+=2){
             for(int k = 1; k <= 7; k++){
-                int checkedField = (8+i)*j*k + position;
+                checkedField = (8+i)*j*k + position;
                 if(checkedField > 63 || checkedField < 0 || abs(checkedField%8-position%8) != abs(checkedField/8-position/8)){
                     continue;
                 } else if(this->anotherColorCheck(checkedField) &&
@@ -265,7 +267,7 @@ bool Board::fieldIsAttacked(int position, int ignore){
     int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -17};
 
     for(auto move: possibleKnightMoves){
-        int checkedField = position + move;
+        checkedField = position + move;
         if(checkedField < 0 || checkedField > 63 || abs(checkedField/8-position/8)+abs(checkedField%8-position%8) != 3){
             continue;
         }
@@ -293,9 +295,10 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
     std::vector<int> attackers;
     attackers.reserve(5);
 
+    int checkedField;
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
-            int checkedField = 8*j*i + position;
+            checkedField = 8*j*i + position;
             if(checkedField > 63 || checkedField < 0){
                 continue;
             }
@@ -314,7 +317,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
     //checking line
     for(int i = -1; i <= 1; i+=2){
         for(int j = 1; j <= 7; j++){
-            int checkedField = j*i + position;
+            checkedField = j*i + position;
             if(checkedField/8 != position/8 || checkedField > 63 || checkedField < 0){
                 continue;
             }
@@ -334,7 +337,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
     for(int i = -1; i <= 1; i+=2){
         for(int j = -1; j <= 1; j+=2){
             for(int k = 1; k <= 7; k++){
-                int checkedField = (8+i)*j*k + position;
+                checkedField = (8+i)*j*k + position;
                 if(checkedField > 63 || checkedField < 0 || abs(checkedField%8-position%8) != abs(checkedField/8-position/8)){
                     continue;
                 } else if(this->anotherColorCheck(checkedField) &&
@@ -354,7 +357,7 @@ std::vector<int> Board::fieldAttackers(int position, int ignore) {
     int possibleKnightMoves[8] = {6, 10, 15, 17, -6, -10, -15, -17};
 
     for(auto move: possibleKnightMoves){
-        int checkedField = position + move;
+        checkedField = position + move;
         if(checkedField < 0 || checkedField > 63 || abs(checkedField/8-position/8)+abs(checkedField%8-position%8) != 3){
             continue;
         }
@@ -376,19 +379,13 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
     std::vector<int> result;
     result.reserve(5);
 
+    int checkedField;
     for (int i = -1; i <= 1; i += 2) {
         for (int j = 1; j <= 7; j++) {
-            int checkedField = 8 * j * i + position;
+            checkedField = 8 * j * i + position;
             if (checkedField > 63 || checkedField < 0) {
                 continue;
             }
-            /*else if (this->currentColorCheck(checkedField) &&
-                ((this->queenCheck(checkedField) || this->rookCheck(checkedField)) ||
-                    (j == 1 && (this->kingCheck(checkedField) || 
-                    (this->pawnCheck(checkedField) && i*(-1 + 2 * this->whiteOrder()) < 0 && !this->anotherColorCheck(checkedField))) ||
-                    (j == 2 && this->pawnCheck(checkedField) && ((checkedField/8 == 6 && !this->whiteOrder()) || (checkedField / 8 == 1 && this->whiteOrder())))))){
-                result.push_back(checkedField);
-            }*/
             else if (this->currentColorCheck(checkedField)) {
                 if (this->queenCheck(checkedField) || this->rookCheck(checkedField)) {
                     result.push_back(checkedField);
@@ -415,7 +412,7 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
     //checking line
     for (int i = -1; i <= 1; i += 2) {
         for (int j = 1; j <= 7; j++) {
-            int checkedField = j * i + position;
+            checkedField = j * i + position;
             if (checkedField / 8 != position / 8 || checkedField > 63 || checkedField < 0) {
                 continue;
             }
@@ -434,7 +431,7 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
     for (int i = -1; i <= 1; i += 2) {
         for (int j = -1; j <= 1; j += 2) {
             for (int k = 1; k <= 7; k++) {
-                int checkedField = (8 + i) * j * k + position;
+                checkedField = (8 + i) * j * k + position;
                 if (checkedField > 63 || checkedField < 0 || abs(checkedField % 8 - position % 8) != abs(checkedField / 8 - position / 8)) {
                     continue;
                 }
@@ -455,7 +452,7 @@ std::vector<int> Board::piecesAbleToMoveHere(int position) {
     int possibleKnightMoves[8] = { 6, 10, 15, 17, -6, -10, -15, -17 };
 
     for (auto move : possibleKnightMoves) {
-        int checkedField = position + move;
+        checkedField = position + move;
         if (checkedField < 0 || checkedField > 63 || abs(checkedField / 8 - position / 8) + abs(checkedField % 8 - position % 8) != 3) {
             continue;
         }
@@ -558,14 +555,7 @@ int Board::possibleEnPassant(){
 }
 
 bool Board::isPinned(int position){
-    bool currentColor = currentColorCheck(position);
-    int kingPos = -1;
-    for(int i = 0; i <= 63; i++){
-        if(this->kingCheck(i) && this->currentColorCheck(i)){
-            kingPos = i;
-            break;
-        }
-    }
+    int kingPos = this->currentColorKingPosition();
     // The piece is pinned if after taking it off the board the number of king field attackers increases
     int initialAttackersNumber = fieldAttackers(kingPos).size();
     int endAttackersNumber = fieldAttackers(kingPos, position).size();
@@ -655,9 +645,10 @@ void Board::printInfo(){
 bool Board::checkmate() {
     int kingPos = this->currentColorKingPosition();
 
+    int newKingPos;
     for(int i = -1; i<=1; i++){
         for(int j = -1; j<=1; j++){
-            int newKingPos = kingPos + 8*i + j;
+            newKingPos = kingPos + 8*i + j;
             if(newKingPos <= 63 && newKingPos >= 0 && abs(kingPos/8-newKingPos/8) <= 1 && abs(kingPos%8-newKingPos%8) <= 1){
                 if(!(this->fieldIsAttacked(newKingPos, kingPos) || (this->currentColorCheck(newKingPos) && !this->kingCheck(newKingPos)))){
                     return false;
