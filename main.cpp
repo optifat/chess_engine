@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
             (MAX_POS_VAL - tree.getPositionValue()) : (-MAX_POS_VAL - tree.getPositionValue())) << std::endl;
         }
         else {
-            std::cout << tree.getPositionValue() << std::endl;
+            std::cout << tree.getPositionValue()/100 << std::endl;
         }
         tree.optimalSequence();
         std::cout << "Total nodes generated: " << tree.totalNodesGenerated() << std::endl;
