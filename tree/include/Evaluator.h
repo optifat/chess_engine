@@ -1,13 +1,13 @@
 #ifndef CHESS_ENGINE_EVALUATOR_H
 #define CHESS_ENGINE_EVALUATOR_H
 
-constexpr float MAX_POS_VAL = 1000;
+constexpr int MAX_POS_VAL = 100000;
 
 #include "../../pieces/include/Board.h"
 
 class Evaluator {
 public:
-    static float evaluatePosition(Board &position);
+    static int evaluatePosition(Board &position);
 };
 
 

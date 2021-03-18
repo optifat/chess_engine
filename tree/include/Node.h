@@ -19,7 +19,7 @@ public:
     void addChildrenInQueue(std::queue<std::shared_ptr<Node>> &queue);
     void showBoard();
     int childrenSize();
-    float getPositionValue();
+    int getPositionValue();
     void updatePositionValue();
 
 private:
@@ -29,7 +29,7 @@ private:
     std::vector<std::shared_ptr<Node>> children;
     std::weak_ptr<Node> parent;
     std::shared_ptr<Board> position;
-    float positionValue;
+    int positionValue;
     int layerNumber;
 };
 

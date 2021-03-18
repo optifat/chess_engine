@@ -27,7 +27,7 @@ void Tree::generateTree(int maxDepth) {
     }
 }
 
-float Tree::getPositionValue() {
+int Tree::getPositionValue() {
     return this->root->getPositionValue();
 }
 

@@ -513,8 +513,8 @@ void Node::updateParentsPositionValue() {
 }
 
 void Node::updatePositionValue() {
-    float val;
-    float childValue;
+    int val;
+    int childValue;
     if (this->position->whiteOrder()) {
         val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : -MAX_POS_VAL;
         for (const auto& child : this->children) {
@@ -536,6 +536,6 @@ void Node::updatePositionValue() {
     }
 }
 
-float Node::getPositionValue() {
+int Node::getPositionValue() {
     return this->positionValue;
 }
