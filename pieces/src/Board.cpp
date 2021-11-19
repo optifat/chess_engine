@@ -558,10 +558,49 @@ int Board::possibleEnPassant(){
 
 bool Board::isPinned(int position){
     int kingPos = this->currentColorKingPosition();
-    // The piece is pinned if after taking it off the board the number of king field attackers increases
-    int initialAttackersNumber = popcount(fieldAttackers(kingPos));
-    int endAttackersNumber = popcount(fieldAttackers(kingPos, position));
-    return endAttackersNumber > initialAttackersNumber;
+    if(kingPos/8 == position/8) {
+        int delta = 2*(position > kingPos) - 1;
+        int checkedSquare = kingPos + delta;
+        while(checkedSquare/8 == kingPos/8){
+            if(this->currentColorCheck(checkedSquare)) {
+                return false;
+            }
+
+            if(this->anotherColorCheck(checkedSquare)){
+                return this->rookCheck(checkedSquare) || this->queenCheck(checkedSquare);
+            }
+            checkedSquare += delta;
+        }
+    }
+    else if(kingPos%8 == position%8){
+        int delta = 8*(2*(position > kingPos) - 1);
+        int checkedSquare = position + delta;
+        while(checkedSquare <= 63 && checkedSquare >= 0){
+            if(this->currentColorCheck(checkedSquare)){
+                return false;
+            }
+
+            if(this->anotherColorCheck(checkedSquare)){
+                return this->rookCheck(checkedSquare) || this->queenCheck(checkedSquare);
+            }
+            checkedSquare += delta;
+        }
+    }
+    else if(abs(kingPos%8 - position%8) == abs(kingPos/8  - position/8)){
+        int delta = 8*(2*(position > kingPos) - 1) + (2*(position%8 > kingPos%8) - 1);
+        int checkedSquare = position + delta;
+        while(abs(kingPos%8 - checkedSquare%8) == abs(kingPos/8 - checkedSquare/8)){
+            if(this->currentColorCheck(checkedSquare)){
+                return false;
+            }
+
+            if(this->anotherColorCheck(checkedSquare)){
+                return this->bishopCheck(checkedSquare) || this->queenCheck(checkedSquare);
+            }
+            checkedSquare += delta;
+        }
+    }
+    return false;
 }
 
 void Board::showBoard() {
@@ -658,7 +697,7 @@ bool Board::checkmate() {
             }
         }
     }
-    
+
     uint64_t attackers = this->fieldAttackers(kingPos);
 
     // it's impossible to cover from double check
