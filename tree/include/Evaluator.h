@@ -4,10 +4,11 @@
 constexpr int MAX_POS_VAL = 100000;
 
 #include "../../pieces/include/Board.h"
+#include "./Node.h"
 
 class Evaluator {
 public:
-    static int evaluatePosition(Board &position);
+    static int evaluatePosition(Node &node);
 };
 
 

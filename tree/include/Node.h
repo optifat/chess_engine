@@ -10,6 +10,7 @@
 class Node: public std::enable_shared_from_this<Node>{
 
     friend class Tree;
+    friend class Evaluator;
 
 public:
     Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int layerNumber);
@@ -31,6 +32,7 @@ private:
     std::shared_ptr<Board> position;
     int positionValue;
     int layerNumber;
+    bool evaluated;
 };
 
 #endif //CHESS_ENGINE_NODE_H

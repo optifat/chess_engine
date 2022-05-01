@@ -24,7 +24,7 @@
 Node::Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int layerNumber){
     this->parent = std::move(parent);
     this->position = std::move(position);
-    this->positionValue = Evaluator::evaluatePosition(*this->position.get());
+    this->evaluated = false;
     this->layerNumber = layerNumber;
 }
 
@@ -513,6 +513,11 @@ void Node::updateParentsPositionValue() {
 }
 
 void Node::updatePositionValue() {
+    if (!this->evaluated){
+        this->positionValue = Evaluator::evaluatePosition(*this);
+        this->evaluated = true;
+    }
+
     int val;
     int childValue;
     if (this->position->whiteOrder()) {

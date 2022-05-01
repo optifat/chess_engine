@@ -23,6 +23,9 @@ void Tree::generateTree(int maxDepth) {
         this->queue.front()->addChildrenInQueue(queue);
         this->queue.front()->updatePositionValue();
         this->queue.pop();
+        if (this->queue.size() == 0){
+            return;
+        }
         this->depth = this->queue.front()->currentLayer();
     }
 }

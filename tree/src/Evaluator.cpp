@@ -6,15 +6,17 @@
 #include "../include/Evaluator.h"
 #include <iostream>
 
-int Evaluator::evaluatePosition(Board &position) {
+int Evaluator::evaluatePosition(Node &node) {
     int positionValue = 0;
-    if (position.checkmate()) {
-        return position.whiteOrder() ? -MAX_POS_VAL : MAX_POS_VAL;
-    }
-    /* doesn't work right now
-    if (position.stalemate()) {
+    Board position = *node.position.get();
+
+    if (node.childrenSize() == 0) {
+        if (position.fieldIsAttacked(position.currentColorKingPosition())){
+            return position.whiteOrder() ? -MAX_POS_VAL : MAX_POS_VAL;
+        }
         return 0;
-    }*/
+    }
+
     // counting material
     positionValue += 900 * __builtin_popcountl(position.queens & position.whitePieces);
     positionValue -= 900 * __builtin_popcountl(position.queens & position.blackPieces);
