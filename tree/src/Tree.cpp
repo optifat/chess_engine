@@ -42,7 +42,7 @@ void Tree::optimalSequence() {
     auto current = this->root;
     current->showBoard();
     std::cout << std::endl;
-    for (int i = 1; i < this->depth; i++) {
+    for (int i = 0; i < this->depth; i++) {
         if (abs(current->getPositionValue()) == MAX_POS_VAL) {
             break;
         }
