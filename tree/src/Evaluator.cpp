@@ -10,7 +10,7 @@ int Evaluator::evaluatePosition(Node &node) {
     int positionValue = 0;
     Board position = *node.position.get();
 
-    if (node.childrenSize() == 0) {
+    if (!node.hasChildren) {
         if (position.fieldIsAttacked(position.currentColorKingPosition())){
             return position.whiteOrder() ? -MAX_POS_VAL : MAX_POS_VAL;
         }

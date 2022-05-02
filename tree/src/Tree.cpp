@@ -14,13 +14,17 @@ Tree::Tree(std::shared_ptr<Board> currentPosition) {
 Tree::~Tree() = default;
 
 void Tree::generateTree(int maxDepth) {
-    while(this->depth < maxDepth){
+    while(this->depth <= maxDepth){
         if (this->queue.front()->currentLayer() > maxDepth){
             return;
         }
-        this->queue.front()->createChildren();
+        this->queue.front()->createChildren(this->depth != maxDepth);
         this->totalNodes += this->queue.front()->childrenSize();
-        this->queue.front()->addChildrenInQueue(queue);
+
+        if(this->depth != maxDepth){
+            this->queue.front()->addChildrenInQueue(queue);
+        }
+
         this->queue.front()->updatePositionValue();
         this->queue.pop();
         if (this->queue.size() == 0){
@@ -36,30 +40,32 @@ int Tree::getPositionValue() {
 
 void Tree::optimalSequence() {
     auto current = this->root;
-    for (int i = 0; i <= this->depth; i++) {
-        current->showBoard();
-        std::cout << std::endl;
-        if (abs(current->positionValue) == MAX_POS_VAL) {
+    current->showBoard();
+    std::cout << std::endl;
+    for (int i = 1; i < this->depth; i++) {
+        if (abs(current->getPositionValue()) == MAX_POS_VAL) {
             break;
         }
         for (auto child : current->children) {
             if (child->getPositionValue() == current->getPositionValue() &&
-                (((current->positionValue <= MAX_POS_VAL - 100) && current->position->whiteOrder()) ||
-                ((current->positionValue >= -MAX_POS_VAL + 100) && !current->position->whiteOrder()))) {
+                (((current->getPositionValue() <= MAX_POS_VAL - 100) && current->position->whiteOrder()) ||
+                ((current->getPositionValue() >= -MAX_POS_VAL + 100) && !current->position->whiteOrder()))) {
                 current = child;
                 break;
             }
-            else if (current->position->whiteOrder() && current->positionValue > MAX_POS_VAL - 100 && 
-                     child->positionValue - current->positionValue == 1) {
+            else if (current->position->whiteOrder() && current->getPositionValue() > MAX_POS_VAL - 100 && 
+                     child->getPositionValue() - current->getPositionValue() == 1) {
                 current = child;
                 break;
             }
-            else if (!current->position->whiteOrder() && current->positionValue < -MAX_POS_VAL + 100 &&
-                child->positionValue - current->positionValue == -1) {
+            else if (!current->position->whiteOrder() && current->getPositionValue() < -MAX_POS_VAL + 100 &&
+                child->getPositionValue() - current->getPositionValue() == -1) {
                 current = child;
                 break;
             }
         }
+        current->showBoard();
+        std::cout << std::endl;
     }
 }
 

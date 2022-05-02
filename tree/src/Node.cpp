@@ -25,6 +25,7 @@ Node::Node(std::shared_ptr<Node> parent, std::shared_ptr<Board> position, int la
     this->parent = std::move(parent);
     this->position = std::move(position);
     this->evaluated = false;
+    this->positionValue = std::nullopt;
     this->layerNumber = layerNumber;
 }
 
@@ -34,16 +35,24 @@ void Node::addChild(std::shared_ptr<Node> child) {
     this->children.push_back(std::move(child));
 }
 
-void Node::createChildren() {
+void Node::createChildren(bool addingChildren) {
     std::shared_ptr<Board> newPosition = std::make_shared<Board>(std::move(*position.get()));
     int square = this->position->currentColorKingPosition();
     if (position->whiteOrder() && square == 4) {
         if (Castling::makeMove(*newPosition.get(), square, square + 2)) {
+            this->hasChildren = true;
+            if(!addingChildren){
+                return;
+            }
             this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                   std::move(newPosition), this->layerNumber + 1)));
             newPosition = std::make_shared<Board>(std::move(*position.get()));
         }
         if (Castling::makeMove(*newPosition.get(), square, square - 2)) {
+            this->hasChildren = true;
+            if(!addingChildren){
+                return;
+            }
             this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                   std::move(newPosition), this->layerNumber + 1)));
             newPosition = std::make_shared<Board>(std::move(*position.get()));
@@ -51,11 +60,19 @@ void Node::createChildren() {
     }
     else if(!position->whiteOrder() && square == 60) {
         if (Castling::makeMove(*newPosition.get(), square, square + 2)) {
+            this->hasChildren = true;
+            if(!addingChildren){
+                return;
+            }
             this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                   std::move(newPosition), this->layerNumber + 1)));
             newPosition = std::make_shared<Board>(std::move(*position.get()));
         }
         if (Castling::makeMove(*newPosition.get(), square, square - 2)) {
+            this->hasChildren = true;
+            if(!addingChildren){
+                return;
+            }
             this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                   std::move(newPosition), this->layerNumber + 1)));
             newPosition = std::make_shared<Board>(std::move(*position.get()));
@@ -72,6 +89,10 @@ void Node::createChildren() {
             }
             if(King_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -99,6 +120,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -118,6 +143,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -137,6 +166,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -156,6 +189,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -175,6 +212,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -194,6 +235,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -213,6 +258,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -232,6 +281,10 @@ void Node::createChildren() {
             }
             else if(Queen_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -258,6 +311,10 @@ void Node::createChildren() {
             }
             else if(Rook_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -277,6 +334,10 @@ void Node::createChildren() {
             }
             else if(Rook_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -296,6 +357,10 @@ void Node::createChildren() {
             }
             else if(Rook_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -315,6 +380,10 @@ void Node::createChildren() {
             }
             else if(Rook_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -341,6 +410,10 @@ void Node::createChildren() {
             }
             else if(Bishop_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -360,6 +433,10 @@ void Node::createChildren() {
             }
             else if(Bishop_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -379,6 +456,10 @@ void Node::createChildren() {
             }
             else if(Bishop_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -398,6 +479,10 @@ void Node::createChildren() {
             }
             else if(Bishop_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -424,6 +509,10 @@ void Node::createChildren() {
             }
             else if(Knight_move::makeMove(*newPosition.get(), square, endSquare)){
                 if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                    this->hasChildren = true;
+                    if(!addingChildren){
+                        return;
+                    }
                     this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                           std::move(newPosition), this->layerNumber + 1)));
                 }
@@ -451,6 +540,10 @@ void Node::createChildren() {
                     for (char promotion : possiblePromotion) {
                         if (Pawn_move::makeMove(*newPosition.get(), square, endSquare, i != 8 , promotion)) {
                             if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                                this->hasChildren = true;
+                                if(!addingChildren){
+                                    return;
+                                }
                                 this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                                       std::move(newPosition), this->layerNumber + 1)));
                             }
@@ -463,6 +556,10 @@ void Node::createChildren() {
                 }
                 else if(Pawn_move::makeMove(*newPosition.get(), square, endSquare, i != 8)){
                     if (!newPosition->fieldIsDefended(newPosition->anotherColorKingPosition())) {
+                        this->hasChildren = true;
+                        if(!addingChildren){
+                            return;
+                        }
                         this->addChild(std::move(std::make_shared<Node>(shared_from_this(),
                                                               std::move(newPosition), this->layerNumber + 1)));
                     }
@@ -483,11 +580,8 @@ int Node::currentLayer(){
 }
 
 void Node::addChildrenInQueue(std::queue<std::shared_ptr<Node>> &queue){
-    for(const auto& child: this->children){
-        if (abs(child->positionValue) != MAX_POS_VAL) {
-            queue.push(child);
-        }
-    }
+    for(const auto& child: this->children)
+        queue.push(child);
 }
 
 void Node::showBoard() {
@@ -498,7 +592,7 @@ int Node::childrenSize() {
     return this->children.size();
 }
 
-void Node::updateParentsPositionValue() {
+/*void Node::updateParentsPositionValue() {
     if (this->layerNumber == 0) {
         return;
     }
@@ -510,31 +604,44 @@ void Node::updateParentsPositionValue() {
     }
     this->parent.lock()->positionValue = this->positionValue;
     this->parent.lock()->updateParentsPositionValue();
-}
+}*/
 
 void Node::updatePositionValue() {
     if (!this->evaluated){
-        this->positionValue = Evaluator::evaluatePosition(*this);
+        this->positionValue = std::optional<int>{ Evaluator::evaluatePosition(*this) };
         this->evaluated = true;
     }
 
     int val;
     int childValue;
+    bool childrenHaveValue = true;
     if (this->position->whiteOrder()) {
-        val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : -MAX_POS_VAL;
+        val = (this->childrenSize() == 0 && abs(this->positionValue.value()) != MAX_POS_VAL) ? 0 : -MAX_POS_VAL;
         for (const auto& child : this->children) {
-            childValue = child->positionValue > MAX_POS_VAL - 100 ? child->positionValue-1 : child->positionValue;
+            if(!child->positionValue.has_value()){
+                childrenHaveValue = false;
+                break;
+            }
+            childValue = child->positionValue.value() > MAX_POS_VAL - 100 ? 
+                child->positionValue.value() - 1 : child->positionValue.value();
             val = val > childValue ? val : childValue;
         }
     }
     else {
-        val = (this->childrenSize() == 0 && abs(this->positionValue) != MAX_POS_VAL) ? 0 : MAX_POS_VAL;
+        val = (this->childrenSize() == 0 && abs(this->positionValue.value()) != MAX_POS_VAL) ? 0 : MAX_POS_VAL;
         for (const auto& child : this->children) {
-            childValue = child->positionValue < -MAX_POS_VAL + 100 ? child->positionValue+1 : child->positionValue;
+            if(!child->positionValue.has_value()){
+                childrenHaveValue = false;
+                break;
+            }
+            childValue = child->positionValue.value() < -MAX_POS_VAL + 100 ?
+                child->positionValue.value() + 1 : child->positionValue.value();
             val = val < childValue ? val : childValue;
         }
     }
-    this->positionValue = val;
+    if(childrenHaveValue){
+        this->positionValue = std::optional<int>{ val };
+    }
     // this->updateParentsPositionValue();
     if (this->layerNumber != 0) {
         this->parent.lock()->updatePositionValue();
@@ -542,5 +649,5 @@ void Node::updatePositionValue() {
 }
 
 int Node::getPositionValue() {
-    return this->positionValue;
+    return this->positionValue.value();
 }
